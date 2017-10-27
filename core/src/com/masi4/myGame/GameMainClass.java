@@ -5,9 +5,11 @@ import com.masi4.screens.GameplayScreen;    // <- обрати внимание 
 import com.masi4.screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.masi4.gamehelpers.AssetLoader;
 
 
 public class GameMainClass extends Game {
+
     public static final int SCREEN_HEIGHT = 480;
     public static final int SCREEN_WIDTH = 800;
 
@@ -15,6 +17,7 @@ public class GameMainClass extends Game {
 	@Override
 	public void create () {
 		Gdx.app.log("GameMainClass", "Игра запущена");
+		AssetLoader.load();
         this.setScreen(new MainMenuScreen(this));
 
 	}
@@ -27,5 +30,7 @@ public class GameMainClass extends Game {
 	@Override
 	public void dispose () {
 
+		super.dispose();
+		AssetLoader.dispose();
 	}
 }

@@ -27,12 +27,22 @@ public class Player {
         position.add(velocity.cpy().scl(delta));    // cpy() - возвращает копию Vector2, scl() - умножает вектор на скаляр.
     }
 
-    public void SetCoords(float x, float y)    // Координаты центра прямоугольника с шириной widht и высотой height
+    public void SetCoords(float x, float y)    // Координаты левого нижнего угла
     {
         position = new Vector2(x, y);
     }
 
-    public void SetSpeed(float speedX, float speedY)
+    public void Move(Vector2 speedVec)    // TODO: джойстик, сделать движение вектором в джойстике, !!!вектор гравитации!!!
+    {
+        velocity = speedVec.cpy();
+    }
+
+    public void Stop()
+    {
+        velocity = new Vector2(0f, 0f);
+    }
+
+    public void Move(float speedX, float speedY)
     {
         velocity = new Vector2(speedX, speedY);
     }
@@ -47,7 +57,7 @@ public class Player {
         return position.y;
     }
 
-    public int GetWidht()
+    public int GetWidth()
     {
         return width;
     }

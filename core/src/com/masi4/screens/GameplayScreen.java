@@ -1,63 +1,57 @@
-package com.masi4.screens;
+package com.masi4.gameworld;
 
 /**
  * Created by OIEFIJM on 23.10.2017.
  *
- * Экран непосредственно игрового процесса
+ * Данный класс отвечает за отрисовку игровых объектов
  */
 
-import com.masi4.gameworld.GameWorld;
-import com.masi4.gameworld.GameRenderer;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class GameplayScreen implements Screen {
+import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gameobjects.Player;
+import static com.masi4.myGame.GameMainClass.*;
+import static com.masi4.gamehelpers.GameTextureRegions.*;
+
+public class GameRenderer {
+
+    private int gameWidth;
+    private int gameHeight;
 
     private GameWorld world;
-    private GameRenderer renderer;
+    private OrthographicCamera camera;
+    private SpriteBatch batcher;
 
-    public GameplayScreen()
+    public GameRenderer(GameWorld world, int gameWidth, int gameHeight)
     {
-        world = new GameWorld();
-        renderer = new GameRenderer(world);
-    }
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
 
-    @Override
-    public void show() {
+        this.world = world;
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    }
-
-    @Override
-    public void render(float delta) {
-
-        world.update(delta);
-        renderer.render();
-    }
-
-    @Override
-    public void resize(int width, int height) {
+        batcher = new SpriteBatch();
+        batcher.setProjectionMatrix(camera.combined);
 
     }
 
-    @Override
-    public void pause() {
+    public void render()
+    {
+        Player player = world.GetPlayer();  // TODO: уберем это из цикла далее для улучшение производительности
 
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batcher.begin();
+
+        batcher.draw(AssetLoader.level_test, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        batcher.draw(AssetLoader.player_test, player.GetX(), player.GetY(), player.GetWidth(), player.GetHeight());
+
+        batcher.end();
     }
 
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }
