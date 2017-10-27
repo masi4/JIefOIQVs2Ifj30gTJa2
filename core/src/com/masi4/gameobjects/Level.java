@@ -12,16 +12,31 @@ public class Level {
     private int height;
     private int floorHeight;
 
-    public Level(int number)    // Считывать информацию об уровне откуда нибудь
-    {
-
-    }
-
     public Level(int width, int height, int floorHeight)
     {
         this.width = width;
         this.height = height;
         this.floorHeight = floorHeight;
+    }
+
+    public Level(LevelNames name)
+    {
+        switch (name)
+        {
+            case TEST:
+            {
+                width = 800;
+                height = 480;
+                floorHeight = 100;
+
+                break;
+            }
+        }
+    }
+
+    public void update(float delta)
+    {
+
     }
 
     public int GetFloorHeight()

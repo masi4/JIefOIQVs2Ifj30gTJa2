@@ -6,6 +6,7 @@ package com.masi4.screens;
  * Экран непосредственно игрового процесса
  */
 
+import com.masi4.gamehelpers.InputHandler;
 import com.masi4.gameworld.GameWorld;
 import com.masi4.gameworld.GameRenderer;
 
@@ -21,7 +22,8 @@ public class GameplayScreen implements Screen {
     public GameplayScreen()
     {
         world = new GameWorld();
-        renderer = new GameRenderer(world);
+        renderer = new GameRenderer(world, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.input.setInputProcessor(new InputHandler(world.GetPlayer()));
     }
 
     @Override

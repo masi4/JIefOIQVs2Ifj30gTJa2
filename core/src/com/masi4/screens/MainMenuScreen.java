@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 
 import com.masi4.myGame.GameMainClass;
 
-public class MainMenuScreen implements Screen {     // TODO: Сделать здеся главное меню
+public class MainMenuScreen implements Screen {
     private OrthographicCamera camera;
     private GameMainClass gameCtrl;
     protected Stage stage;
@@ -82,7 +82,7 @@ public class MainMenuScreen implements Screen {     // TODO: Сделать зд
 
     @Override
     public void render(float delta) {
-        //batch.draw(bgTexture,0, 0, 1280 , 720);     сделать фон меню
+        //batch.draw(bgTexture,0, 0, 1280 , 720);     сделать фон меню (здарова) ) ))
         Gdx.gl.glClearColor(255, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

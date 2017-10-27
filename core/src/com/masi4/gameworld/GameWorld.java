@@ -6,6 +6,9 @@ package com.masi4.gameworld;
  * Данный класс отвечает за обновление игровых объектов
  */
 
+import static com.masi4.gamehelpers.GameTextureRegions.*;
+
+import com.masi4.gameobjects.LevelNames;
 import com.masi4.gameobjects.Player;
 import com.masi4.gameobjects.Level;
 
@@ -16,14 +19,21 @@ public class GameWorld {
 
     public GameWorld()
     {
-        level = new Level(1600, 480, 110);      // TODO: информацию об уровнях, размерах персонажа куда нибудь вынести
-        player = new Player(82, 100);
-        player.SetCoords(player.GetWidht()/2, level.GetFloorHeight() + player.GetHeight()/2);
+        // TODO: информацию об уровнях, размерах персонажа куда нибудь вынести
+
+        level = new Level(LevelNames.TEST);
+        player = new Player(player_test_Width, player_test_Height);
+        player.SetCoords(0, level.GetFloorHeight());
     }
 
     public void update(float delta)
     {
+        player.update(delta);
+    }
 
+    public Player GetPlayer()
+    {
+        return player;
     }
 
 }
