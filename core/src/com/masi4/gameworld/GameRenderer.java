@@ -25,8 +25,7 @@ public class GameRenderer {
     private OrthographicCamera camera;
     private SpriteBatch batcher;
 
-    public GameRenderer(GameWorld world, int gameWidth, int gameHeight)
-    {
+    public GameRenderer(GameWorld world, int gameWidth, int gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
 
@@ -39,8 +38,7 @@ public class GameRenderer {
 
     }
 
-    public void render()
-    {
+    public void render() {
         Player player = world.GetPlayer();  // TODO: уберем это из цикла далее для улучшение производительности
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -53,5 +51,4 @@ public class GameRenderer {
 
         batcher.end();
     }
-
 }

@@ -17,12 +17,12 @@ import com.badlogic.gdx.graphics.GL20;
 public class GameplayScreen implements Screen {
 
     private GameWorld world;
-    private GameRenderer renderer;
+    private com.masi4.gameworld.GameRenderer renderer;
 
     public GameplayScreen()
     {
         world = new GameWorld();
-        renderer = new GameRenderer(world, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        renderer = new com.masi4.gameworld.GameRenderer(world, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(new InputHandler(world.GetPlayer()));
     }
 
@@ -63,3 +63,4 @@ public class GameplayScreen implements Screen {
 
     }
 }
+
