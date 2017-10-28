@@ -1,57 +1,66 @@
-package com.masi4.gameworld;
+package com.masi4.screens;
 
 /**
  * Created by OIEFIJM on 23.10.2017.
  *
- * Данный класс отвечает за отрисовку игровых объектов
+ * Экран непосредственно игрового процесса
  */
 
+import com.masi4.gamehelpers.InputHandler;
+import com.masi4.gameworld.GameWorld;
+import com.masi4.gameworld.GameRenderer;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gameobjects.Player;
-import static com.masi4.myGame.GameMainClass.*;
-import static com.masi4.gamehelpers.GameTextureRegions.*;
-
-public class GameRenderer {
-
-    private int gameWidth;
-    private int gameHeight;
+public class GameplayScreen implements Screen {
 
     private GameWorld world;
-    private OrthographicCamera camera;
-    private SpriteBatch batcher;
+    private com.masi4.gameworld.GameRenderer renderer;
 
-    public GameRenderer(GameWorld world, int gameWidth, int gameHeight)
+    public GameplayScreen()
     {
-        this.gameWidth = gameWidth;
-        this.gameHeight = gameHeight;
+        world = new GameWorld();
+        renderer = new com.masi4.gameworld.GameRenderer(world, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.input.setInputProcessor(new InputHandler(world.GetPlayer()));
+    }
 
-        this.world = world;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        batcher = new SpriteBatch();
-        batcher.setProjectionMatrix(camera.combined);
+    @Override
+    public void show() {
 
     }
 
-    public void render()
-    {
-        Player player = world.GetPlayer();  // TODO: уберем это из цикла далее для улучшение производительности
+    @Override
+    public void render(float delta) {
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batcher.begin();
-
-        batcher.draw(AssetLoader.level_test, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        batcher.draw(AssetLoader.player_test, player.GetX(), player.GetY(), player.GetWidth(), player.GetHeight());
-
-        batcher.end();
+        world.update(delta);
+        renderer.render();
     }
 
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
 }
+
