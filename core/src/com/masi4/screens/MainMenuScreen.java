@@ -45,7 +45,7 @@ public class MainMenuScreen implements Screen {
     private void loadTextures(){
         menuBg = new Texture[5];
         for(int i = 0; i <5;i++){
-            menuBg[i] =  new Texture(Gdx.files.internal("gameplay/level_0/bg_"+i+".png"));
+            menuBg[i] =  new Texture(Gdx.files.internal("gameplay/level_0/bg_0"+i+".png"));
         }
         buttonsTxr = new Texture(Gdx.files.internal("menuButtons-256x96.png"));
 
