@@ -48,6 +48,8 @@ public class AssetLoader {
         MainMenu_Buttons = new Texture(Gdx.files.internal("menuButtons-256x96.png"));
     }
 
+
+
     public static void dispose()
     {
         player_Texture.dispose();

@@ -47,7 +47,7 @@ public class GameplayScreen implements Screen {
         world.update(delta);
         renderer.render();
         controller.render(delta);
-
+        //Gdx.app.log("GameScreen", "JUMP: "+world.GetPlayer().jump);
     }
 
     @Override

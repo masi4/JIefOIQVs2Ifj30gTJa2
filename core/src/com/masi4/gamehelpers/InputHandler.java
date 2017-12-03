@@ -48,7 +48,6 @@ public class InputHandler implements InputProcessor{
         }
         else
         {
-
             controller.SetPosition(screenX,screenY);
             controller.MakeActive();
         }
@@ -62,12 +61,20 @@ public class InputHandler implements InputProcessor{
         player.Stop();
         return false;
     }
-
+    boolean jumpControl = false; // Чтобы нельзя было делать распрыжку)
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if(controller.touchpad.getKnobPercentY()>0.5&&!jumpControl)
+        {
+            player.Jump();
+            jumpControl = true;
+        }
+        if(controller.touchpad.getKnobPercentY()<0.5&&jumpControl)
+        {
+            jumpControl = false;
+        }
+        player.Move(300 * controller.touchpad.getKnobPercentX());
 
-        player.Move(300*controller.touchpad.getKnobPercentX(), 0);
-        //if(controller.touchpad.getKnobPercentY()>0.5) {player.Jump()}   // TODO: наприсать в классе player метод Jump
         return false;
     }
 

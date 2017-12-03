@@ -12,23 +12,36 @@ public class Player {
 
     private Vector2 position;
     private Vector2 velocity;
+    private Vector2 acceleration;
     private int width;
     private int height;
-
+    private float floorHeight;
     public Player(int width, int height)
     {
         this.width = width;
         this.height = height;
         velocity = new Vector2(0, 0);
+        acceleration = new Vector2(0, -1560);
     }
 
     public void update(float delta)
     {
+        velocity.add(acceleration.cpy().scl(delta));
         position.add(velocity.cpy().scl(delta));    // cpy() - возвращает копию Vector2, scl() - умножает вектор на скаляр.
+
+        if(position.y<floorHeight && jump){
+            jump = false;
+        }
+        if(position.y<floorHeight){
+            position.y = floorHeight;
+        }
+
+
     }
 
     public void SetCoords(float x, float y)    // Координаты левого нижнего угла
     {
+        floorHeight = y;
         position = new Vector2(x, y);
     }
 
@@ -37,14 +50,22 @@ public class Player {
         velocity = speedVec.cpy();
     }
 
-    public void Stop()
+    public boolean jump = false;    // Игрок находится в прыжке
+    public void Jump()
     {
-        velocity = new Vector2(0f, 0f);
+        if(!jump)
+           velocity = new Vector2(velocity.x, 640);
+        jump = true;
     }
 
-    public void Move(float speedX, float speedY)
+    public void Stop()
     {
-        velocity = new Vector2(speedX, speedY);
+        velocity = new Vector2(0f, velocity.y);
+    }
+
+    public void Move(float speedX)
+    {
+        velocity.x = speedX;
     }
 
     public float GetX()
