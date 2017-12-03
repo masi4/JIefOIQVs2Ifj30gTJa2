@@ -26,5 +26,12 @@ public class GameTextureRegions {
     public static final int test_level_BG_Width = 800;
     public static final int test_level_BG_Height = 480;
 
+    // /controller - атлас с джойстиком
+    public static final int controller_frame_Width = 242;
+    public static final int controller_frame_Height = 242;
+    public static final int controller_circle_Width = 70;
+    public static final int controller_circle_Height = 70;
+
+
 
 }

@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.badlogic.gdx.physics.box2d.World;
+import com.masi4.GUI.WalkingControl;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gameobjects.Player;
 import static com.masi4.myGame.GameMainClass.*;
@@ -24,11 +26,9 @@ public class GameRenderer {
     private GameWorld world;
     private OrthographicCamera camera;
     private SpriteBatch batcher;
-
     public GameRenderer(GameWorld world, int gameWidth, int gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-
         this.world = world;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -50,5 +50,7 @@ public class GameRenderer {
         batcher.draw(AssetLoader.player_test, player.GetX(), player.GetY(), player.GetWidth(), player.GetHeight());
 
         batcher.end();
+
+
     }
 }

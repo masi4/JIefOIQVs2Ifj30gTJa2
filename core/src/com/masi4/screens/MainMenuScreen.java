@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
+import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.myGame.GameMainClass;
 
 import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
@@ -30,7 +31,6 @@ public class MainMenuScreen implements Screen {
     private OrthographicCamera camera;
     private GameMainClass gameCtrl;
     protected Stage stage;
-    Texture buttonsTxr;
     SpriteBatch batch;
     public MainMenuScreen(GameMainClass gameCtrl){
         Gdx.app.log("GameScreen", "Игровое меню запущено");
@@ -39,17 +39,9 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(new FillViewport(SCREEN_WIDTH/4,SCREEN_HEIGHT/4));
         batch = new SpriteBatch();
-        loadTextures();
+        AssetLoader.load_MainMenu();
     }
-    Texture[] menuBg;
-    private void loadTextures(){
-        menuBg = new Texture[5];
-        for(int i = 0; i <5;i++){
-            menuBg[i] =  new Texture(Gdx.files.internal("gameplay/level_0/bg_0"+i+".png"));
-        }
-        buttonsTxr = new Texture(Gdx.files.internal("menuButtons-256x96.png"));
 
-    }
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -58,11 +50,11 @@ public class MainMenuScreen implements Screen {
         mainTable.setFillParent(true);
         mainTable.top();
 
-        TextureRegion[] playButtonTxrReg ={new TextureRegion(buttonsTxr,0,0,128,32),new TextureRegion(buttonsTxr,128,0,128,32)};
+        TextureRegion[] playButtonTxrReg ={new TextureRegion(AssetLoader.MainMenu_Buttons,0,0,128,32),new TextureRegion(AssetLoader.MainMenu_Buttons,128,0,128,32)};
         ImageButton playButton = new ImageButton(new TextureRegionDrawable(playButtonTxrReg[0]),new TextureRegionDrawable(playButtonTxrReg[1]));
-        TextureRegion[] optionsButtonTxrReg = {new TextureRegion(buttonsTxr,0,32,128,32),new TextureRegion(buttonsTxr,128,32,128,32)};
+        TextureRegion[] optionsButtonTxrReg = {new TextureRegion(AssetLoader.MainMenu_Buttons,0,32,128,32),new TextureRegion(AssetLoader.MainMenu_Buttons,128,32,128,32)};
         ImageButton optionsButton = new ImageButton(new TextureRegionDrawable(optionsButtonTxrReg[0]),new TextureRegionDrawable(optionsButtonTxrReg[1]));
-        TextureRegion[] exitButtonTxrReg = {new TextureRegion(buttonsTxr,0,64,128,32),new TextureRegion(buttonsTxr,128,64,128,32)};
+        TextureRegion[] exitButtonTxrReg = {new TextureRegion(AssetLoader.MainMenu_Buttons,0,64,128,32),new TextureRegion(AssetLoader.MainMenu_Buttons,128,64,128,32)};
         ImageButton exitButton = new ImageButton(new TextureRegionDrawable(exitButtonTxrReg[0]),new TextureRegionDrawable(exitButtonTxrReg[1]));
 
         playButton.addListener(new ClickListener(){
@@ -92,11 +84,9 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         batch.begin();
         for(int i = 0; i <5;i++) {
-            batch.draw(menuBg[i], 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.draw(AssetLoader.MainMenu_Bg[i], 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
         batch.end();
-       // Gdx.gl.glClearColor(255, 0, 0, 1);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
