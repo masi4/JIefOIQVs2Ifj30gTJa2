@@ -9,14 +9,18 @@ package com.masi4.gamehelpers;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.masi4.GUI.WalkingControl;
 import com.masi4.gameobjects.Player;
+import com.masi4.screens.GameplayScreen;
 
 public class InputHandler implements InputProcessor{
 
     private Player player;
-
-    public InputHandler(Player player)
+    public WalkingControl controller;
+    public InputHandler(WalkingControl controller,Player player)
     {
+        this.controller = controller;
         this.player = player;
     }
 
@@ -40,24 +44,37 @@ public class InputHandler implements InputProcessor{
 
         if (screenX >= Gdx.graphics.getWidth() / 2)
         {
-            player.Move(200, 0);
+
         }
         else
         {
-            player.Move(-200, 0);
+            controller.SetPosition(screenX,screenY);
+            controller.MakeActive();
         }
-        return true;
+        return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
+        controller.MakeInactive();
+        controller.ResetPosition();
         player.Stop();
-        return true;
+        return false;
     }
-
+    boolean jumpControl = false; // Чтобы нельзя было делать распрыжку)
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if(controller.touchpad.getKnobPercentY()>0.5&&!jumpControl)
+        {
+            player.Jump();
+            jumpControl = true;
+        }
+        if(controller.touchpad.getKnobPercentY()<0.5&&jumpControl)
+        {
+            jumpControl = false;
+        }
+        player.Move(300 * controller.touchpad.getKnobPercentX());
+
         return false;
     }
 
