@@ -17,6 +17,7 @@ public class Player
     private int height;
     private boolean isInJump;    // находится ли персонаж в прыжке
 
+
     // Публичные члены
 
     public Player(int width, int height)
@@ -65,8 +66,11 @@ public class Player
     {
         setVelocity(new Vector2(0, 0));
         position.y = y;
-        acceleration = new Vector2(0, 0);
-        if (isInJump) isInJump = false;
+        if (isInJump)
+        {
+            acceleration = new Vector2(0, 0);
+            isInJump = false;
+        }
     }
 
     public void handleUpCollision(float y)

@@ -127,6 +127,8 @@ public class AssetLoader
                 level_BG4 = new TextureRegion(level_Texture, level_0_4_X, level_0_4_Y, level_0_4_Width, level_0_4_Height);
                 level_grass = new TextureRegion(level_Texture, level_0_grass_X, level_0_grass_Y,
                         level_0_grass_Width, level_0_grass_Height);
+                level_floor = new TextureRegion(level_Texture, level_0_floor_X, level_0_floor_Y,
+                        level_0_floor_Width, level_0_floor_Height);
 
             }
         }

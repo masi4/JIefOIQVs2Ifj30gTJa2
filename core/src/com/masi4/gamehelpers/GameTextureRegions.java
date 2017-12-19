@@ -27,27 +27,32 @@ public class GameTextureRegions
     public static final int level_0_1_Width = 256;
     public static final int level_0_1_Height = 144;
 
-    public static final int level_0_2_X = 257;
+    public static final int level_0_2_X = 256;
     public static final int level_0_2_Y = 0;
     public static final int level_0_2_Width = 256;
     public static final int level_0_2_Height = 144;
 
-    public static final int level_0_3_X = 513;
+    public static final int level_0_3_X = 512;
     public static final int level_0_3_Y = 0;
     public static final int level_0_3_Width = 256;
     public static final int level_0_3_Height = 144;
 
-    public static final int level_0_4_X = 769;
+    public static final int level_0_4_X = 768;
     public static final int level_0_4_Y = 0;
     public static final int level_0_4_Width = 256;
     public static final int level_0_4_Height = 144;
 
     public static final int level_0_grass_X = 0;
-    public static final int level_0_grass_Y = 145;
+    public static final int level_0_grass_Y = 144;
     public static final int level_0_grass_Width = 768;
     public static final int level_0_grass_Height = 144;
 
-    // /controller - атлас с джойстиком
+    public static final int level_0_floor_X = 768;
+    public static final int level_0_floor_Y = 270;
+    public static final int level_0_floor_Width = 256;
+    public static final int level_0_floor_Height = 18;
+
+  // /controller - атлас с джойстиком
     public static final int controller_frame_Width = 242;
     public static final int controller_frame_Height = 242;
     public static final int controller_circle_Width = 70;

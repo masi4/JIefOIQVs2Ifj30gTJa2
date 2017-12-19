@@ -55,4 +55,5 @@ public class GameWorld
     }
 
     public int getLevelWidth() { return level.getWidth(); }
+    public int getLevelFloorHeight() { return level.getFloorHeight(); }
 }

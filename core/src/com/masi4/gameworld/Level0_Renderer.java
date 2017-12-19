@@ -21,7 +21,13 @@ public class Level0_Renderer extends GameRenderer
 
     // Assets
     private TextureRegion player_default; // Впоследствии использовать Animation
-    private TextureRegion level_BG1, level_BG2, level_BG3, level_BG4, level_grass;
+    private TextureRegion
+            level_BG1,
+            level_BG2,
+            level_BG3,
+            level_BG4,
+            level_grass,
+            level_floor;
 
     //
     // Методы
@@ -39,6 +45,8 @@ public class Level0_Renderer extends GameRenderer
         level_BG3 = AssetLoader.level_BG3;
         level_BG4 = AssetLoader.level_BG4;
         level_grass = AssetLoader.level_grass;
+        level_floor = AssetLoader.level_floor;
+
         player_default = AssetLoader.player_default;
     }
 
@@ -60,7 +68,13 @@ public class Level0_Renderer extends GameRenderer
         batcher.draw(level_BG2, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         batcher.draw(level_BG3, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         batcher.draw(level_BG4, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        batcher.draw(level_grass, 0, 0, level_0_grass_Width * 2, level_0_grass_Height * 2);
+        batcher.draw(level_grass, 0, 0, level_0_grass_Width * 2, level_0_grass_Height * 3);
+        batcher.draw(level_floor, 0, 0, level_0_grass_Width * 2, world.getLevelFloorHeight());
+
+        // возможно:
+        // персонаж доходит где то до половины и камера привязывается к персонажу
+        // уходит в начало и камера отвязывается
+        // то же самое с концом
         batcher.draw(player_default, player.getX(), player.getY(), player.getWidth(), player.getHeight());
 
         batcher.end();
