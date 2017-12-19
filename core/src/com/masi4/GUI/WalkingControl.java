@@ -3,7 +3,6 @@ package com.masi4.GUI;
  * Created by U1wknUzeU6 on 01.12.2017.
  */
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -14,11 +13,12 @@ import com.masi4.gamehelpers.AssetLoader;
 
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 
-public class WalkingControl {
-    Viewport viewport;
+public class WalkingControl
+{
+    private Viewport viewport;
     public Stage stage;
-    public Touchpad touchpad;
-    public Touchpad.TouchpadStyle touchpadStyle;
+    public Touchpad touchpad; // публичные поля = плохо
+    public Touchpad.TouchpadStyle touchpadStyle;  // публичные поля = плохо
 
     private Skin touchpadSkin;
     private Drawable touchFrameAc;
@@ -30,10 +30,10 @@ public class WalkingControl {
 
     public WalkingControl() {
         touchpadSkin = new Skin();
-        touchpadSkin.add("frameAc", AssetLoader.controller_FrameAc);
-        touchpadSkin.add("circleAc", AssetLoader.controller_CircleAc);
-        touchpadSkin.add("frameInac", AssetLoader.controller_FrameInac);
-        touchpadSkin.add("circleInac", AssetLoader.controller_CircleInac);
+        touchpadSkin.add("frameAc", AssetLoader.controller_FrameActive);
+        touchpadSkin.add("circleAc", AssetLoader.controller_CircleActive);
+        touchpadSkin.add("frameInac", AssetLoader.controller_FrameInactive);
+        touchpadSkin.add("circleInac", AssetLoader.controller_CircleInactive);
         touchpadStyle = new Touchpad.TouchpadStyle();
         touchFrameAc = touchpadSkin.getDrawable("frameAc");
         touchCicleAc = touchpadSkin.getDrawable("circleAc");
@@ -65,7 +65,6 @@ public class WalkingControl {
     }
     public void ResetPosition(){
         touchpad.setBounds(0, 0, controller_frame_Width,controller_frame_Height);
-
     }
     public void Opacity(){
 

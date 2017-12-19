@@ -1,0 +1,60 @@
+package com.masi4.gameworld;
+
+/**
+ * Created by OIEFIJM on 19.12.2017.
+ */
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+
+import static com.masi4.myGame.GameMainClass.*;
+
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gameobjects.Player;
+
+public class Level0_Renderer extends GameRenderer
+{
+    // Objects
+    private Player player;
+
+    // Assets
+    private TextureRegion player_default; // Впоследствии использовать Animation
+    private TextureRegion level_BG1, level_BG2, level_BG3, level_BG4, level_grass;
+
+    //
+    // Методы
+    //
+
+    private void initGameObjects()
+    {
+        player = world.getPlayer();
+    }
+
+    private void initAssets()
+    {
+        level_BG1 = AssetLoader.level_BG1;
+        level_BG2 = AssetLoader.level_BG2;
+        level_BG3 = AssetLoader.level_BG3;
+        level_BG4 = AssetLoader.level_BG4;
+        level_grass = AssetLoader.level_grass;
+    }
+
+    public Level0_Renderer(GameWorld world, int gameWidth, int gameHeight)
+    {
+        super(world, gameWidth, gameHeight);
+    }
+
+    public void render()
+    {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batcher.begin();
+
+        batcher.draw(level_BG1, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        batcher.draw(player_default, player.getX(), player.getY(), player.getWidth(), player.getHeight());
+
+        batcher.end();
+    }
+}

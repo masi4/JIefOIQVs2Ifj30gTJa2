@@ -6,18 +6,15 @@ package com.masi4.gameobjects;
  * Этот класс описывает игровой уровень
  */
 
+import com.badlogic.gdx.math.Rectangle;
+import java.util.ArrayList;
+
 public class Level {
 
     private int width;
     private int height;
     private int floorHeight;
-
-    public Level(int width, int height, int floorHeight)
-    {
-        this.width = width;
-        this.height = height;
-        this.floorHeight = floorHeight;
-    }
+    private ArrayList<Rectangle> levelObjects;  // (возможно) сделать отдельный класс. isRemovable true false
 
     public Level(LevelNames name)
     {
@@ -29,6 +26,13 @@ public class Level {
                 height = 480;
                 floorHeight = 100;
 
+                // Границы отдельно. прямоугольники с нулевой шириной высотой нельзя
+/*
+                levelObjects.add(new Rectangle(0f, 0f, 0f, height)); // левая граница уровня
+                levelObjects.add(new Rectangle(0f, 0f, width, 0f)); // нижняя
+                levelObjects.add(new Rectangle(0f, (float)height, (float)width, 0)); // верхняя
+                levelObjects.add(new Rectangle((float)width, 0, 0, (float)height));  // правая
+*/
                 break;
             }
         }
@@ -39,17 +43,17 @@ public class Level {
 
     }
 
-    public int GetFloorHeight()
+    public int getFloorHeight()
     {
         return floorHeight;
     }
 
-    public int GetWidth()
+    public int getWidth()
     {
         return width;
     }
 
-    public int GetHeight()
+    public int getHeight()
     {
         return height;
     }

@@ -9,8 +9,6 @@ package com.masi4.screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -23,27 +21,33 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.myGame.GameMainClass;
+import com.masi4.gameobjects.LevelNames;
 
 import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
 import static com.masi4.myGame.GameMainClass.SCREEN_WIDTH;
 
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen implements Screen
+{
     private OrthographicCamera camera;
     private GameMainClass gameCtrl;
     protected Stage stage;
     SpriteBatch batch;
-    public MainMenuScreen(GameMainClass gameCtrl){
-        Gdx.app.log("GameScreen", "Игровое меню запущено");
+
+    public MainMenuScreen(GameMainClass gameCtrl)
+    {
+        AssetLoader.load_MainMenu();
+
         this.gameCtrl = gameCtrl;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(new FillViewport(SCREEN_WIDTH/4,SCREEN_HEIGHT/4));
         batch = new SpriteBatch();
-        AssetLoader.load_MainMenu();
+
     }
 
     @Override
-    public void show() {
+    public void show()
+    {
         Gdx.input.setInputProcessor(stage);
 
         Table mainTable = new Table();
@@ -61,7 +65,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                gameCtrl.setScreen(new GameplayScreen());
+                gameCtrl.setScreen(new GameplayScreen(LevelNames.TEST)); // Экран выбора уровня
                 dispose();
             }
         });
@@ -102,22 +106,26 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void pause() {
+    public void pause()
+    {
 
     }
 
     @Override
-    public void resume() {
+    public void resume()
+    {
 
     }
 
     @Override
-    public void hide() {
+    public void hide()
+    {
 
     }
 
     @Override
-    public void dispose() {
-
+    public void dispose()
+    {
+        AssetLoader.dispose_MainMenu();
     }
 }

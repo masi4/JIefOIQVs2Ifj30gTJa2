@@ -9,10 +9,8 @@ package com.masi4.gamehelpers;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Gdx;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.masi4.GUI.WalkingControl;
 import com.masi4.gameobjects.Player;
-import com.masi4.screens.GameplayScreen;
 
 public class InputHandler implements InputProcessor{
 
@@ -42,11 +40,7 @@ public class InputHandler implements InputProcessor{
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        if (screenX >= Gdx.graphics.getWidth() / 2)
-        {
-
-        }
-        else
+        if (screenX <= Gdx.graphics.getWidth() / 2)
         {
             controller.SetPosition(screenX,screenY);
             controller.MakeActive();
@@ -56,24 +50,27 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        controller.MakeInactive();
-        controller.ResetPosition();
-        player.Stop();
+
+        if (screenX <= Gdx.graphics.getWidth() / 2)
+        {
+            controller.MakeInactive();
+            controller.ResetPosition();
+        }
         return false;
     }
-    boolean jumpControl = false; // Чтобы нельзя было делать распрыжку)
+    boolean jumpControl = false; // Чтобы нельзя было делать распрыжку
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if(controller.touchpad.getKnobPercentY()>0.5&&!jumpControl)
+        if(controller.touchpad.getKnobPercentY()>0.5 && !jumpControl)
         {
-            player.Jump();
+            player.jump();
             jumpControl = true;
         }
-        if(controller.touchpad.getKnobPercentY()<0.5&&jumpControl)
+        if(controller.touchpad.getKnobPercentY()<0.5 && jumpControl)
         {
             jumpControl = false;
         }
-        player.Move(300 * controller.touchpad.getKnobPercentX());
+        player.setVelocityX(300 * controller.touchpad.getKnobPercentX());
 
         return false;
     }

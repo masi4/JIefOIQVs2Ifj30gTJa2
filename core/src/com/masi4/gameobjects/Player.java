@@ -8,82 +8,102 @@ package com.masi4.gameobjects;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class Player {
-
+public class Player
+{
     private Vector2 position;
-    private Vector2 velocity;
-    private Vector2 acceleration;
+    private Vector2 velocity;         // Вектор скорости
+    private Vector2 acceleration;     // Вектор ускорения
     private int width;
     private int height;
-    private float floorHeight;
+    private boolean isInJump;    // находится ли персонаж в прыжке
+
+    // Публичные члены
+
     public Player(int width, int height)
     {
         this.width = width;
         this.height = height;
+        isInJump = false;
         velocity = new Vector2(0, 0);
-        acceleration = new Vector2(0, -1560);
+        acceleration = new Vector2(0, 0);
     }
 
-    public void update(float delta)
+    public void update_position(float delta)
     {
         velocity.add(acceleration.cpy().scl(delta));
         position.add(velocity.cpy().scl(delta));    // cpy() - возвращает копию Vector2, scl() - умножает вектор на скаляр.
-
-        if(position.y<floorHeight && jump){
-            jump = false;
-        }
-        if(position.y<floorHeight){
-            position.y = floorHeight;
-        }
-
-
     }
 
-    public void SetCoords(float x, float y)    // Координаты левого нижнего угла
+    public void setCoords(float x, float y)    // Координаты левого нижнего угла
     {
-        floorHeight = y;
         position = new Vector2(x, y);
     }
 
-    public void Move(Vector2 speedVec)    // TODO: джойстик, сделать движение вектором в джойстике, !!!вектор гравитации!!!
+    public void setVelocity(Vector2 speedVec)
     {
         velocity = speedVec.cpy();
     }
 
-    public boolean jump = false;    // Игрок находится в прыжке
-    public void Jump()
-    {
-        if(!jump)
-           velocity = new Vector2(velocity.x, 640);
-        jump = true;
-    }
-
-    public void Stop()
-    {
-        velocity = new Vector2(0f, velocity.y);
-    }
-
-    public void Move(float speedX)
+    public void setVelocityX(float speedX)
     {
         velocity.x = speedX;
     }
 
-    public float GetX()
+    // акселерация только когда в воздухе
+    public void jump()
+    {
+        if(!isInJump)
+        {
+            acceleration = new Vector2(0, -1560);
+            velocity = new Vector2(velocity.x, 640);
+            isInJump = true;
+        }
+    }
+
+    // TODO: посмотреть, как сделано в птице
+    public void handleDownCollision(float y)
+    {
+        setVelocity(new Vector2(0, 0));
+        position.y = y;
+        acceleration = new Vector2(0, 0);
+        if (isInJump) isInJump = false;
+    }
+
+    public void handleUpCollision(float y)
+    {
+        velocity.y = 0f;
+        position.y = y - height;
+    }
+
+    public void handleLeftCollision(float x)
+    {
+        velocity.x = 0f;
+        position.x = 0;
+    }
+
+    public void handleRightCollision(float x)
+    {
+        velocity.x = 0f;
+        position.x = x - width;
+    }
+
+
+    public float getX()
     {
         return position.x;
     }
 
-    public float GetY()
+    public float getY()
     {
         return position.y;
     }
 
-    public int GetWidth()
+    public int getWidth()
     {
         return width;
     }
 
-    public int GetHeight()
+    public int getHeight()
     {
         return height;
     }
