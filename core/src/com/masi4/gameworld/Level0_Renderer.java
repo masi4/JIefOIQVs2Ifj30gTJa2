@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 import static com.masi4.myGame.GameMainClass.*;
+import static com.masi4.gamehelpers.GameTextureRegions.*;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.masi4.gamehelpers.AssetLoader;
@@ -38,11 +39,14 @@ public class Level0_Renderer extends GameRenderer
         level_BG3 = AssetLoader.level_BG3;
         level_BG4 = AssetLoader.level_BG4;
         level_grass = AssetLoader.level_grass;
+        player_default = AssetLoader.player_default;
     }
 
     public Level0_Renderer(GameWorld world, int gameWidth, int gameHeight)
     {
         super(world, gameWidth, gameHeight);
+        initGameObjects();
+        initAssets();
     }
 
     public void render()
@@ -53,6 +57,10 @@ public class Level0_Renderer extends GameRenderer
         batcher.begin();
 
         batcher.draw(level_BG1, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        batcher.draw(level_BG2, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        batcher.draw(level_BG3, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        batcher.draw(level_BG4, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        batcher.draw(level_grass, 0, 0, level_0_grass_Width * 2, level_0_grass_Height * 2);
         batcher.draw(player_default, player.getX(), player.getY(), player.getWidth(), player.getHeight());
 
         batcher.end();

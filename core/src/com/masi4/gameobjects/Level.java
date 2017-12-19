@@ -22,9 +22,9 @@ public class Level {
         {
             case TEST:
             {
-                width = 800;
+                width = 2400;
                 height = 480;
-                floorHeight = 100;
+                floorHeight = 90;
 
                 // Границы отдельно. прямоугольники с нулевой шириной высотой нельзя
 /*

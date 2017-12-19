@@ -17,7 +17,6 @@ public class GameWorld
     private Player player;
     private Level level;
 
-
     public GameWorld(LevelNames levelName)
     {
         level = new Level(levelName);
@@ -55,4 +54,5 @@ public class GameWorld
         return player;
     }
 
+    public int getLevelWidth() { return level.getWidth(); }
 }

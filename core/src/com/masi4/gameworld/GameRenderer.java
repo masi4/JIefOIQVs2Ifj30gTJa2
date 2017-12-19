@@ -26,7 +26,6 @@ public abstract class GameRenderer
 
     public GameRenderer(GameWorld world, int gameWidth, int gameHeight)
     {
-
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
         this.world = world;
