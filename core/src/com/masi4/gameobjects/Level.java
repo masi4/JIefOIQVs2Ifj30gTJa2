@@ -22,7 +22,7 @@ public class Level {
         {
             case TEST:
             {
-                width = 2400;
+                width = 3200;
                 height = 480;
                 floorHeight = 90;
 

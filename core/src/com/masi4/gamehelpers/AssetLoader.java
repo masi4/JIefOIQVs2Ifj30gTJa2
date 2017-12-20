@@ -35,8 +35,10 @@ public class AssetLoader
             level_BG3,
             level_BG4,
             level_BG5,
-            level_floor,
-            level_grass,
+            level_floor,   // TODO: Loop'ить
+            level_grassBack,
+            level_grassBackLoop,
+            level_grassForeLoop,
 
             // джойстик
             controller_FrameActive,
@@ -125,10 +127,14 @@ public class AssetLoader
                 level_BG2 = new TextureRegion(level_Texture, level_0_2_X, level_0_2_Y, level_0_2_Width, level_0_2_Height);
                 level_BG3 = new TextureRegion(level_Texture, level_0_3_X, level_0_3_Y, level_0_3_Width, level_0_3_Height);
                 level_BG4 = new TextureRegion(level_Texture, level_0_4_X, level_0_4_Y, level_0_4_Width, level_0_4_Height);
-                level_grass = new TextureRegion(level_Texture, level_0_grass_X, level_0_grass_Y,
-                        level_0_grass_Width, level_0_grass_Height);
+                level_grassBack = new TextureRegion(level_Texture, level_0_grassBack_X, level_0_grassBack_Y,
+                        level_0_grassBack_Width, level_0_grassBack_Height);
+                level_grassBackLoop = new TextureRegion(level_Texture, level_0_grassBackLoop_X, level_0_grassBackLoop_Y,
+                        level_0_grassBackLoop_Width, level_0_grassBackLoop_Height);
                 level_floor = new TextureRegion(level_Texture, level_0_floor_X, level_0_floor_Y,
                         level_0_floor_Width, level_0_floor_Height);
+                level_grassForeLoop = new TextureRegion(level_Texture, level_0_grassForeLoop_X, level_0_grassForeLoop_Y,
+                        level_0_grassForeLoop_Width, level_0_grassForeLoop_Height);
 
             }
         }

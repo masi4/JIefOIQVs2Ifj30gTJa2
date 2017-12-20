@@ -49,11 +49,9 @@ public class GameWorld
 
     }
 
-    public Player getPlayer()
-    {
-        return player;
-    }
+    public Player getPlayer() { return player; }
 
     public int getLevelWidth() { return level.getWidth(); }
+
     public int getLevelFloorHeight() { return level.getFloorHeight(); }
 }

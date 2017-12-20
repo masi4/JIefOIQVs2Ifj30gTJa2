@@ -13,10 +13,10 @@ public class Player
     private Vector2 position;
     private Vector2 velocity;         // Вектор скорости
     private Vector2 acceleration;     // Вектор ускорения
+    private float delta;
     private int width;
     private int height;
-    private boolean isInJump;    // находится ли персонаж в прыжке
-
+    private boolean inJump;    // находится ли персонаж в прыжке
 
     // Публичные члены
 
@@ -24,15 +24,16 @@ public class Player
     {
         this.width = width;
         this.height = height;
-        isInJump = false;
+        inJump = false;
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
     }
 
     public void update_position(float delta)
     {
-        velocity.add(acceleration.cpy().scl(delta));
-        position.add(velocity.cpy().scl(delta));    // cpy() - возвращает копию Vector2, scl() - умножает вектор на скаляр.
+        this.delta = delta;
+        velocity.add(acceleration.cpy().scl(delta));    // TODO: прибавление вручную, без cpy()
+        position.add(velocity.cpy().scl(delta));
     }
 
     public void setCoords(float x, float y)    // Координаты левого нижнего угла
@@ -40,9 +41,9 @@ public class Player
         position = new Vector2(x, y);
     }
 
-    public void setVelocity(Vector2 speedVec)
+    public void setVelocity(float velocityX, float velocityY)
     {
-        velocity = speedVec.cpy();
+        velocity = new Vector2(velocityX, velocityY);
     }
 
     public void setVelocityX(float speedX)
@@ -50,26 +51,31 @@ public class Player
         velocity.x = speedX;
     }
 
+    public void setVelocityY(float speedY)
+    {
+        velocity.y = speedY;
+    }
+
     // акселерация только когда в воздухе
     public void jump()
     {
-        if(!isInJump)
+        if(!inJump)
         {
             acceleration = new Vector2(0, -1560);
             velocity = new Vector2(velocity.x, 640);
-            isInJump = true;
+            inJump = true;
         }
     }
 
     // TODO: посмотреть, как сделано в птице
     public void handleDownCollision(float y)
     {
-        setVelocity(new Vector2(0, 0));
         position.y = y;
-        if (isInJump)
+        if (inJump)
         {
+            setVelocity(0, 0);
             acceleration = new Vector2(0, 0);
-            isInJump = false;
+            inJump = false;
         }
     }
 
@@ -101,6 +107,12 @@ public class Player
     {
         return position.y;
     }
+
+    public float getSpeedX() { return velocity.x; }
+
+    public float getDelta() { return delta; }
+
+    public boolean isInJump() { return inJump; }
 
     public int getWidth()
     {

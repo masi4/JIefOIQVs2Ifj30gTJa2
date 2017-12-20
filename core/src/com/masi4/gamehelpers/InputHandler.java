@@ -12,8 +12,8 @@ import com.badlogic.gdx.Gdx;
 import com.masi4.GUI.WalkingControl;
 import com.masi4.gameobjects.Player;
 
-public class InputHandler implements InputProcessor{
-
+public class InputHandler implements InputProcessor
+{
     private Player player;
     public WalkingControl controller;
     public InputHandler(WalkingControl controller,Player player)
@@ -38,8 +38,8 @@ public class InputHandler implements InputProcessor{
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
+    public boolean touchDown(int screenX, int screenY, int pointer, int button)
+    {
         if (screenX <= Gdx.graphics.getWidth() / 2)
         {
             controller.SetPosition(screenX,screenY);
@@ -49,24 +49,28 @@ public class InputHandler implements InputProcessor{
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
+    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    {
         if (screenX <= Gdx.graphics.getWidth() / 2)
         {
             controller.MakeInactive();
             controller.ResetPosition();
+            if (!player.isInJump())
+                player.setVelocityX(0);
         }
         return false;
     }
+
     boolean jumpControl = false; // Чтобы нельзя было делать распрыжку
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if(controller.touchpad.getKnobPercentY()>0.5 && !jumpControl)
+    public boolean touchDragged(int screenX, int screenY, int pointer)
+    {
+        if(controller.touchpad.getKnobPercentY() > 0.5 && !jumpControl)
         {
             player.jump();
             jumpControl = true;
         }
-        if(controller.touchpad.getKnobPercentY()<0.5 && jumpControl)
+        if(controller.touchpad.getKnobPercentY() < 0.5 && jumpControl)
         {
             jumpControl = false;
         }

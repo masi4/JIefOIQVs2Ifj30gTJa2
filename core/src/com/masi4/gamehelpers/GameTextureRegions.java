@@ -42,15 +42,25 @@ public class GameTextureRegions
     public static final int level_0_4_Width = 256;
     public static final int level_0_4_Height = 144;
 
-    public static final int level_0_grass_X = 0;
-    public static final int level_0_grass_Y = 144;
-    public static final int level_0_grass_Width = 768;
-    public static final int level_0_grass_Height = 144;
+    public static final int level_0_grassBack_X = 0;     // TODO: Вынести объекты отдельно
+    public static final int level_0_grassBack_Y = 144;
+    public static final int level_0_grassBack_Width = 256;
+    public static final int level_0_grassBack_Height = 144;
 
-    public static final int level_0_floor_X = 768;
-    public static final int level_0_floor_Y = 270;
+    public static final int level_0_grassBackLoop_X = 256;
+    public static final int level_0_grassBackLoop_Y = 144;
+    public static final int level_0_grassBackLoop_Width = 256;
+    public static final int level_0_grassBackLoop_Height = 144;
+
+    public static final int level_0_floor_X = 0;
+    public static final int level_0_floor_Y = 288;
     public static final int level_0_floor_Width = 256;
     public static final int level_0_floor_Height = 18;
+
+    public static final int level_0_grassForeLoop_X = 512;
+    public static final int level_0_grassForeLoop_Y = 144;
+    public static final int level_0_grassForeLoop_Width = 256;
+    public static final int level_0_grassForeLoop_Height = 144;
 
   // /controller - атлас с джойстиком
     public static final int controller_frame_Width = 242;
