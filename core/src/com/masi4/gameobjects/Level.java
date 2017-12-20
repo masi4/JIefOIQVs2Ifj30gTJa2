@@ -1,5 +1,7 @@
 package com.masi4.gameobjects;
 
+import com.masi4.gamehelpers.AssetLoader;
+
 /**
  * Created by OIEFIJM on 13.10.2017.
  *

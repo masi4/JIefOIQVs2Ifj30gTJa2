@@ -40,7 +40,7 @@ public class MainMenuScreen implements Screen
         this.gameCtrl = gameCtrl;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        stage = new Stage(new FillViewport(SCREEN_WIDTH/4,SCREEN_HEIGHT/4));
+        stage = new Stage(new FillViewport(SCREEN_WIDTH/3.8f,SCREEN_HEIGHT/3.8f));
         batch = new SpriteBatch();
 
     }
@@ -52,8 +52,8 @@ public class MainMenuScreen implements Screen
 
         Table mainTable = new Table();
         mainTable.setFillParent(true);
-        mainTable.top();
-
+        mainTable.center();
+        mainTable.padLeft(30);
         TextureRegion[] playButtonTxrReg ={new TextureRegion(AssetLoader.MainMenu_Buttons,0,0,128,32),new TextureRegion(AssetLoader.MainMenu_Buttons,128,0,128,32)};
         ImageButton playButton = new ImageButton(new TextureRegionDrawable(playButtonTxrReg[0]),new TextureRegionDrawable(playButtonTxrReg[1]));
         TextureRegion[] optionsButtonTxrReg = {new TextureRegion(AssetLoader.MainMenu_Buttons,0,32,128,32),new TextureRegion(AssetLoader.MainMenu_Buttons,128,32,128,32)};
@@ -69,6 +69,14 @@ public class MainMenuScreen implements Screen
                 dispose();
             }
         });
+        optionsButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                gameCtrl.setScreen(new OptionsScreen()); // Экран настроек
+                dispose();
+            }
+        });
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,9 +84,10 @@ public class MainMenuScreen implements Screen
             }
         });
 
-        mainTable.add(playButton); mainTable.row();
+
+        mainTable.add(playButton).padLeft(20); mainTable.row();
         mainTable.add(optionsButton);  mainTable.row();
-        mainTable.add(exitButton);
+        mainTable.add(exitButton).padLeft(45);
 
         stage.addActor(mainTable);
     }
