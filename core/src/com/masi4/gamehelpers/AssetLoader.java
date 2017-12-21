@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import static com.masi4.gamehelpers.GameTextureRegions.*;
@@ -45,7 +46,9 @@ public class AssetLoader
             controller_CircleActive,
             controller_FrameInactive,
             controller_CircleInactive;
-
+    public static BitmapFont
+            default18,
+            default22;
     public static Animation
             player_default_animation;
 
@@ -58,7 +61,16 @@ public class AssetLoader
     {
 
     }
-
+    public static void load_Fonts()
+    {
+        default18 = new BitmapFont(Gdx.files.internal("fonts/default18.fnt"));
+        default22 = new BitmapFont(Gdx.files.internal("fonts/default22.fnt"));
+    }
+    public static void dispose_Fonts()
+    {
+        default18.dispose();
+        default22.dispose();
+    }
     //#MAIN MENU
     public static Texture[] MainMenu_Bg;   // TODO: засунуть кнопки в один атлас, использовать bg из /level_0/
     public static void load_MainMenu()
