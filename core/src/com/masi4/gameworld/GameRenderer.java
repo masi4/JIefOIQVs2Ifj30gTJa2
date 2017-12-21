@@ -18,6 +18,7 @@ public abstract class GameRenderer
 
     protected GameWorld world;
     protected OrthographicCamera camera;
+    protected OrthographicCamera staticCam;
     protected SpriteBatch batcher;
 
     //
@@ -31,6 +32,8 @@ public abstract class GameRenderer
         this.world = world;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+        staticCam = new OrthographicCamera();
+        staticCam.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         batcher = new SpriteBatch();
         batcher.setProjectionMatrix(camera.combined);

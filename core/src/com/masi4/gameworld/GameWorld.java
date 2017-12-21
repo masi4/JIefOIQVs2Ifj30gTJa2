@@ -29,7 +29,7 @@ public class GameWorld
         player.update_position(delta);
 
         // Обработка столкновений
-        if ( player.getY() <= level.getFloorHeight())   // сделать циклом для всех levelobjects
+        if ( player.getY() < level.getFloorHeight())   // сделать циклом для всех levelobjects
         {
             player.handleDownCollision(level.getFloorHeight());
         }

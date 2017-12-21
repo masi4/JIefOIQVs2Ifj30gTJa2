@@ -21,6 +21,7 @@ public class Level0_Renderer extends GameRenderer
     // Objects
     private Player player;
 
+
     // Assets
     private TextureRegion player_default; // Впоследствии использовать Animation
     private TextureRegion
@@ -29,14 +30,17 @@ public class Level0_Renderer extends GameRenderer
             level_BG3,
             level_BG4,
             level_grassBack,
-            level_grassBackLoop,
-            level_floor,
-            level_grassForeLoop;
+            level_floor;
+
+    // 1) возможно сделать vector или list
+    // 2) возможно будет работать и без массива, а возможно он отрисовывает в трех местах и типо мелькает
+    private TextureRegion[] grassBackLoops, grassForeLoops;
 
     // Misc
     private boolean cameraAttached;
-    private float proportion = 0.42f;  // часть экрана, начиная с которой камера привязывается к персонажу
-    private float staticBG_X;  // смещение фонов, которые двигаются с персонажем
+    private final float proportion = 0.42f;  // часть экрана, начиная с которой камера привязывается к персонажу
+    private float attachedSegment;  // Длина отрезка, на котором камера прикрепляется к персонажу
+    private float parallax;  // процентное смещение фонов
 
     //
     // Методы
@@ -54,9 +58,15 @@ public class Level0_Renderer extends GameRenderer
         level_BG3 = AssetLoader.level_BG3;
         level_BG4 = AssetLoader.level_BG4;
         level_grassBack = AssetLoader.level_grassBack;
-        level_grassBackLoop = AssetLoader.level_grassBackLoop;
         level_floor = AssetLoader.level_floor;
-        level_grassForeLoop = AssetLoader.level_grassForeLoop;
+
+        grassBackLoops = new TextureRegion[3];
+        for (int i = 0; i < grassBackLoops.length; i++)
+            grassBackLoops[i] = new TextureRegion(AssetLoader.level_grassBackLoop);
+
+        grassForeLoops = new TextureRegion[4];
+        for (int i = 0; i < grassForeLoops.length; i++)
+            grassForeLoops[i] = new TextureRegion(AssetLoader.level_grassForeLoop);
 
         player_default = AssetLoader.player_default;
     }
@@ -64,9 +74,12 @@ public class Level0_Renderer extends GameRenderer
     public Level0_Renderer(GameWorld world, int gameWidth, int gameHeight)
     {
         super(world, gameWidth, gameHeight);
+        cameraAttached = false;
+        parallax = 0;
+        attachedSegment = world.getLevelWidth() - SCREEN_WIDTH;
+
         initGameObjects();
         initAssets();
-        cameraAttached = false;
     }
 
     public void render()
@@ -75,59 +88,56 @@ public class Level0_Renderer extends GameRenderer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // привязка камеры к персонажу
-        // TODO: убрать рывки и рывки бэкграунда при прыжках
+        // TODO: убрать рывки
         if (player.getX() > SCREEN_WIDTH * proportion &&
                 player.getX() < world.getLevelWidth() - SCREEN_WIDTH * (1 - proportion))
         {
             cameraAttached = true;
             camera.translate(player.getSpeedX() * player.getDelta(), 0);
+            parallax = (player.getX() - proportion * SCREEN_WIDTH) / attachedSegment;
         }
         else if (cameraAttached && player.getX() <= SCREEN_WIDTH * proportion)  // Вошел обратно в начало уровня
         {
             cameraAttached = false;
             camera.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
+            parallax = 0;
         }
         else if (cameraAttached)  // Дошёл до конца уровня
         {
             cameraAttached = false;
             camera.position.set(world.getLevelWidth() - SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
+            parallax = 1;
         }
         camera.update();
-        batcher.setProjectionMatrix(camera.combined);
+        batcher.setProjectionMatrix(staticCam.combined);
 
         batcher.begin();
+            //
+            // Отрисовка фонов и GUI
+            //
+
             // TODO: параллакс
-            // фоны двигаются с персонажем
-            if (cameraAttached)
-            {
-                staticBG_X = player.getX() - SCREEN_WIDTH * proportion;
-            }
-            else
-            {
-                if (player.getX() < SCREEN_WIDTH * proportion)  // персонаж в начале уровня
-                {
-                    staticBG_X = 0;
-                }
-                else  // в конце
-                {
-                    staticBG_X = world.getLevelWidth() - SCREEN_WIDTH;
-                }
-            }
-            batcher.draw(level_BG1, staticBG_X, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            batcher.draw(level_BG2, staticBG_X, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            batcher.draw(level_BG3, staticBG_X, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            batcher.draw(level_BG4, staticBG_X, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            batcher.draw(level_BG1, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            batcher.draw(level_BG2, -(SCREEN_WIDTH * 0.25f * parallax), 0, SCREEN_WIDTH * 1.25f, SCREEN_HEIGHT * 1.05f);
+            batcher.draw(level_BG3, -(SCREEN_WIDTH * 0.5f * parallax), 0, SCREEN_WIDTH * 1.5f, SCREEN_HEIGHT);
+            batcher.draw(level_BG4, -(SCREEN_WIDTH * parallax), 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 1.1f);
 
+            //
+            // Отрисовка мира
+            //
+            batcher.setProjectionMatrix(camera.combined);
+            // задняя трава
             batcher.draw(level_grassBack, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            for (int i = 1; i <= 3; i++)
+            for (int i = 0; i < grassBackLoops.length; i++)
             {
-                batcher.draw(level_grassBackLoop, 256 * i, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+                batcher.draw(grassBackLoops[i], SCREEN_WIDTH * (i + 1) , 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             }
+            // пол
             batcher.draw(level_floor, 0, 25, world.getLevelWidth(), world.getLevelFloorHeight());
-
-            for (int i = 0; i < 4; i++)
+            // передняя трава
+            for (int i = 0; i < grassForeLoops.length; i++)
             {
-                batcher.draw(level_grassForeLoop, 256 * i, -185, SCREEN_WIDTH, SCREEN_HEIGHT);
+                batcher.draw(grassForeLoops[i],  SCREEN_WIDTH * i, -185, SCREEN_WIDTH, SCREEN_HEIGHT);
             }
 
             batcher.draw(player_default, player.getX(), player.getY(), player.getWidth(), player.getHeight());
