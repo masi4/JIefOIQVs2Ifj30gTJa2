@@ -54,12 +54,10 @@ public class MainMenuScreen implements Screen
         mainTable.setFillParent(true);
         mainTable.center();
         mainTable.padLeft(30);
-        TextureRegion[] playButtonTxrReg ={new TextureRegion(AssetLoader.MainMenu_Buttons,0,0,128,32),new TextureRegion(AssetLoader.MainMenu_Buttons,128,0,128,32)};
-        ImageButton playButton = new ImageButton(new TextureRegionDrawable(playButtonTxrReg[0]),new TextureRegionDrawable(playButtonTxrReg[1]));
-        TextureRegion[] optionsButtonTxrReg = {new TextureRegion(AssetLoader.MainMenu_Buttons,0,32,128,32),new TextureRegion(AssetLoader.MainMenu_Buttons,128,32,128,32)};
-        ImageButton optionsButton = new ImageButton(new TextureRegionDrawable(optionsButtonTxrReg[0]),new TextureRegionDrawable(optionsButtonTxrReg[1]));
-        TextureRegion[] exitButtonTxrReg = {new TextureRegion(AssetLoader.MainMenu_Buttons,0,64,128,32),new TextureRegion(AssetLoader.MainMenu_Buttons,128,64,128,32)};
-        ImageButton exitButton = new ImageButton(new TextureRegionDrawable(exitButtonTxrReg[0]),new TextureRegionDrawable(exitButtonTxrReg[1]));
+
+        ImageButton playButton = new ImageButton(new TextureRegionDrawable(AssetLoader.playButtonTxrReg[0]),new TextureRegionDrawable(AssetLoader.playButtonTxrReg[1]));
+        ImageButton optionsButton = new ImageButton(new TextureRegionDrawable(AssetLoader.optionsButtonTxrReg[0]),new TextureRegionDrawable(AssetLoader.optionsButtonTxrReg[1]));
+        ImageButton exitButton = new ImageButton(new TextureRegionDrawable(AssetLoader.exitButtonTxrReg[0]),new TextureRegionDrawable(AssetLoader.exitButtonTxrReg[1]));
 
         playButton.addListener(new ClickListener(){
             @Override
@@ -84,10 +82,10 @@ public class MainMenuScreen implements Screen
             }
         });
 
-
-        mainTable.add(playButton).padLeft(20); mainTable.row();
-        mainTable.add(optionsButton);  mainTable.row();
-        mainTable.add(exitButton).padLeft(45);
+        mainTable.left();
+        mainTable.add(playButton); mainTable.row();
+        mainTable.add(optionsButton); mainTable.row();
+        mainTable.add(exitButton);
 
         stage.addActor(mainTable);
     }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.GamePreferences;
 
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 
@@ -32,8 +33,14 @@ public class WalkingControl
         touchpadSkin = new Skin();
         touchpadSkin.add("frameAc", AssetLoader.controller_FrameActive);
         touchpadSkin.add("circleAc", AssetLoader.controller_CircleActive);
-        touchpadSkin.add("frameInac", AssetLoader.controller_FrameInactive);
-        touchpadSkin.add("circleInac", AssetLoader.controller_CircleInactive);
+        if(GamePreferences.Options.getInteger("Controller")==0) {
+            touchpadSkin.add("frameInac", AssetLoader.controller_FrameInactive0);
+            touchpadSkin.add("circleInac", AssetLoader.controller_CircleInactive0);
+        }
+        else{
+            touchpadSkin.add("frameInac", AssetLoader.controller_FrameInactive1);
+            touchpadSkin.add("circleInac", AssetLoader.controller_CircleInactive1);
+        }
         touchpadStyle = new Touchpad.TouchpadStyle();
         touchFrameAc = touchpadSkin.getDrawable("frameAc");
         touchCicleAc = touchpadSkin.getDrawable("circleAc");

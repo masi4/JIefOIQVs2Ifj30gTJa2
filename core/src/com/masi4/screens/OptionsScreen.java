@@ -1,20 +1,25 @@
 package com.masi4.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.GamePreferences;
 import com.masi4.myGame.GameMainClass;
+
+import java.util.Locale;
 
 import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
 import static com.masi4.myGame.GameMainClass.SCREEN_WIDTH;
@@ -29,10 +34,14 @@ public class OptionsScreen implements Screen
     SpriteBatch batch;
     protected Stage stage;
     private GameMainClass gameCtrl;
-
     Label.LabelStyle labelActive;
     Label.LabelStyle labelInactive;
     Label.LabelStyle systemLabel;
+    Label[] systemLabels;
+    Label[] labels;
+    Label[][] options;
+
+    private String[] prefNames = {"Sound","Controller","Language"};
 
     public OptionsScreen(GameMainClass gameCtrl)
     {
@@ -54,22 +63,8 @@ public class OptionsScreen implements Screen
         Gdx.input.setInputProcessor(stage);
         Table mainTable = new Table();
         mainTable.setFillParent(true);
-
-        Label[] systemLabels = {
-                new Label("НАЗAД",systemLabel),
-        };
-        Label[] labels = {
-
-                new Label("Звук",labelActive),
-                new Label("Контроллер",labelActive)
-
-        };
-        final Label[][] options = {
-                {new Label("ВКЛ",labelActive), new Label("ВЫКЛ",labelActive)},
-                {new Label("ВИДИМЫЙ", labelActive),new Label("СКРЫТЫЙ", labelActive)}
-
-        };
-        load_properties(options);
+        loadLabels();
+        load_prefs();
        // mainTable.left().top().pad(10,10,0,0);
 
         mainTable.add(labels[0]).left().pad(15,15,10,0).expandX();
@@ -77,6 +72,9 @@ public class OptionsScreen implements Screen
         mainTable.row();
         mainTable.add(labels[1]).left().padLeft(15).padBottom(10);
         mainTable.add(options[1][0]).right().padRight(15);mainTable.add(options[1][1]).left().padRight(15);
+        mainTable.row();
+        mainTable.add(labels[2]).left().padLeft(15).padBottom(10);
+        mainTable.add(options[2][0]).right().padRight(15);mainTable.add(options[2][1]).left().padRight(15);
         mainTable.row();
 
         mainTable.add(systemLabels[0]).left().bottom().padLeft(15).padBottom(10).expandY();
@@ -98,24 +96,85 @@ public class OptionsScreen implements Screen
                 });
             }
         }
+        options[2][0].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GamePreferences.SwitchToEn();
+               // loadLabels();
+            }
+        });
+        options[2][1].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GamePreferences.SwitchToRu();
+                //loadLabels();
+            }
+        });
         systemLabels[0].addListener(new ClickListener(){
              @Override
              public void clicked(InputEvent event, float x, float y) {
+                 save_prefs();
                  gameCtrl.setScreen(new MainMenuScreen(gameCtrl)); // Экран настроек
                  dispose();
              }
         });
         stage.addActor(mainTable);
     }
-    private void load_properties(Label[][] options)
+
+    private void loadLabels()
     {
-        options[0][0].setStyle(labelActive);
-        options[0][1].setStyle(labelInactive);
-        options[1][0].setStyle(labelActive);
-        options[1][1].setStyle(labelInactive);
+        systemLabels = new Label[]{
+                new Label(GamePreferences.loc.format("Options_Back"), systemLabel),
+        };
+        labels = new Label[]{
+                new Label(GamePreferences.loc.format("Options_Sound"), labelActive),
+                new Label(GamePreferences.loc.format("Options_Controller"), labelActive),
+                new Label(GamePreferences.loc.format("Options_Language"), labelActive)
+
+        };
+        options = new Label[][]{
+                {new Label(GamePreferences.loc.format("Options_Sound_0"), labelActive), new Label(GamePreferences.loc.format("Options_Sound_1"), labelActive)},
+                {new Label(GamePreferences.loc.format("Options_Controller_0"), labelActive), new Label(GamePreferences.loc.format("Options_Controller_1"), labelActive)},
+                {new Label("ENGLISH", labelActive), new Label("РУССКИЙ", labelActive)}
+
+        };
+    }
+
+    
+    private void load_prefs()
+    {
+        int i = 0;
+        for (Label[] LL: options) {
+            int j = 0;
+            for (Label L: LL) {
+                if (j== GamePreferences.Options.getInteger(prefNames[i]))
+                    L.setStyle(labelActive);
+                else
+                    L.setStyle(labelInactive);
+                j++;
+            }
+            i++;
+        }
+    }
+
+    private void save_prefs()
+    {
+        int i = 0;
+        for (Label[] LL: options) {
+            int j = 0;
+            for (Label L: LL) {
+                if (L.getStyle() == labelActive)
+                    GamePreferences.Options.putInteger(prefNames[i],j);
+
+                j++;
+            }
+            i++;
+        }
+        GamePreferences.Options.flush();
     }
     private void load_lableStyles()
     {
+
         labelActive.font = AssetLoader.default18;
         labelActive.fontColor = Color.WHITE;
         labelInactive.font = AssetLoader.default18;
@@ -126,6 +185,7 @@ public class OptionsScreen implements Screen
     @Override
     public void render(float delta)
     {
+        Gdx.gl.glClearColor( 0, 0, 0, 1 );
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
