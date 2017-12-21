@@ -73,7 +73,7 @@ public class MainMenuScreen implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                gameCtrl.setScreen(new OptionsScreen()); // Экран настроек
+                gameCtrl.setScreen(new OptionsScreen(gameCtrl)); // Экран настроек
                 dispose();
             }
         });
@@ -136,5 +136,6 @@ public class MainMenuScreen implements Screen
     public void dispose()
     {
         AssetLoader.dispose_MainMenu();
+        stage.dispose();
     }
 }
