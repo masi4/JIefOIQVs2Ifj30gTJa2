@@ -24,6 +24,7 @@ public class GameplayScreen implements Screen
     private GameWorld world;
     private GameRenderer renderer;
     public WalkingControl controller;  // публичные поля = плохо
+    private float runTime;
 
     public GameplayScreen(LevelNames levelName)
     {
@@ -59,8 +60,9 @@ public class GameplayScreen implements Screen
     @Override
     public void render(float delta)
     {
+        runTime += delta;
         world.update(delta);
-        renderer.render();
+        renderer.render(runTime);
         controller.render(delta);
     }
 

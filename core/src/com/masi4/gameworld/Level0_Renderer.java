@@ -6,12 +6,12 @@ package com.masi4.gameworld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-
-import static com.masi4.myGame.GameMainClass.*;
-import static com.masi4.gamehelpers.GameTextureRegions.*;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import static com.masi4.myGame.GameMainClass.*;
+
+import static com.masi4.gamehelpers.GameTextureRegions.*;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gameobjects.Player;
 
@@ -21,10 +21,10 @@ public class Level0_Renderer extends GameRenderer
     // Objects
     private Player player;
 
-
     // Assets
-    private TextureRegion player_default; // Впоследствии использовать Animation
+    private Animation player_animation; // TODO: убрать подергивание, подкорректировать кадры, возможно убрать лишний кадр (8 ?)
     private TextureRegion
+            player_standing,  // повернут вправо
             level_BG1,
             level_BG2,
             level_BG3,
@@ -41,6 +41,8 @@ public class Level0_Renderer extends GameRenderer
     private final float proportion = 0.42f;  // часть экрана, начиная с которой камера привязывается к персонажу
     private float attachedSegment;  // Длина отрезка, на котором камера прикрепляется к персонажу
     private float parallax;  // процентное смещение фонов
+    // возможно внести в player
+    private boolean playerTurnedRight;  // Повернут ли персонаж вправо
 
     //
     // Методы
@@ -68,7 +70,8 @@ public class Level0_Renderer extends GameRenderer
         for (int i = 0; i < grassForeLoops.length; i++)
             grassForeLoops[i] = new TextureRegion(AssetLoader.level_grassForeLoop);
 
-        player_default = AssetLoader.player_default;
+        player_standing = AssetLoader.player_standing;
+        player_animation = AssetLoader.player_default_animation;
     }
 
     public Level0_Renderer(GameWorld world, int gameWidth, int gameHeight)
@@ -77,12 +80,13 @@ public class Level0_Renderer extends GameRenderer
         cameraAttached = false;
         parallax = 0;
         attachedSegment = world.getLevelWidth() - SCREEN_WIDTH;
+        playerTurnedRight = true;
 
         initGameObjects();
         initAssets();
     }
 
-    public void render()
+    public void render(float runTime)
     {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -140,7 +144,28 @@ public class Level0_Renderer extends GameRenderer
                 batcher.draw(grassForeLoops[i],  SCREEN_WIDTH * i, -185, SCREEN_WIDTH, SCREEN_HEIGHT);
             }
 
-            batcher.draw(player_default, player.getX(), player.getY(), player.getWidth(), player.getHeight());
+            if (player.getSpeedX() > 0)
+            {
+                batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX(), player.getY(),
+                        (float) player.getWidth(), (float) player.getHeight());
+                if (!playerTurnedRight) playerTurnedRight = true;
+                else {}
+            }
+            else if (player.getSpeedX() < 0)
+            {
+                batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX() + player.getWidth(),
+                        player.getY(), -(float) player.getWidth(), (float) player.getHeight());
+                if (playerTurnedRight) playerTurnedRight = false;
+                else {}
+            }
+            else
+                if (playerTurnedRight) batcher.draw(player_standing, player.getX(), player.getY(),
+                        (float)player.getWidth(), (float)player.getHeight());
+
+                else batcher.draw(player_standing, player.getX() + player.getWidth(), player.getY(),
+                        -(float)player.getWidth(), (float)player.getHeight());
+
+
         batcher.end();
 
 

@@ -16,10 +16,21 @@ public class GameTextureRegions
 
     // /gameplay/player/player_default - атлас с default анимацией персонажа
 
-    public static final int player_default_X = 0;
-    public static final int player_default_Y = 0;
-    public static final int player_default_Width = 39;
-    public static final int player_default_Height = 95;
+    public static final int player_default_frame0_X = 0;  // стоит
+    public static final int player_default_frame1_X = 48;
+    public static final int player_default_frame2_X = 92;
+    public static final int player_default_frame3_X = 140;  // кадр прыжка
+    public static final int player_default_frame4_X = 196;
+    public static final int player_default_frame5_X = 252;
+    public static final int player_default_frame6_X = 306;
+    public static final int player_default_frame7_X = 354;
+    public static final int player_default_frame8_X = 401;
+    public static final int player_default_frame9_X = 450;
+    public static final int player_default_frame_Y = 0;
+    public static final int player_default_frame3_Width = 48;
+    public static final int player_default_frame4_Width = 48;
+    public static final int player_default_frame_Width = 40;
+    public static final int player_default_frame_Height = 96;
 
     // /gameplay/level_0/level0_atlas - атлас с фонами 0-го уровня
     public static final int level_0_1_X = 0;

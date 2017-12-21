@@ -20,7 +20,7 @@ public class GameWorld
     public GameWorld(LevelNames levelName)
     {
         level = new Level(levelName);
-        player = new Player(player_default_Width, player_default_Height);
+        player = new Player(player_default_frame_Width, player_default_frame_Height);
         player.setCoords(0, level.getFloorHeight());
     }
 

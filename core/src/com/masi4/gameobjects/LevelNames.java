@@ -6,4 +6,5 @@ package com.masi4.gameobjects;
  * Содержит названия уровней
  */
 
+// TODO: заменить на Level.Names enum !!!!
 public enum LevelNames { TEST }

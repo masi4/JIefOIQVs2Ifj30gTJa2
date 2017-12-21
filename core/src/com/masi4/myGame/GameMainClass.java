@@ -7,9 +7,8 @@ import com.masi4.gamehelpers.AssetLoader;
 public class GameMainClass extends Game
 {
 
-    public static final int SCREEN_HEIGHT = 480;
+    public static final int SCREEN_HEIGHT = 450;
     public static final int SCREEN_WIDTH = 800;
-
 
 	@Override
 	public void create ()

@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import static com.masi4.gamehelpers.GameTextureRegions.*;
+
+import com.badlogic.gdx.utils.Array;
 import com.masi4.gameobjects.LevelNames;
 
 // TODO: Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
@@ -27,8 +29,8 @@ public class AssetLoader
             MainMenu_Buttons;
 
     public static TextureRegion
-            // персонаж
-            player_default,   // для начальных тестов, затем использовать animation
+            // персонаж (стоит)
+            player_standing,
 
             // элементы уровня
             level_BG1,
@@ -46,31 +48,34 @@ public class AssetLoader
             controller_CircleActive,
             controller_FrameInactive,
             controller_CircleInactive;
+
     public static BitmapFont
             default18,
             default22;
-    public static Animation
-            player_default_animation;
+
+    public static Array<TextureRegion> player_default_frames;
+
+    public static Animation<TextureRegion> player_default_animation;
 
     //
     // Методы
     //
 
     // может быть пригодится load по умолчанию
-    public static void load()
-    {
+    public static void load() {}
 
-    }
     public static void load_Fonts()
     {
         default18 = new BitmapFont(Gdx.files.internal("fonts/default18.fnt"));
         default22 = new BitmapFont(Gdx.files.internal("fonts/default22.fnt"));
     }
+
     public static void dispose_Fonts()
     {
         default18.dispose();
         default22.dispose();
     }
+
     //#MAIN MENU
     public static Texture[] MainMenu_Bg;   // TODO: засунуть кнопки в один атлас, использовать bg из /level_0/
     public static void load_MainMenu()
@@ -98,10 +103,14 @@ public class AssetLoader
         controller_Texture = new Texture(Gdx.files.internal("controller.png"));
         controller_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
-        controller_FrameActive = new TextureRegion(controller_Texture, 0, 0, controller_frame_Width, controller_frame_Height);
-        controller_CircleActive = new TextureRegion(controller_Texture,  controller_frame_Width, 0, controller_circle_Width, controller_circle_Height);
-        controller_FrameInactive = new TextureRegion(controller_Texture, 0,  controller_frame_Height, controller_frame_Width, controller_frame_Height);
-        controller_CircleInactive = new TextureRegion(controller_Texture, controller_frame_Width, controller_frame_Height, controller_circle_Width, controller_circle_Height);
+        controller_FrameActive = new TextureRegion(controller_Texture, 0, 0, controller_frame_Width,
+                controller_frame_Height);
+        controller_CircleActive = new TextureRegion(controller_Texture, controller_frame_Width, 0,
+                controller_circle_Width, controller_circle_Height);
+        controller_FrameInactive = new TextureRegion(controller_Texture, 0, controller_frame_Height,
+                controller_frame_Width, controller_frame_Height);
+        controller_CircleInactive = new TextureRegion(controller_Texture, controller_frame_Width,
+                controller_frame_Height, controller_circle_Width, controller_circle_Height);
     }
 
     public static void dispose_Controller()
@@ -115,16 +124,37 @@ public class AssetLoader
     {
         player_Texture = new Texture(Gdx.files.internal("gameplay/player/player_default_BIG.png"));
         player_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        player_standing = new TextureRegion(player_Texture, player_default_frame0_X, player_default_frame_Y,
+                player_default_frame_Width, player_default_frame_Height);
 
-        player_default = new TextureRegion(player_Texture, player_default_X, player_default_Y,
-                player_default_Width, player_default_Height);
+        player_default_frames = new Array<TextureRegion>(9);
+        // анимация бега вправо
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame1_X, player_default_frame_Y,
+                player_default_frame_Width, player_default_frame_Height));
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame2_X, player_default_frame_Y,
+                player_default_frame_Width, player_default_frame_Height));
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame3_X, player_default_frame_Y,
+                player_default_frame3_Width, player_default_frame_Height));
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame4_X, player_default_frame_Y,
+                player_default_frame4_Width, player_default_frame_Height));
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame5_X, player_default_frame_Y,
+                player_default_frame_Width, player_default_frame_Height));
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame6_X, player_default_frame_Y,
+                player_default_frame_Width, player_default_frame_Height));
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame7_X, player_default_frame_Y,
+                player_default_frame_Width, player_default_frame_Height));
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame8_X, player_default_frame_Y,
+                player_default_frame_Width, player_default_frame_Height));
+        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame9_X, player_default_frame_Y,
+                player_default_frame_Width, player_default_frame_Height));
+        // TODO: скорость смены кадров в зависимости от скорости игрока
+        player_default_animation = new Animation(0.06f, player_default_frames, Animation.PlayMode.LOOP);
     }
 
     public static void dispose_Player()
     {
         player_Texture.dispose();
     }
-
 
     // Level
     public static void load_Level(LevelNames levelName)

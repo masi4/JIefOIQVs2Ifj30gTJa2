@@ -9,8 +9,6 @@ package com.masi4.gameobjects;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import org.w3c.dom.css.Rect;
-
 public class Player
 {
     private Vector2 position;

@@ -39,7 +39,7 @@ public abstract class GameRenderer
         batcher.setProjectionMatrix(camera.combined);
     }
 
-    abstract public void render();
+    abstract public void render(float runTime);
 
 
 }

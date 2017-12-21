@@ -159,6 +159,7 @@ public class OptionsScreen implements Screen
     public void dispose()
     {
         stage.dispose();
+        AssetLoader.dispose_Fonts();
 
     }
 }
