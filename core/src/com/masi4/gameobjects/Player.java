@@ -6,7 +6,10 @@ package com.masi4.gameobjects;
  * Этот класс описывает игрового персонажа
  */
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
+import org.w3c.dom.css.Rect;
 
 public class Player
 {
@@ -16,6 +19,8 @@ public class Player
     private float delta;
     private int width;
     private int height;
+    // Важно: сначала выполнять дешевые проверки, затем дорогие (intersector)
+    private Rectangle boundingRec;   // Определение коллизий TODO: переписать handleCollisions через этот квадрат
     private boolean inJump;    // находится ли персонаж в прыжке
 
     // Публичные члены
@@ -24,6 +29,8 @@ public class Player
     {
         this.width = width;
         this.height = height;
+        boundingRec = new Rectangle();
+        boundingRec.setSize(width, height);
         inJump = false;
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
@@ -34,11 +41,13 @@ public class Player
         this.delta = delta;
         velocity.add(acceleration.cpy().scl(delta));    // TODO: прибавление вручную, без cpy()
         position.add(velocity.cpy().scl(delta));
+        boundingRec.setPosition(position.x, position.y);
     }
 
     public void setCoords(float x, float y)    // Координаты левого нижнего угла
     {
         position = new Vector2(x, y);
+        boundingRec.setPosition(x, y);
     }
 
     public void setVelocity(float velocityX, float velocityY)
@@ -111,6 +120,8 @@ public class Player
     public float getSpeedX() { return velocity.x; }
 
     public float getDelta() { return delta; }
+
+    public Rectangle getBoundingRec() { return boundingRec; }
 
     public boolean isInJump() { return inJump; }
 
