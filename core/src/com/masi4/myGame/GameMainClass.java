@@ -1,5 +1,6 @@
 package com.masi4.myGame;
 
+import com.masi4.gamehelpers.GamePreferences;
 import com.masi4.screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.masi4.gamehelpers.AssetLoader;
@@ -14,6 +15,10 @@ public class GameMainClass extends Game
 	public void create ()
 	{
 		AssetLoader.load();
+		if(GamePreferences.Options.getInteger("Language")==0)
+			GamePreferences.SwitchToEn();
+		if(GamePreferences.Options.getInteger("Language")==1)
+			GamePreferences.SwitchToRu();
         this.setScreen(new MainMenuScreen(this));
 	}
 
