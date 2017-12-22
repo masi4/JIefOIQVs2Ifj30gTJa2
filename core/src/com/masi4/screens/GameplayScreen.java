@@ -6,6 +6,8 @@ package com.masi4.screens;
  * Экран непосредственно игрового процесса
  */
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.masi4.GUI.WalkingControl;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.InputHandler;
@@ -17,18 +19,20 @@ import com.masi4.gameobjects.LevelNames;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.masi4.myGame.GameMainClass;
 
 public class GameplayScreen implements Screen
 {
-    private LevelNames levelName;
+    private GameMainClass gameCtrl;
+    private InputMultiplexer inputMultiplexer;
     private GameWorld world;
     private GameRenderer renderer;
     public WalkingControl controller;  // публичные поля = плохо
     private float runTime;
 
-    public GameplayScreen(LevelNames levelName)
+    public GameplayScreen(GameMainClass gameCtrl, LevelNames levelName)
     {
-        this.levelName = levelName;
+        this.gameCtrl = gameCtrl;
         AssetLoader.load_Level(levelName);
         AssetLoader.load_Player();
         AssetLoader.load_Controller();
@@ -44,11 +48,11 @@ public class GameplayScreen implements Screen
         }
 
         controller = new WalkingControl();
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(new InputHandler(controller, world.getPlayer()));
         inputMultiplexer.addProcessor(controller.stage);
         Gdx.input.setInputProcessor(inputMultiplexer);
-
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -60,6 +64,11 @@ public class GameplayScreen implements Screen
     @Override
     public void render(float delta)
     {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        {
+            gameCtrl.setScreen(new MainMenuScreen(gameCtrl));
+            dispose();
+        }
         runTime += delta;
         world.update(delta);
         renderer.render(runTime);
@@ -96,6 +105,7 @@ public class GameplayScreen implements Screen
         AssetLoader.dispose_Controller();
         AssetLoader.dispose_Player();
         AssetLoader.dispose_Level();
+        inputMultiplexer.clear();
     }
 }
 

@@ -12,6 +12,8 @@ import com.badlogic.gdx.Gdx;
 import com.masi4.GUI.WalkingControl;
 import com.masi4.gameobjects.Player;
 
+import java.awt.event.KeyEvent;
+
 public class InputHandler implements InputProcessor
 {
     private Player player;
@@ -22,8 +24,10 @@ public class InputHandler implements InputProcessor
         this.player = player;
     }
 
+    // TODO: Обработка кнопки назад
     @Override
     public boolean keyDown(int keycode) {
+
         return false;
     }
 

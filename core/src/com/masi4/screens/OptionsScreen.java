@@ -1,6 +1,7 @@
 package com.masi4.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.I18NBundle;
+
+
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.GamePreferences;
@@ -61,6 +64,7 @@ public class OptionsScreen implements Screen
     public void show()
     {
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(true);
         Table mainTable = new Table();
         mainTable.setFillParent(true);
         loadLabels();
@@ -185,6 +189,13 @@ public class OptionsScreen implements Screen
     @Override
     public void render(float delta)
     {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        {
+            save_prefs();
+            gameCtrl.setScreen(new MainMenuScreen(gameCtrl)); // Экран настроек
+            dispose();
+        }
+
         Gdx.gl.glClearColor( 0, 0, 0, 1 );
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
