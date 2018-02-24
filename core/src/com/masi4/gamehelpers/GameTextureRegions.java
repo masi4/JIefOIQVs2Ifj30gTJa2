@@ -27,9 +27,7 @@ public class GameTextureRegions
     public static final int player_default_frame8_X = 401;
     public static final int player_default_frame9_X = 450;
     public static final int player_default_frame_Y = 0;
-    public static final int player_default_frame3_Width = 48;
-    public static final int player_default_frame4_Width = 48;
-    public static final int player_default_frame_Width = 40;
+    public static final int player_default_frame_Width = 64;
     public static final int player_default_frame_Height = 96;
 
     // /gameplay/level_0/level0_atlas - атлас с фонами 0-го уровня

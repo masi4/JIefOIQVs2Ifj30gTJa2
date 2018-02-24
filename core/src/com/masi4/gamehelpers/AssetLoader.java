@@ -63,9 +63,10 @@ public class AssetLoader
             default22;
 
     public static Array<TextureRegion> player_default_frames;
+    public static Array<TextureRegion> player_default_startsWalking_frames;
 
     public static Animation<TextureRegion> player_default_animation;
-
+    public static Animation<TextureRegion> player_default_startsWalking_animation;
     //
     // Методы
     //
@@ -136,31 +137,25 @@ public class AssetLoader
     {
         player_Texture = new Texture(Gdx.files.internal("gameplay/player/player_default_BIG.png"));
         player_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-        player_standing = new TextureRegion(player_Texture, player_default_frame0_X, player_default_frame_Y,
+        player_standing = new TextureRegion(player_Texture, 0, player_default_frame_Y,
                 player_default_frame_Width, player_default_frame_Height);
 
-        player_default_frames = new Array<TextureRegion>(9);
+        int[] frames_count = new int[] {8,  2}; //{бег, начало бега}
+        player_default_frames = new Array<TextureRegion>(frames_count[0]);
+        player_default_startsWalking_frames = new Array<TextureRegion>(frames_count[1]);
+
         // анимация бега вправо
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame1_X, player_default_frame_Y,
-                player_default_frame_Width, player_default_frame_Height));
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame2_X, player_default_frame_Y,
-                player_default_frame_Width, player_default_frame_Height));
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame3_X, player_default_frame_Y,
-                player_default_frame3_Width, player_default_frame_Height));
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame4_X, player_default_frame_Y,
-                player_default_frame4_Width, player_default_frame_Height));
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame5_X, player_default_frame_Y,
-                player_default_frame_Width, player_default_frame_Height));
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame6_X, player_default_frame_Y,
-                player_default_frame_Width, player_default_frame_Height));
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame7_X, player_default_frame_Y,
-                player_default_frame_Width, player_default_frame_Height));
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame8_X, player_default_frame_Y,
-                player_default_frame_Width, player_default_frame_Height));
-        player_default_frames.add(new TextureRegion(player_Texture, player_default_frame9_X, player_default_frame_Y,
-                player_default_frame_Width, player_default_frame_Height));
+        for(int i = 2; i<=frames_count[0];i++)
+        {
+            player_default_frames.add(new TextureRegion(player_Texture, player_default_frame_Width*i,player_default_frame_Y, player_default_frame_Width, player_default_frame_Height));
+        }
+        for(int i = 0; i<=frames_count[1];i++)
+        {
+            player_default_startsWalking_frames.add(new TextureRegion(player_Texture, player_default_frame_Width*i,player_default_frame_Y, player_default_frame_Width, player_default_frame_Height));
+        }
         // TODO: скорость смены кадров в зависимости от скорости игрока
         player_default_animation = new Animation(0.06f, player_default_frames, Animation.PlayMode.LOOP);
+        player_default_startsWalking_animation = new Animation(0.06f,player_default_startsWalking_frames , Animation.PlayMode.NORMAL);
     }
 
     public static void dispose_Player()

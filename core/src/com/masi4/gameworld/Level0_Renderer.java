@@ -22,7 +22,9 @@ public class Level0_Renderer extends GameRenderer
     private Player player;
 
     // Assets
-    private Animation player_animation; // TODO: убрать подергивание, подкорректировать кадры, возможно убрать лишний кадр (8 ?)
+    private Animation
+            player_animation,
+            player_startWalking_animation; // TODO: убрать подергивание, подкорректировать кадры, возможно убрать лишний кадр (8 ?)
     private TextureRegion
             player_standing,  // повернут вправо
             level_BG1,
@@ -71,6 +73,7 @@ public class Level0_Renderer extends GameRenderer
             grassForeLoops[i] = new TextureRegion(AssetLoader.level_grassForeLoop);
 
         player_standing = AssetLoader.player_standing;
+        player_startWalking_animation = AssetLoader.player_default_startsWalking_animation;
         player_animation = AssetLoader.player_default_animation;
     }
 
@@ -85,7 +88,7 @@ public class Level0_Renderer extends GameRenderer
         initGameObjects();
         initAssets();
     }
-
+    private float elapsedTime = 0;
     public void render(float runTime)
     {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -146,24 +149,38 @@ public class Level0_Renderer extends GameRenderer
 
             if (player.getSpeedX() > 0)
             {
-                batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX(), player.getY(),
-                        (float) player.getWidth(), (float) player.getHeight());
+                elapsedTime += Gdx.graphics.getDeltaTime();
+                if(!player_startWalking_animation.isAnimationFinished(elapsedTime)) {                  //Начало шага
+                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime), player.getX(), player.getY(), (float) player.getWidth(), (float) player.getHeight());
+                }
+
+                else {
+                    batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX(), player.getY(), (float) player.getWidth(), (float) player.getHeight());
+                }
                 if (!playerTurnedRight) playerTurnedRight = true;
                 else {}
             }
             else if (player.getSpeedX() < 0)
             {
-                batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX() + player.getWidth(),
-                        player.getY(), -(float) player.getWidth(), (float) player.getHeight());
+                elapsedTime += Gdx.graphics.getDeltaTime();
+                if(!player_startWalking_animation.isAnimationFinished(elapsedTime)) {                  //Начало шага
+                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime), player.getX() + player.getWidth(), player.getY(), -(float) player.getWidth(), (float) player.getHeight());
+                }
+                else{
+                    batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX() + player.getWidth(),player.getY(), -(float) player.getWidth(), (float) player.getHeight());
+                }
                 if (playerTurnedRight) playerTurnedRight = false;
                 else {}
             }
             else
-                if (playerTurnedRight) batcher.draw(player_standing, player.getX(), player.getY(),
-                        (float)player.getWidth(), (float)player.getHeight());
-
-                else batcher.draw(player_standing, player.getX() + player.getWidth(), player.getY(),
-                        -(float)player.getWidth(), (float)player.getHeight());
+                if (playerTurnedRight) {
+                    batcher.draw(player_standing, player.getX(), player.getY(),  (float) player.getWidth(), (float) player.getHeight());
+                    elapsedTime=0;
+                }
+                else {
+                    batcher.draw(player_standing, player.getX() + player.getWidth(), player.getY(), -(float)player.getWidth(), (float)player.getHeight());
+                    elapsedTime=0;
+                }
 
 
         batcher.end();
