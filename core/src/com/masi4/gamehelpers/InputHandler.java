@@ -10,18 +10,16 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Gdx;
 
 import com.masi4.GUI.WalkingControl;
-import com.masi4.gameobjects.Player;
-
-import java.awt.event.KeyEvent;
+import com.masi4.objectsGraphic.PlayerGraphics;
 
 public class InputHandler implements InputProcessor
 {
-    private Player player;
+    private PlayerGraphics playerGraphics;
     public WalkingControl controller;
-    public InputHandler(WalkingControl controller,Player player)
+    public InputHandler(WalkingControl controller,PlayerGraphics playerGraphics)
     {
         this.controller = controller;
-        this.player = player;
+        this.playerGraphics = playerGraphics;
     }
 
     // TODO: Обработка кнопки назад
@@ -59,8 +57,8 @@ public class InputHandler implements InputProcessor
         {
             controller.MakeInactive();
             controller.ResetPosition();
-            if (!player.isInJump())
-                player.setVelocityX(0);
+            if (!playerGraphics.isInJump())
+                playerGraphics.setVelocityX(0);
         }
         return false;
     }
@@ -71,14 +69,14 @@ public class InputHandler implements InputProcessor
     {
         if(controller.touchpad.getKnobPercentY() > 0.5 && !jumpControl)
         {
-            player.jump();
+            playerGraphics.jump();
             jumpControl = true;
         }
         if(controller.touchpad.getKnobPercentY() < 0.5 && jumpControl)
         {
             jumpControl = false;
         }
-        player.setVelocityX(300 * controller.touchpad.getKnobPercentX());
+        playerGraphics.setVelocityX(300 * controller.touchpad.getKnobPercentX());
 
         return false;
     }

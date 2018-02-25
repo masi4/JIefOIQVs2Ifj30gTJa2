@@ -6,20 +6,19 @@ package com.masi4.screens;
  * Экран непосредственно игрового процесса
  */
 
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+
 import com.masi4.GUI.WalkingControl;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.InputHandler;
 import com.masi4.gameworld.GameWorld;
 import com.masi4.gameworld.GameRenderer;
 import com.masi4.gameworld.Level0_Renderer;
-import com.masi4.gameobjects.LevelNames;
-
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.masi4.myGame.GameMainClass;
+import com.masi4.gameobjects.Level.LevelNames;
 
 public class GameplayScreen implements Screen
 {
@@ -49,7 +48,7 @@ public class GameplayScreen implements Screen
 
         controller = new WalkingControl();
         inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(new InputHandler(controller, world.getPlayer()));
+        inputMultiplexer.addProcessor(new InputHandler(controller, world.getPlayerGraphics()));
         inputMultiplexer.addProcessor(controller.stage);
         Gdx.input.setInputProcessor(inputMultiplexer);
         Gdx.input.setCatchBackKey(true);

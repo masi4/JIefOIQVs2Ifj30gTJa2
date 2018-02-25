@@ -10,7 +10,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -21,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.myGame.GameMainClass;
-import com.masi4.gameobjects.LevelNames;
+import com.masi4.gameobjects.Level.LevelNames;
 
 import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
 import static com.masi4.myGame.GameMainClass.SCREEN_WIDTH;
@@ -92,7 +91,8 @@ public class MainMenuScreen implements Screen
 
 
     @Override
-    public void render(float delta) {
+    public void render(float delta)
+    {
         batch.begin();
         for(int i = 0; i <5;i++) {
             batch.draw(AssetLoader.MainMenu_Bg[i], 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

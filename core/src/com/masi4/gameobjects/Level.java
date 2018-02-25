@@ -18,6 +18,8 @@ public class Level {
     private int floorHeight;
     private ArrayList<Rectangle> levelObjects;  // (возможно) сделать отдельный класс. isRemovable true false
 
+    public enum LevelNames { TEST }
+
     public Level(LevelNames name)
     {
         switch (name)

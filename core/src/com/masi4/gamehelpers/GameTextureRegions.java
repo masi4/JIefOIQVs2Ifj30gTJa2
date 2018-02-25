@@ -30,6 +30,18 @@ public class GameTextureRegions
     public static final int player_default_frame_Width = 64;
     public static final int player_default_frame_Height = 96;
 
+    // /gameplay/player/player_attack1 - атлас с первой частью анимации атаки персонажа
+    public static final int player_attack1_frame1_X = 0;
+    public static final int player_attack1_frame2_X = 174;
+    public static final int player_attack1_frame3_X = 348;
+    public static final int player_attack1_frame4_X = 522;
+    public static final int player_attack1_frame5_X = 696;
+    public static final int player_attack1_frame_Y = 0;
+    public static final int player_attack1_frame_Width = 174;
+    public static final int player_attack1_frame_Height = 128;
+    // TODO: померить смещение ноги относительно левого края и головы
+    public static final int player_attack_X_offset = 50;
+
     // /gameplay/level_0/level0_atlas - атлас с фонами 0-го уровня
     public static final int level_0_1_X = 0;
     public static final int level_0_1_Y = 0;

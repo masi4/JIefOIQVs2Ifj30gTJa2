@@ -6,20 +6,18 @@ package com.masi4.gameworld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.masi4.myGame.GameMainClass.*;
 
-import static com.masi4.gamehelpers.GameTextureRegions.*;
 import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gameobjects.Player;
+import com.masi4.objectsGraphic.PlayerGraphics;
 
 
 public class Level0_Renderer extends GameRenderer
 {
     // Objects
-    private Player player;
+    private PlayerGraphics playerG;
 
     // Assets
     private Animation
@@ -43,7 +41,7 @@ public class Level0_Renderer extends GameRenderer
     private final float proportion = 0.42f;  // часть экрана, начиная с которой камера привязывается к персонажу
     private float attachedSegment;  // Длина отрезка, на котором камера прикрепляется к персонажу
     private float parallax;  // процентное смещение фонов
-    // возможно внести в player
+    // возможно внести в playerG
     private boolean playerTurnedRight;  // Повернут ли персонаж вправо
 
     //
@@ -52,7 +50,7 @@ public class Level0_Renderer extends GameRenderer
 
     private void initGameObjects()
     {
-        player = world.getPlayer();
+        playerG = world.getPlayerGraphics();
     }
 
     private void initAssets()
@@ -95,15 +93,14 @@ public class Level0_Renderer extends GameRenderer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // привязка камеры к персонажу
-        // TODO: убрать рывки
-        if (player.getX() > SCREEN_WIDTH * proportion &&
-                player.getX() < world.getLevelWidth() - SCREEN_WIDTH * (1 - proportion))
+        if (playerG.getX() > SCREEN_WIDTH * proportion &&
+                playerG.getX() < world.getLevelWidth() - SCREEN_WIDTH * (1 - proportion))
         {
             cameraAttached = true;
-            camera.translate(player.getSpeedX() * player.getDelta(), 0);
-            parallax = (player.getX() - proportion * SCREEN_WIDTH) / attachedSegment;
+            camera.translate(playerG.getSpeedX() * playerG.getDelta(), 0);
+            parallax = (playerG.getX() - proportion * SCREEN_WIDTH) / attachedSegment;
         }
-        else if (cameraAttached && player.getX() <= SCREEN_WIDTH * proportion)  // Вошел обратно в начало уровня
+        else if (cameraAttached && playerG.getX() <= SCREEN_WIDTH * proportion)  // Вошел обратно в начало уровня
         {
             cameraAttached = false;
             camera.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
@@ -123,7 +120,7 @@ public class Level0_Renderer extends GameRenderer
             // Отрисовка фонов и GUI
             //
 
-            // TODO: параллакс
+            // параллакс
             batcher.draw(level_BG1, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             batcher.draw(level_BG2, -(SCREEN_WIDTH * 0.25f * parallax), 0, SCREEN_WIDTH * 1.25f, SCREEN_HEIGHT * 1.05f);
             batcher.draw(level_BG3, -(SCREEN_WIDTH * 0.5f * parallax), 0, SCREEN_WIDTH * 1.5f, SCREEN_HEIGHT);
@@ -147,47 +144,56 @@ public class Level0_Renderer extends GameRenderer
                 batcher.draw(grassForeLoops[i],  SCREEN_WIDTH * i, -185, SCREEN_WIDTH, SCREEN_HEIGHT);
             }
 
-            if (player.getSpeedX() > 0)
+            if (playerG.getSpeedX() > 0)
             {
                 elapsedTime += Gdx.graphics.getDeltaTime();
-                if(!player_startWalking_animation.isAnimationFinished(elapsedTime)) {                  //Начало шага
-                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime), player.getX(), player.getY(), (float) player.getWidth(), (float) player.getHeight());
+                //Начало шага
+                if (!player_startWalking_animation.isAnimationFinished(elapsedTime))
+                {
+                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime), playerG.getX(),
+                            playerG.getY(), (float) playerG.getWidth(), (float) playerG.getHeight());
                 }
-
-                else {
-                    batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX(), player.getY(), (float) player.getWidth(), (float) player.getHeight());
+                else
+                {
+                    batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), playerG.getX(),
+                            playerG.getY(), (float) playerG.getWidth(), (float) playerG.getHeight());
                 }
                 if (!playerTurnedRight) playerTurnedRight = true;
                 else {}
             }
-            else if (player.getSpeedX() < 0)
+            else if (playerG.getSpeedX() < 0)
             {
                 elapsedTime += Gdx.graphics.getDeltaTime();
-                if(!player_startWalking_animation.isAnimationFinished(elapsedTime)) {                  //Начало шага
-                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime), player.getX() + player.getWidth(), player.getY(), -(float) player.getWidth(), (float) player.getHeight());
+                //Начало шага
+                if (!player_startWalking_animation.isAnimationFinished(elapsedTime))
+                {
+                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime),
+                            playerG.getX() + playerG.getWidth(), playerG.getY(),
+                            -(float) playerG.getWidth(), (float) playerG.getHeight());
                 }
-                else{
-                    batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX() + player.getWidth(),player.getY(), -(float) player.getWidth(), (float) player.getHeight());
+                else
+                {
+                    batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime),
+                            playerG.getX() + playerG.getWidth(), playerG.getY(),
+                            -(float) playerG.getWidth(), (float) playerG.getHeight());
                 }
                 if (playerTurnedRight) playerTurnedRight = false;
                 else {}
             }
             else
-                if (playerTurnedRight) {
-                    batcher.draw(player_standing, player.getX(), player.getY(),  (float) player.getWidth(), (float) player.getHeight());
+                if (playerTurnedRight)
+                {
+                    batcher.draw(player_standing, playerG.getX(), playerG.getY(),
+                            (float) playerG.getWidth(), (float) playerG.getHeight());
                     elapsedTime=0;
                 }
-                else {
-                    batcher.draw(player_standing, player.getX() + player.getWidth(), player.getY(), -(float)player.getWidth(), (float)player.getHeight());
+                else
+                {
+                    batcher.draw(player_standing, playerG.getX() + playerG.getWidth(), playerG.getY(), -(float) playerG.getWidth(), (float) playerG.getHeight());
                     elapsedTime=0;
                 }
-
 
         batcher.end();
-
-
-
-
 
     }
 }

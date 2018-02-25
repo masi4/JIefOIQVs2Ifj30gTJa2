@@ -7,7 +7,6 @@ package com.masi4.gamehelpers;
  */
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -15,9 +14,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import static com.masi4.gamehelpers.GameTextureRegions.*;
-
+import static com.masi4.gameobjects.Level.LevelNames;
 import com.badlogic.gdx.utils.Array;
-import com.masi4.gameobjects.LevelNames;
 
 // TODO: Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
 public class AssetLoader
@@ -132,7 +130,7 @@ public class AssetLoader
     }
 
 
-    // Player
+    // PlayerGraphics
     public static void load_Player()
     {
         player_Texture = new Texture(Gdx.files.internal("gameplay/player/player_default_BIG.png"));
