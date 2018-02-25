@@ -1,8 +1,8 @@
 package com.masi4.gameobjects;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.masi4.objectsRpg.PlayerRpg;
-import com.masi4.objectsGraphic.PlayerGraphics;
+import com.masi4.gameobjects.objectRpg.PlayerRpg;
+import com.masi4.gameobjects.objectGraphics.PlayerGraphics;
 
 /**
  * Created by OIEFIJM on 22.12.2017.

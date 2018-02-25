@@ -1,4 +1,4 @@
-package com.masi4.objectsGraphic;
+package com.masi4.gameobjects.objectGraphics;
 
 /**
  * Created by OIEFIJM on 13.10.2017.

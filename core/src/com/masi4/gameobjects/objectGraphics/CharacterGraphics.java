@@ -1,4 +1,4 @@
-package com.masi4.objectsGraphic;
+package com.masi4.gameobjects.objectGraphics;
 
 import com.badlogic.gdx.math.Vector2;
 

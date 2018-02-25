@@ -29,7 +29,8 @@ public class WalkingControl
     private int viewportWidth = 960;
     private int viewportHeight = 540;
 
-    public WalkingControl() {
+    public WalkingControl()
+    {
         touchpadSkin = new Skin();
         touchpadSkin.add("frameAc", AssetLoader.controller_FrameActive);
         touchpadSkin.add("circleAc", AssetLoader.controller_CircleActive);

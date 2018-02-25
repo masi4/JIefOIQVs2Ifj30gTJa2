@@ -10,7 +10,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Gdx;
 
 import com.masi4.GUI.WalkingControl;
-import com.masi4.objectsGraphic.PlayerGraphics;
+import com.masi4.gameobjects.objectGraphics.PlayerGraphics;
 
 public class InputHandler implements InputProcessor
 {
@@ -46,6 +46,10 @@ public class InputHandler implements InputProcessor
         {
             controller.SetPosition(screenX,screenY);
             controller.MakeActive();
+        }
+        if (screenX > Gdx.graphics.getWidth() / 2)
+        {
+
         }
         return false;
     }

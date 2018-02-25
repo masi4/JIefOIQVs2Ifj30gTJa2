@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.masi4.myGame.GameMainClass.*;
 
 import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.objectsGraphic.PlayerGraphics;
+import com.masi4.gameobjects.objectGraphics.PlayerGraphics;
 
 
 public class Level0_Renderer extends GameRenderer
@@ -130,14 +130,17 @@ public class Level0_Renderer extends GameRenderer
             // Отрисовка мира
             //
             batcher.setProjectionMatrix(camera.combined);
+
             // задняя трава
             batcher.draw(level_grassBack, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             for (int i = 0; i < grassBackLoops.length; i++)
             {
                 batcher.draw(grassBackLoops[i], SCREEN_WIDTH * (i + 1) , 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             }
+
             // пол
             batcher.draw(level_floor, 0, 25, world.getLevelWidth(), world.getLevelFloorHeight());
+
             // передняя трава
             for (int i = 0; i < grassForeLoops.length; i++)
             {

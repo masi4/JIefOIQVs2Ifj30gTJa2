@@ -63,7 +63,7 @@ public class GameTextureRegions
     public static final int level_0_4_Width = 256;
     public static final int level_0_4_Height = 144;
 
-    public static final int level_0_grassBack_X = 0;     // TODO: Вынести объекты отдельно
+    public static final int level_0_grassBack_X = 0;
     public static final int level_0_grassBack_Y = 144;
     public static final int level_0_grassBack_Width = 256;
     public static final int level_0_grassBack_Height = 144;

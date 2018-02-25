@@ -17,7 +17,6 @@ import static com.masi4.gamehelpers.GameTextureRegions.*;
 import static com.masi4.gameobjects.Level.LevelNames;
 import com.badlogic.gdx.utils.Array;
 
-// TODO: Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
 public class AssetLoader
 {
 
@@ -37,7 +36,7 @@ public class AssetLoader
             level_BG3,
             level_BG4,
             level_BG5,
-            level_floor,   // TODO: Loop'ить
+            level_floor,
             level_grassBack,
             level_grassBackLoop,
             level_grassForeLoop,
