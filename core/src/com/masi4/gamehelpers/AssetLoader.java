@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 
 import com.badlogic.gdx.utils.Array;
+import com.masi4.GUI.AttackButton;
 import com.masi4.gameobjects.LevelNames;
 
 // TODO: Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
@@ -25,8 +26,10 @@ public class AssetLoader
 
     public static Texture
             player_Texture,
+            player_attack_Texture,
             level_Texture,
             controller_Texture,
+            attackButton_Texture,
             MainMenu_Buttons;
 
     public static TextureRegion
@@ -50,7 +53,12 @@ public class AssetLoader
             controller_FrameInactive0,
             controller_CircleInactive0,
             controller_FrameInactive1,
-            controller_CircleInactive1;
+            controller_CircleInactive1,
+
+            // кнопка атаки
+            attackButton_Up,
+            attackButton_Down;
+
 
     public static TextureRegion[]
             // главное меню
@@ -64,9 +72,11 @@ public class AssetLoader
 
     public static Array<TextureRegion> player_default_frames;
     public static Array<TextureRegion> player_default_startsWalking_frames;
+    public static Array<TextureRegion> player_attack_frames;
 
     public static Animation<TextureRegion> player_default_animation;
     public static Animation<TextureRegion> player_default_startsWalking_animation;
+    public static Animation<TextureRegion> player_attack_animation;
     //
     // Методы
     //
@@ -126,6 +136,14 @@ public class AssetLoader
         controller_CircleInactive0 = new TextureRegion(controller_Texture, controller_frame_Width, 2*controller_frame_Height, controller_circle_Width, controller_circle_Height);
     }
 
+    // Кнопка атаки
+
+    public static void load_AttackButton()
+    {
+        attackButton_Texture = new Texture(Gdx.files.internal("attackButton.png"));
+        attackButton_Down = new TextureRegion(attackButton_Texture,0,0,attackButton_Width,attackButton_Height);
+        attackButton_Up = new TextureRegion(attackButton_Texture,0,attackButton_Height,attackButton_Width,attackButton_Height);
+    }
     public static void dispose_Controller()
     {
         controller_Texture.dispose();
@@ -137,8 +155,7 @@ public class AssetLoader
     {
         player_Texture = new Texture(Gdx.files.internal("gameplay/player/player_default_BIG.png"));
         player_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-        player_standing = new TextureRegion(player_Texture, 0, player_default_frame_Y,
-                player_default_frame_Width, player_default_frame_Height);
+        player_standing = new TextureRegion(player_Texture, 0, player_default_frame_Y, player_default_frame_Width, player_default_frame_Height);
 
         int[] frames_count = new int[] {8,  2}; //{бег, начало бега}
         player_default_frames = new Array<TextureRegion>(frames_count[0]);
@@ -156,6 +173,17 @@ public class AssetLoader
         // TODO: скорость смены кадров в зависимости от скорости игрока
         player_default_animation = new Animation(0.06f, player_default_frames, Animation.PlayMode.LOOP);
         player_default_startsWalking_animation = new Animation(0.06f,player_default_startsWalking_frames , Animation.PlayMode.NORMAL);
+    }
+
+    public static void load_PlayerAttack()
+    {
+        player_attack_Texture = new Texture(Gdx.files.internal("gameplay/player/player_attack_1.png"));
+        player_attack_frames = new Array<TextureRegion>(5);
+        for(int i = 0; i< 5;i++)
+        {
+            player_attack_frames.add(new TextureRegion(player_attack_Texture,player_attack_frame_Width*i,player_attack_frame_Y,player_attack_frame_Width, player_attack_frame_Height));
+        }
+        player_attack_animation = new Animation(0.05f,player_attack_frames, Animation.PlayMode.NORMAL);
     }
 
     public static void dispose_Player()

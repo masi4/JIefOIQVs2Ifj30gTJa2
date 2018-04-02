@@ -9,6 +9,7 @@ package com.masi4.gamehelpers;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Gdx;
 
+import com.masi4.GUI.AttackButton;
 import com.masi4.GUI.WalkingControl;
 import com.masi4.gameobjects.Player;
 
@@ -17,10 +18,12 @@ import java.awt.event.KeyEvent;
 public class InputHandler implements InputProcessor
 {
     private Player player;
-    public WalkingControl controller;
-    public InputHandler(WalkingControl controller,Player player)
+    private WalkingControl controller;
+    private AttackButton attackButton;
+    public InputHandler(WalkingControl controller,AttackButton attackButton,Player player)
     {
         this.controller = controller;
+        this.attackButton = attackButton;
         this.player = player;
     }
 
@@ -44,9 +47,8 @@ public class InputHandler implements InputProcessor
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        if (screenX <= Gdx.graphics.getWidth() / 2)
-        {
-            controller.SetPosition(screenX,screenY);
+        if (screenX <= Gdx.graphics.getWidth() / 2) {
+            controller.SetPosition(screenX, screenY);
             controller.MakeActive();
         }
         return false;
@@ -62,6 +64,11 @@ public class InputHandler implements InputProcessor
             if (!player.isInJump())
                 player.setVelocityX(0);
         }
+        else
+        if(attackButton.IsPressed())
+        {
+            player.SetAttack(true);
+        }
         return false;
     }
 
@@ -69,16 +76,20 @@ public class InputHandler implements InputProcessor
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
-        if(controller.touchpad.getKnobPercentY() > 0.5 && !jumpControl)
+        if(controller.getKnobPercentY() > 0.5 && !jumpControl)
         {
             player.jump();
             jumpControl = true;
         }
-        if(controller.touchpad.getKnobPercentY() < 0.5 && jumpControl)
+        if(controller.getKnobPercentY() < 0.5 && jumpControl)
         {
             jumpControl = false;
         }
-        player.setVelocityX(300 * controller.touchpad.getKnobPercentX());
+        if(!player.IsAttack())
+        {
+            player.setVelocityX(300 * controller.getKnobPercentX());
+        }
+
 
         return false;
     }

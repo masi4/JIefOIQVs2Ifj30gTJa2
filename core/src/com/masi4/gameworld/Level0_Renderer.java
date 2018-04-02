@@ -6,12 +6,10 @@ package com.masi4.gameworld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.masi4.myGame.GameMainClass.*;
 
-import static com.masi4.gamehelpers.GameTextureRegions.*;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gameobjects.Player;
 
@@ -24,7 +22,8 @@ public class Level0_Renderer extends GameRenderer
     // Assets
     private Animation
             player_animation,
-            player_startWalking_animation; // TODO: убрать подергивание, подкорректировать кадры, возможно убрать лишний кадр (8 ?)
+            player_startWalking_animation, // TODO: убрать подергивание, подкорректировать кадры, возможно убрать лишний кадр (8 ?)
+            player_attack_animation; //
     private TextureRegion
             player_standing,  // повернут вправо
             level_BG1,
@@ -75,6 +74,7 @@ public class Level0_Renderer extends GameRenderer
         player_standing = AssetLoader.player_standing;
         player_startWalking_animation = AssetLoader.player_default_startsWalking_animation;
         player_animation = AssetLoader.player_default_animation;
+        player_attack_animation = AssetLoader.player_attack_animation;
     }
 
     public Level0_Renderer(GameWorld world, int gameWidth, int gameHeight)
@@ -88,8 +88,9 @@ public class Level0_Renderer extends GameRenderer
         initGameObjects();
         initAssets();
     }
-    private float elapsedTime = 0;
-    public void render(float runTime)
+    private float elapsedWalkingTime = 0;
+    private float elapsedAttackTIme = 0;
+     public void render(float runTime)
     {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -147,11 +148,29 @@ public class Level0_Renderer extends GameRenderer
                 batcher.draw(grassForeLoops[i],  SCREEN_WIDTH * i, -185, SCREEN_WIDTH, SCREEN_HEIGHT);
             }
 
-            if (player.getSpeedX() > 0)
+        if(player_attack_animation.isAnimationFinished(elapsedAttackTIme))
+        {
+            player.SetAttack(false);
+            elapsedAttackTIme=0;
+        }
+        else if(player.IsAttack())
+        {
+            elapsedAttackTIme += Gdx.graphics.getDeltaTime();
+            if (playerTurnedRight)
             {
-                elapsedTime += Gdx.graphics.getDeltaTime();
-                if(!player_startWalking_animation.isAnimationFinished(elapsedTime)) {                  //Начало шага
-                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime), player.getX(), player.getY(), (float) player.getWidth(), (float) player.getHeight());
+                batcher.draw((TextureRegion) player_attack_animation.getKeyFrame(elapsedAttackTIme), player.getX(),player.getY(), 174, 128);
+            }
+            else
+            {
+                batcher.draw((TextureRegion) player_attack_animation.getKeyFrame(elapsedAttackTIme), player.getX()+174/2,player.getY(), -174, 128);
+            }
+        }
+
+        if (player.getSpeedX() > 0)
+            {
+                elapsedWalkingTime += Gdx.graphics.getDeltaTime();
+                if(!player_startWalking_animation.isAnimationFinished(elapsedWalkingTime)) {                  //Начало шага
+                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedWalkingTime), player.getX(), player.getY(), (float) player.getWidth(), (float) player.getHeight());
                 }
 
                 else {
@@ -162,9 +181,9 @@ public class Level0_Renderer extends GameRenderer
             }
             else if (player.getSpeedX() < 0)
             {
-                elapsedTime += Gdx.graphics.getDeltaTime();
-                if(!player_startWalking_animation.isAnimationFinished(elapsedTime)) {                  //Начало шага
-                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime), player.getX() + player.getWidth(), player.getY(), -(float) player.getWidth(), (float) player.getHeight());
+                elapsedWalkingTime += Gdx.graphics.getDeltaTime();
+                if(!player_startWalking_animation.isAnimationFinished(elapsedWalkingTime)) {                  //Начало шага
+                    batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedWalkingTime), player.getX() + player.getWidth(), player.getY(), -(float) player.getWidth(), (float) player.getHeight());
                 }
                 else{
                     batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime), player.getX() + player.getWidth(),player.getY(), -(float) player.getWidth(), (float) player.getHeight());
@@ -172,22 +191,19 @@ public class Level0_Renderer extends GameRenderer
                 if (playerTurnedRight) playerTurnedRight = false;
                 else {}
             }
-            else
-                if (playerTurnedRight) {
-                    batcher.draw(player_standing, player.getX(), player.getY(),  (float) player.getWidth(), (float) player.getHeight());
-                    elapsedTime=0;
-                }
-                else {
-                    batcher.draw(player_standing, player.getX() + player.getWidth(), player.getY(), -(float)player.getWidth(), (float)player.getHeight());
-                    elapsedTime=0;
-                }
 
+
+            if(player.getSpeedX() == 0 && !player.IsAttack()) {
+                if (playerTurnedRight) {
+                    batcher.draw(player_standing, player.getX(), player.getY(), (float) player.getWidth(), (float) player.getHeight());
+                    elapsedWalkingTime = 0;
+                } else {
+                    batcher.draw(player_standing, player.getX() + player.getWidth(), player.getY(), -(float) player.getWidth(), (float) player.getHeight());
+                    elapsedWalkingTime = 0;
+                }
+            }
 
         batcher.end();
-
-
-
-
 
     }
 }

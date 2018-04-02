@@ -8,6 +8,7 @@ package com.masi4.screens;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.masi4.GUI.AttackButton;
 import com.masi4.GUI.WalkingControl;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.InputHandler;
@@ -27,7 +28,8 @@ public class GameplayScreen implements Screen
     private InputMultiplexer inputMultiplexer;
     private GameWorld world;
     private GameRenderer renderer;
-    public WalkingControl controller;  // публичные поля = плохо
+    private WalkingControl controller;  // публичные поля = плохо
+    private AttackButton attackButton;
     private float runTime;
 
     public GameplayScreen(GameMainClass gameCtrl, LevelNames levelName)
@@ -35,8 +37,9 @@ public class GameplayScreen implements Screen
         this.gameCtrl = gameCtrl;
         AssetLoader.load_Level(levelName);
         AssetLoader.load_Player();
+        AssetLoader.load_PlayerAttack();
         AssetLoader.load_Controller();
-
+        AssetLoader.load_AttackButton();
         // возможно создать дочерние классы от GameWorld. Для каждого levelName свой.
         world = new GameWorld(levelName);
         switch (levelName)
@@ -48,9 +51,11 @@ public class GameplayScreen implements Screen
         }
 
         controller = new WalkingControl();
+        attackButton = new AttackButton();
         inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(new InputHandler(controller, world.getPlayer()));
+        inputMultiplexer.addProcessor(new InputHandler(controller,attackButton, world.getPlayer()));
         inputMultiplexer.addProcessor(controller.stage);
+        inputMultiplexer.addProcessor(attackButton.stage);
         Gdx.input.setInputProcessor(inputMultiplexer);
         Gdx.input.setCatchBackKey(true);
     }
@@ -73,6 +78,7 @@ public class GameplayScreen implements Screen
         world.update(delta);
         renderer.render(runTime);
         controller.render(delta);
+        attackButton.render(delta);
     }
 
     @Override

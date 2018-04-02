@@ -18,8 +18,8 @@ public class WalkingControl
 {
     private Viewport viewport;
     public Stage stage;
-    public Touchpad touchpad; // публичные поля = плохо
-    public Touchpad.TouchpadStyle touchpadStyle;  // публичные поля = плохо
+    private Touchpad touchpad;
+    private Touchpad.TouchpadStyle touchpadStyle;
 
     private Skin touchpadSkin;
     private Drawable touchFrameAc;
@@ -81,5 +81,12 @@ public class WalkingControl
          stage.draw();
 
     }
-
+    public float getKnobPercentY()
+    {
+        return touchpad.getKnobPercentY();
+    }
+    public float getKnobPercentX()
+    {
+        return touchpad.getKnobPercentX();
+    }
 }

@@ -6,6 +6,7 @@ package com.masi4.gameobjects;
  * Этот класс описывает игрового персонажа
  */
 
+
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -20,7 +21,7 @@ public class Player
     // Важно: сначала выполнять дешевые проверки, затем дорогие (intersector)
     private Rectangle boundingRec;   // Определение коллизий TODO: переписать handleCollisions через этот квадрат
     private boolean inJump;    // находится ли персонаж в прыжке
-
+    private boolean isAttack;  //
     // Публичные члены
 
     public Player(int width, int height)
@@ -133,4 +134,23 @@ public class Player
         return height;
     }
 
+    float bufferVelocity = 0; //Сохраняет скорость которая была до активации атаки, а применяет ее после того, как атака завершится. Связано с тем, что скорость персонажа зависит от ПЕРЕМЕЩЕНИЯ кноба. Исправить!
+    public void SetAttack(boolean Attack)
+    {
+        isAttack = Attack;
+        if(Attack) {
+            bufferVelocity = this.velocity.x;
+            setVelocityX(0);
+
+        }
+        else {
+            setVelocityX(bufferVelocity);
+            bufferVelocity = 0;
+        }
+    }
+
+    public boolean IsAttack()
+    {
+        return isAttack;
+    }
 }
