@@ -65,13 +65,17 @@ public class GameTextureRegions
     public static final int level_0_grassForeLoop_Width = 256;
     public static final int level_0_grassForeLoop_Height = 144;
 
-  // /controller - атлас с джойстиком
+    // /gameplay/level_0/torch_atlas_png
+    public static final int torch_width = 80;
+    public static final int torch_height = 77;
+
+    // controller - атлас с джойстиком
     public static final int controller_frame_Width = 242;
     public static final int controller_frame_Height = 242;
     public static final int controller_circle_Width = 70;
     public static final int controller_circle_Height = 70;
 
-    // /attackButton - атлас с кнопкой атаки
+    // attackButton - атлас с кнопкой атаки
     public static final int attackButton_Width = 90;
     public static final int attackButton_Height = 90;
 }

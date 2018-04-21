@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.masi4.myGame.GameMainClass.*;
 
 import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.GameTextureRegions;
 import com.masi4.gameobjects.Player;
 
 
@@ -23,7 +24,8 @@ public class Level0_Renderer extends GameRenderer
     private Animation
             player_animation,
             player_startWalking_animation, // TODO: убрать подергивание, подкорректировать кадры, возможно убрать лишний кадр (8 ?)
-            player_attack_animation; //
+            player_attack_animation, //
+            level_torch_animanion;
     private TextureRegion
             player_standing,  // повернут вправо
             level_BG1,
@@ -31,7 +33,8 @@ public class Level0_Renderer extends GameRenderer
             level_BG3,
             level_BG4,
             level_grassBack,
-            level_floor;
+            level_floor,
+            level_cave;
 
     // 1) возможно сделать vector или list
     // 2) возможно будет работать и без массива, а возможно он отрисовывает в трех местах и типо мелькает
@@ -62,6 +65,8 @@ public class Level0_Renderer extends GameRenderer
         level_BG4 = AssetLoader.level_BG4;
         level_grassBack = AssetLoader.level_grassBack;
         level_floor = AssetLoader.level_floor;
+        level_torch_animanion = AssetLoader.torch_animation;
+        level_cave = AssetLoader.level_cave;
 
         grassBackLoops = new TextureRegion[3];
         for (int i = 0; i < grassBackLoops.length; i++)
@@ -88,6 +93,7 @@ public class Level0_Renderer extends GameRenderer
         initGameObjects();
         initAssets();
     }
+
     private float elapsedWalkingTime = 0;
     private float elapsedAttackTIme = 0;
      public void render(float runTime)
@@ -126,14 +132,15 @@ public class Level0_Renderer extends GameRenderer
 
             // TODO: параллакс
             batcher.draw(level_BG1, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            batcher.draw(level_BG2, -(SCREEN_WIDTH * 0.25f * parallax), 0, SCREEN_WIDTH * 1.25f, SCREEN_HEIGHT * 1.05f);
-            batcher.draw(level_BG3, -(SCREEN_WIDTH * 0.5f * parallax), 0, SCREEN_WIDTH * 1.5f, SCREEN_HEIGHT);
-            batcher.draw(level_BG4, -(SCREEN_WIDTH * parallax), 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 1.1f);
+            batcher.draw(level_BG2, -(SCREEN_WIDTH * 0.25f * parallax), -50, SCREEN_WIDTH * 1.25f, SCREEN_HEIGHT * 1.25f);
+            batcher.draw(level_BG3, -(SCREEN_WIDTH * 0.5f * parallax), -100, SCREEN_WIDTH * 1.5f, SCREEN_HEIGHT*1.5f);
+            batcher.draw(level_BG4, -(SCREEN_WIDTH * parallax), -170, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 
             //
             // Отрисовка мира
             //
             batcher.setProjectionMatrix(camera.combined);
+
             // задняя трава
             batcher.draw(level_grassBack, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             for (int i = 0; i < grassBackLoops.length; i++)
@@ -142,11 +149,17 @@ public class Level0_Renderer extends GameRenderer
             }
             // пол
             batcher.draw(level_floor, 0, 25, world.getLevelWidth(), world.getLevelFloorHeight());
-            // передняя трава
+            // Пешера
+            batcher.draw(level_cave, world.getLevelWidth()-950,world.getLevelFloorHeight()-2, level_cave.getRegionWidth()*3, level_cave.getRegionHeight()*3);
+            batcher.draw((TextureRegion) level_torch_animanion.getKeyFrame(runTime), world.getLevelWidth()-1000,world.getLevelFloorHeight()+30, GameTextureRegions.torch_width*2, GameTextureRegions.torch_height*2);
+            batcher.draw((TextureRegion) level_torch_animanion.getKeyFrame(runTime+10), world.getLevelWidth()-800,world.getLevelFloorHeight()+30, GameTextureRegions.torch_width*2, GameTextureRegions.torch_height*2);
+
+        // передняя трава
             for (int i = 0; i < grassForeLoops.length; i++)
             {
                 batcher.draw(grassForeLoops[i],  SCREEN_WIDTH * i, -185, SCREEN_WIDTH, SCREEN_HEIGHT);
             }
+
 
         if(player_attack_animation.isAnimationFinished(elapsedAttackTIme))
         {

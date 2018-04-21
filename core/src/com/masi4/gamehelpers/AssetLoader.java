@@ -7,7 +7,6 @@ package com.masi4.gamehelpers;
  */
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -17,7 +16,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 
 import com.badlogic.gdx.utils.Array;
-import com.masi4.GUI.AttackButton;
 import com.masi4.gameobjects.LevelNames;
 
 // TODO: Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
@@ -30,12 +28,13 @@ public class AssetLoader
             level_Texture,
             controller_Texture,
             attackButton_Texture,
-            MainMenu_Buttons;
+            MainMenu_Buttons,
+            level_torch_Texture,
+            level_cave_Teaxture;
 
     public static TextureRegion
             // персонаж (стоит)
             player_standing,
-
             // элементы уровня
             level_BG1,
             level_BG2,
@@ -46,6 +45,7 @@ public class AssetLoader
             level_grassBack,
             level_grassBackLoop,
             level_grassForeLoop,
+            level_cave,
 
             // джойстик
             controller_FrameActive,
@@ -73,10 +73,12 @@ public class AssetLoader
     public static Array<TextureRegion> player_default_frames;
     public static Array<TextureRegion> player_default_startsWalking_frames;
     public static Array<TextureRegion> player_attack_frames;
+    public static Array<TextureRegion> torch_frames;
 
     public static Animation<TextureRegion> player_default_animation;
     public static Animation<TextureRegion> player_default_startsWalking_animation;
     public static Animation<TextureRegion> player_attack_animation;
+    public static Animation<TextureRegion> torch_animation;
     //
     // Методы
     //
@@ -213,9 +215,34 @@ public class AssetLoader
                 level_grassForeLoop = new TextureRegion(level_Texture, level_0_grassForeLoop_X, level_0_grassForeLoop_Y,
                         level_0_grassForeLoop_Width, level_0_grassForeLoop_Height);
 
+                load_Torch();
+                load_Cave();
             }
         }
     }
+
+    //TODO: Всю анимацию окружения можно вынести в отдельный класс
+    ///
+    private static void load_Torch()
+    {
+        level_torch_Texture = new Texture(Gdx.files.internal("gameplay/level_0/torch_atlas.png")); //TODO: Поместить в атлас
+        level_torch_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        int frames_count = 11;
+        torch_frames = new Array<TextureRegion>(frames_count);
+        for(int i = 0; i<=frames_count;i++)
+        {
+            torch_frames.add(new TextureRegion(level_torch_Texture,torch_width*i,0,torch_width,torch_height));
+        }
+        torch_animation = new Animation(0.09f, torch_frames,Animation.PlayMode.LOOP);
+    }
+    private static void load_Cave()
+    {
+        level_cave_Teaxture = new Texture(Gdx.files.internal("gameplay/level_0/cave.png")); //TODO: Поместить в атлас
+
+        level_cave = new TextureRegion(level_cave_Teaxture);
+    }
+    ///
+
 
     public static void dispose_Level()
     {
