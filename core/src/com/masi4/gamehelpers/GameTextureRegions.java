@@ -20,6 +20,9 @@ public class GameTextureRegions
     public static final int player_default_frame_Width = 64;
     public static final int player_default_frame_Height = 96;
 
+    public static final int skeleton_frame_Width = 128;
+    public static final int skeleton_frame_Height = 128;
+
     public static final int player_attack_frame_Y = 0;
     public static final int player_attack_frame_Width = 174;
     public static final int player_attack_frame_Height = 128;
