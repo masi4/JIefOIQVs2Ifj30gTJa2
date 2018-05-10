@@ -36,4 +36,29 @@ public class Player
         graphics.setCoords(x, y);
         rpg.setHitboxCoords(x, y);
     }
+
+    /*
+        В player.Graphics
+    ***************************
+
+    float bufferVelocity = 0; //Сохраняет скорость которая была до активации атаки, а применяет ее после того, как атака завершится. Связано с тем, что скорость персонажа зависит от ПЕРЕМЕЩЕНИЯ кноба. Исправить!
+    public void SetAttack(boolean Attack)
+    {
+        isAttack = Attack;
+        if(Attack) {
+            bufferVelocity = this.velocity.x;
+            setVelocityX(0);
+
+        }
+        else {
+            setVelocityX(bufferVelocity);
+            bufferVelocity = 0;
+        }
+    }
+
+    public boolean IsAttack()
+    {
+        return isAttack;
+    }
+     */
 }

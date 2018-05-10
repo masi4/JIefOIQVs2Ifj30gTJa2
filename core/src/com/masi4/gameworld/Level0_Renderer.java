@@ -27,7 +27,8 @@ public class Level0_Renderer extends GameRenderer
     // Assets
     private Animation
             player_animation,
-            player_startWalking_animation;
+            player_startWalking_animation,
+            player_attack_animation;
     private TextureRegion
             player_standing,  // стоит на месте
             level_BG1,
@@ -38,8 +39,11 @@ public class Level0_Renderer extends GameRenderer
             level_floor;
     private TextureRegion[] grassBackLoops, grassForeLoops;
 
-    /** Время, прошедшее со старта уровня **/
-    private float elapsedTime = 0;
+    /** Время, прошедшее со старта анимации ходьбы **/
+    private float elapsedWalkingTime;
+    /** Время, прошедшее со старта анимации атаки **/
+    private float elapsedAttackTime;
+
     /** Прикреплена ли камера к игроку **/
     private boolean cameraAttached;
     /** Длина отрезка, на котором камера прикрепляется к игроку **/
@@ -60,6 +64,9 @@ public class Level0_Renderer extends GameRenderer
         cameraAttached = false;
         backgroundsOffset = 0;
         attachedSegment = world.getLevelWidth() - SCREEN_WIDTH;
+
+        elapsedWalkingTime = 0;
+        elapsedAttackTime = 0;
 
         initGameObjects();
         initAssets();
@@ -111,6 +118,7 @@ public class Level0_Renderer extends GameRenderer
         player_standing = AssetLoader.player_standing;
         player_startWalking_animation = AssetLoader.player_default_startsWalking_animation;
         player_animation = AssetLoader.player_default_animation;
+        player_attack_animation = AssetLoader.player_attack_animation;
     }
 
     // ***********************************************
@@ -217,13 +225,43 @@ public class Level0_Renderer extends GameRenderer
      */
     private void drawPlayer(float runTime)
     {
+        //
+        // Атака
+        //
+
+        if(player_attack_animation.isAnimationFinished(elapsedAttackTime))
+        {
+            player.graphics.SetAttack(false);
+            elapsedAttackTime = 0;
+        }
+        else if(player.graphics.isAttacking())
+        {
+            elapsedAttackTime += Gdx.graphics.getDeltaTime();
+            if (player.graphics.isTurnedRight())
+            {
+                batcher.draw((TextureRegion) player_attack_animation.getKeyFrame(elapsedAttackTime),
+                        player.graphics.getX(), player.graphics.getY(), 174, 128);
+            }
+            else
+            {
+                batcher.draw((TextureRegion) player_attack_animation.getKeyFrame(elapsedAttackTime),
+                        player.graphics.getX() + 174/2, player.graphics.getY(), -174, 128);
+            }
+        }
+
+        //
+        // Ходьба
+        //
+
+        // TODO: если остановился, elapsedTime = 0. Переименовать в elapsedWalkingTime
+        // Если идет вправо
         if (player.graphics.getSpeedX() > 0)
         {
-            elapsedTime += Gdx.graphics.getDeltaTime();
+            elapsedWalkingTime += Gdx.graphics.getDeltaTime();
             // начало шага
-            if (!player_startWalking_animation.isAnimationFinished(elapsedTime))
+            if (!player_startWalking_animation.isAnimationFinished(elapsedWalkingTime))
             {
-                batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime), player.graphics.getX(),
+                batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedWalkingTime), player.graphics.getX(),
                         player.graphics.getY(), (float) player.graphics.getWidth(), (float) player.graphics.getHeight());
             }
             else
@@ -239,11 +277,11 @@ public class Level0_Renderer extends GameRenderer
         // Если идет влево
         else if (player.graphics.getSpeedX() < 0)
         {
-            elapsedTime += Gdx.graphics.getDeltaTime();
+            elapsedWalkingTime += Gdx.graphics.getDeltaTime();
             // начало шага
-            if (!player_startWalking_animation.isAnimationFinished(elapsedTime))
+            if (!player_startWalking_animation.isAnimationFinished(elapsedWalkingTime))
             {
-                batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedTime),
+                batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedWalkingTime),
                         player.graphics.getX() + player.graphics.getWidth(), player.graphics.getY(),
                         -(float) player.graphics.getWidth(), (float) player.graphics.getHeight());
             }
@@ -258,17 +296,21 @@ public class Level0_Renderer extends GameRenderer
         }
 
         // Если стоит на месте
-        else
-        if (player.graphics.isTurnedRight())
+        else if (player.graphics.getSpeedX() == 0 && !player.graphics.isAttacking())
         {
-            batcher.draw(player_standing, player.graphics.getX(), player.graphics.getY(),
-                    (float) player.graphics.getWidth(), (float) player.graphics.getHeight());
-            elapsedTime = 0;
-        }
-        else
-        {
-            batcher.draw(player_standing, player.graphics.getX() + player.graphics.getWidth(), player.graphics.getY(), -(float) player.graphics.getWidth(), (float) player.graphics.getHeight());
-            elapsedTime = 0;
+            if (player.graphics.isTurnedRight())
+            {
+                batcher.draw(player_standing, player.graphics.getX(), player.graphics.getY(),
+                        (float) player.graphics.getWidth(), (float) player.graphics.getHeight());
+                elapsedWalkingTime = 0;
+            }
+            else
+            {
+                batcher.draw(player_standing, player.graphics.getX() + player.graphics.getWidth(),
+                        player.graphics.getY(), -(float) player.graphics.getWidth(),
+                        (float) player.graphics.getHeight());
+                elapsedWalkingTime = 0;
+            }
         }
 
         // DEBUG: Отрисовка хитбокса игрока

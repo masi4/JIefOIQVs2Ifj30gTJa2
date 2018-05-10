@@ -9,6 +9,7 @@ package com.masi4.gamehelpers;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Gdx;
 
+import com.masi4.GUI.AttackButton;
 import com.masi4.GUI.WalkingControl;
 import com.masi4.gameobjects.objectGraphics.PlayerGraphics;
 
@@ -16,16 +17,19 @@ public class InputHandler implements InputProcessor
 {
     private PlayerGraphics playerGraphics;
     public WalkingControl controller;
-    public InputHandler(WalkingControl controller, PlayerGraphics playerGraphics)
+    private AttackButton attackButton;
+
+    public InputHandler(WalkingControl controller, AttackButton attackButton, PlayerGraphics playerGraphics)
     {
         this.controller = controller;
+        this.attackButton = attackButton;
         this.playerGraphics = playerGraphics;
     }
 
     // TODO: Обработка кнопки назад
     @Override
-    public boolean keyDown(int keycode) {
-
+    public boolean keyDown(int keycode)
+    {
         return false;
     }
 
@@ -44,12 +48,8 @@ public class InputHandler implements InputProcessor
     {
         if (screenX <= Gdx.graphics.getWidth() / 2)
         {
-            controller.SetPosition(screenX,screenY);
+            controller.SetPosition(screenX, screenY);
             controller.MakeActive();
-        }
-        if (screenX > Gdx.graphics.getWidth() / 2)
-        {
-
         }
         return false;
     }
@@ -64,6 +64,10 @@ public class InputHandler implements InputProcessor
             if (!playerGraphics.isInJump())
                 playerGraphics.setVelocityX(0);
         }
+        else if(attackButton.IsPressed())
+        {
+            playerGraphics.SetAttack(true);
+        }
         return false;
     }
 
@@ -71,16 +75,16 @@ public class InputHandler implements InputProcessor
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
-        if(controller.touchpad.getKnobPercentY() > 0.5 && !jumpControl)
+        if(controller.getKnobPercentY() > 0.5 && !jumpControl)
         {
             playerGraphics.jump();
             jumpControl = true;
         }
-        if(controller.touchpad.getKnobPercentY() < 0.5 && jumpControl)
+        if(controller.getKnobPercentY() < 0.5 && jumpControl)
         {
             jumpControl = false;
         }
-        playerGraphics.setVelocityX(300 * controller.touchpad.getKnobPercentX());
+        playerGraphics.setVelocityX(300 * controller.getKnobPercentX());
 
         return false;
     }

@@ -16,16 +16,6 @@ public class GameTextureRegions
 
     // /gameplay/player/player_default - атлас с default анимацией персонажа
 
-    public static final int player_default_frame0_X = 0;  // стоит
-    public static final int player_default_frame1_X = 48;
-    public static final int player_default_frame2_X = 92;
-    public static final int player_default_frame3_X = 140;  // кадр прыжка
-    public static final int player_default_frame4_X = 196;
-    public static final int player_default_frame5_X = 252;
-    public static final int player_default_frame6_X = 306;
-    public static final int player_default_frame7_X = 354;
-    public static final int player_default_frame8_X = 401;
-    public static final int player_default_frame9_X = 450;
     public static final int player_default_frame_Y = 0;
     public static final int player_default_frame_Width = 64;
     public static final int player_default_frame_Height = 96;
@@ -43,6 +33,10 @@ public class GameTextureRegions
     public static final int player_attack1_frame_Height = 128;
     // TODO: померить смещение ноги относительно левого края и головы
     public static final int player_attack_X_offset = 50;
+
+    public static final int player_attack_frame_Y = 0;
+    public static final int player_attack_frame_Width = 174;
+    public static final int player_attack_frame_Height = 128;
 
     // /gameplay/level_0/level0_atlas - атлас с фонами 0-го уровня
     public static final int level_0_1_X = 0;
@@ -91,6 +85,7 @@ public class GameTextureRegions
     public static final int controller_circle_Width = 70;
     public static final int controller_circle_Height = 70;
 
-
-
+    // /attackButton - атлас с кнопкой атаки
+    public static final int attackButton_Width = 90;
+    public static final int attackButton_Height = 90;
 }

@@ -6,16 +6,15 @@ package com.masi4.gameobjects.objectGraphics;
  * Представляет собой математическую модель графики игрока
  */
 
-
-
 public class PlayerGraphics extends CharacterGraphics
 {
     private float delta;
-
+    private boolean isAttacking;
 
     public PlayerGraphics(int width, int height)
     {
         super(width, height);
+        isAttacking = false;
     }
 
     public void update_position(float delta)
@@ -24,6 +23,33 @@ public class PlayerGraphics extends CharacterGraphics
         super.update_position(delta);
     }
 
-    public float getDelta() { return delta; }
+    // TODO: u1kwn исправь! какой то велосипед с bufferVelocity. Почему просто не оставить скорость?
+    // Сохраняет скорость которая была до активации атаки, а применяет ее после того, как атака
+    // завершится. Связано с тем, что скорость персонажа зависит от ПЕРЕМЕЩЕНИЯ кноба. Исправить!
+    private float bufferVelocity = 0;
+    public void SetAttack(boolean isAttacking)
+    {
+        this.isAttacking = isAttacking;
+        if (isAttacking)
+        {
+            bufferVelocity = this.velocity.x;
+            setVelocityX(0);
+        }
+        else
+        {
+            setVelocityX(bufferVelocity);
+            bufferVelocity = 0;
+        }
+    }
+
+    public boolean isAttacking()
+    {
+        return isAttacking;
+    }
+
+    public float getDelta()
+    {
+        return delta;
+    }
 
 }
