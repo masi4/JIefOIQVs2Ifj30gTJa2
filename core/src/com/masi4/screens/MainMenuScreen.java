@@ -10,7 +10,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -19,25 +18,25 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
+import com.masi4.UI.gameInventory.InventoryScreen;
 import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.myGame.GameMain;
 import com.masi4.myGame.GameMainClass;
 import com.masi4.gameobjects.LevelNames;
 
+import static com.masi4.myGame.GameMain.game;
 import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
 import static com.masi4.myGame.GameMainClass.SCREEN_WIDTH;
 
 public class MainMenuScreen implements Screen
 {
     private OrthographicCamera camera;
-    private GameMainClass gameCtrl;
     protected Stage stage;
     SpriteBatch batch;
 
-    public MainMenuScreen(GameMainClass gameCtrl)
+    public MainMenuScreen()
     {
         AssetLoader.load_MainMenu();
-
-        this.gameCtrl = gameCtrl;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(new FillViewport(SCREEN_WIDTH/3.8f,SCREEN_HEIGHT/3.8f));
@@ -63,21 +62,21 @@ public class MainMenuScreen implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                gameCtrl.setScreen(new GameplayScreen(gameCtrl, LevelNames.TEST)); // Экран выбора уровня
+                game.setScreen(new GameplayScreen(LevelNames.TEST)); // Экран выбора уровня
                 dispose();
             }
         });
         optionsButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                gameCtrl.setScreen(new OptionsScreen(gameCtrl)); // Экран настроек
+                game.setScreen(new OptionsScreen()); // Экран настроек
                 dispose();
             }
         });
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+
                 Gdx.app.exit();
             }
         });

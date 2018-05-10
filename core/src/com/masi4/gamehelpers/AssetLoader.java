@@ -7,6 +7,7 @@ package com.masi4.gamehelpers;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -15,8 +16,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
+import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 import com.masi4.gameobjects.LevelNames;
+
+import java.io.IOException;
 
 // TODO: Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
 public class AssetLoader
@@ -28,9 +35,14 @@ public class AssetLoader
             level_Texture,
             controller_Texture,
             attackButton_Texture,
+            inventoryButton_Texture,
             MainMenu_Buttons,
             level_torch_Texture,
-            level_cave_Teaxture;
+            level_cave_Teaxture,
+            items_Texture,
+            GameInventory_HealthBarTexture,
+            GameInventory_InventoryTexture,
+            GameInventory_SlotTexture;
 
     public static TextureRegion
             // персонаж (стоит)
@@ -57,8 +69,16 @@ public class AssetLoader
 
             // кнопка атаки
             attackButton_Up,
-            attackButton_Down;
+            attackButton_Down,
+            // кнопка инвентаря
+            inventoryButton_Up,
+            inventoryButton_Down,
 
+            // инвентарь
+            GameInventory_InventoryTextureRegion,
+            GameInventory_HealthBarBoundsTextureRegion,
+            GameInventory_HealthBarFillTextureRegion,
+            GameInventory_SlotTextureRegion;
 
     public static TextureRegion[]
             // главное меню
@@ -68,32 +88,42 @@ public class AssetLoader
 
     public static BitmapFont
             default18,
+            default12,
             default22;
 
-    public static Array<TextureRegion> player_default_frames;
-    public static Array<TextureRegion> player_default_startsWalking_frames;
-    public static Array<TextureRegion> player_attack_frames;
-    public static Array<TextureRegion> torch_frames;
+    public static Array<TextureRegion>
+            player_default_frames,
+            player_default_startsWalking_frames,
+            player_attack_frames,
+            torch_frames;
 
-    public static Animation<TextureRegion> player_default_animation;
-    public static Animation<TextureRegion> player_default_startsWalking_animation;
-    public static Animation<TextureRegion> player_attack_animation;
-    public static Animation<TextureRegion> torch_animation;
+    public static Animation<TextureRegion>
+            player_default_animation,
+            player_default_startsWalking_animation,
+            player_attack_animation,
+            torch_animation;
+
+    public static Skin
+            controllerSkin;
     //
     // Методы
     //
 
     // может быть пригодится load по умолчанию
-    public static void load() {}
+    public static void load() {
+        load_Fonts();
+    }
 
     public static void load_Fonts()
     {
+        default12 = new BitmapFont(Gdx.files.internal("fonts/default12.fnt"));
         default18 = new BitmapFont(Gdx.files.internal("fonts/default18.fnt"));
         default22 = new BitmapFont(Gdx.files.internal("fonts/default22.fnt"));
     }
 
     public static void dispose_Fonts()
     {
+        default12.dispose();
         default18.dispose();
         default22.dispose();
     }
@@ -136,15 +166,34 @@ public class AssetLoader
         controller_CircleInactive1 = new TextureRegion(controller_Texture, controller_frame_Width, controller_frame_Height, controller_circle_Width, controller_circle_Height);
         controller_FrameInactive0 = new TextureRegion(controller_Texture, 0,  2*controller_frame_Height, controller_frame_Width, controller_frame_Height);
         controller_CircleInactive0 = new TextureRegion(controller_Texture, controller_frame_Width, 2*controller_frame_Height, controller_circle_Width, controller_circle_Height);
+
+        controllerSkin = new Skin();
+        controllerSkin .add("frameAc", AssetLoader.controller_FrameActive);
+        controllerSkin .add("circleAc", AssetLoader.controller_CircleActive);
+        if(GamePreferences.Options.getInteger("Controller")==0)
+        {
+            controllerSkin .add("frameInac", AssetLoader.controller_FrameInactive0);
+            controllerSkin .add("circleInac", AssetLoader.controller_CircleInactive0);
+        }
+        else
+        {
+            controllerSkin .add("frameInac", AssetLoader.controller_FrameInactive1);
+            controllerSkin .add("circleInac", AssetLoader.controller_CircleInactive1);
+        }
     }
 
     // Кнопка атаки
 
-    public static void load_AttackButton()
+    public static void load_GUI_Buttons()
     {
         attackButton_Texture = new Texture(Gdx.files.internal("attackButton.png"));
-        attackButton_Down = new TextureRegion(attackButton_Texture,0,0,attackButton_Width,attackButton_Height);
-        attackButton_Up = new TextureRegion(attackButton_Texture,0,attackButton_Height,attackButton_Width,attackButton_Height);
+        attackButton_Down = new TextureRegion(attackButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
+        attackButton_Up = new TextureRegion(attackButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
+        inventoryButton_Texture = new Texture(Gdx.files.internal("inventoryButton.png"));
+        inventoryButton_Down = new TextureRegion(inventoryButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
+        inventoryButton_Up = new TextureRegion(inventoryButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
+
+
     }
     public static void dispose_Controller()
     {
@@ -242,8 +291,31 @@ public class AssetLoader
         level_cave = new TextureRegion(level_cave_Teaxture);
     }
     ///
+    public static void load_Inventory()
+    {
+        GameInventory_InventoryTexture = new Texture(Gdx.files.internal("inventoryDefaultSkin.png"));
+        GameInventory_InventoryTextureRegion = new TextureRegion(GameInventory_InventoryTexture,0,0,52,52);
+        GameInventory_SlotTexture = new Texture(Gdx.files.internal("slotDefaultSkin.png"));
+        GameInventory_SlotTextureRegion = new TextureRegion(GameInventory_InventoryTexture,0,0,52,52);
+        items_Texture = new Texture(Gdx.files.internal("Items_atlas.png"));
+        GameInventory_HealthBarTexture = new Texture(Gdx.files.internal("healthbar.png"));
+        GameInventory_HealthBarBoundsTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,0,90,10);
+        GameInventory_HealthBarFillTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,10,1,8);
+    }
+    public static TextureRegion Inventory_GetItemTexture(_InventoryItem item) {
+        XmlReader reader = new XmlReader();
+        XmlReader.Element root = null;
+        FileHandle file = Gdx.files.internal("xml/Items.xml");
+        try {
+            root = reader.parse(file);
+        } catch (IOException e) {        }
 
+        int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
 
+        int x = (id%(items_Texture.getWidth()/itemWidth))*itemWidth;
+        int y = (id/(items_Texture.getHeight()/itemHeight))*itemHeight;
+        return new TextureRegion(items_Texture,x,y,itemWidth,itemHeight);
+    }
     public static void dispose_Level()
     {
         level_Texture.dispose();

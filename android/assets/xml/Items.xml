@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items name="itemsId">
+  <Test_Item id="0"/>
+  <healing_potion id="1"/>
+</level1>

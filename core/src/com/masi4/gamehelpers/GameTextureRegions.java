@@ -76,6 +76,10 @@ public class GameTextureRegions
     public static final int controller_circle_Height = 70;
 
     // attackButton - атлас с кнопкой атаки
-    public static final int attackButton_Width = 90;
-    public static final int attackButton_Height = 90;
+    public static final int GUI_Button_Width = 90;
+    public static final int GUI_Button_Height = 90;
+
+    // inventory
+    public static final int itemWidth = 32;
+    public static final int itemHeight = 32;
 }

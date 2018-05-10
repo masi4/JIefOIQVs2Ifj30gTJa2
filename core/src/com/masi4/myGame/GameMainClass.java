@@ -19,7 +19,7 @@ public class GameMainClass extends Game
 			GamePreferences.SwitchToEn();
 		if(GamePreferences.Options.getInteger("Language")==1)
 			GamePreferences.SwitchToRu();
-        this.setScreen(new MainMenuScreen(this));
+        this.setScreen(new MainMenuScreen());
 	}
 
 	@Override
