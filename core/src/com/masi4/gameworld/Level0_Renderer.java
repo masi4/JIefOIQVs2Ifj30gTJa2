@@ -28,7 +28,8 @@ public class Level0_Renderer extends GameRenderer
     private Animation
             player_animation,
             player_startWalking_animation,
-            player_attack_animation;
+            player_attack_animation,
+            level_torch_animanion; // TODO: typo
     private TextureRegion
             player_standing,  // стоит на месте
             level_BG1,
@@ -36,7 +37,8 @@ public class Level0_Renderer extends GameRenderer
             level_BG3,
             level_BG4,
             level_grassBack,
-            level_floor;
+            level_floor,
+            level_cave;
     private TextureRegion[] grassBackLoops, grassForeLoops;
 
     /** Время, прошедшее со старта анимации ходьбы **/
@@ -100,6 +102,8 @@ public class Level0_Renderer extends GameRenderer
         level_BG4 = AssetLoader.level_BG4;
         level_grassBack = AssetLoader.level_grassBack;
         level_floor = AssetLoader.level_floor;
+        level_torch_animanion = AssetLoader.torch_animation;
+        level_cave = AssetLoader.level_cave;
 
         grassBackLoops = new TextureRegion[3];
         for (int i = 0; i < grassBackLoops.length; i++)
@@ -213,6 +217,11 @@ public class Level0_Renderer extends GameRenderer
         // пол
         batcher.draw(level_floor, 0, 25, world.getLevelWidth(), world.getLevelFloorHeight());
 
+        // Пешера
+        batcher.draw(level_cave, world.getLevelWidth()-950,world.getLevelFloorHeight()-2, level_cave.getRegionWidth()*3, level_cave.getRegionHeight()*3);
+        batcher.draw((TextureRegion) level_torch_animanion.getKeyFrame(runTime), world.getLevelWidth()-1000,world.getLevelFloorHeight()+30, GameTextureRegions.torch_width*2, GameTextureRegions.torch_height*2);
+        batcher.draw((TextureRegion) level_torch_animanion.getKeyFrame(runTime+10), world.getLevelWidth()-800,world.getLevelFloorHeight()+30, GameTextureRegions.torch_width*2, GameTextureRegions.torch_height*2);
+
         // передняя трава
         for (int i = 0; i < grassForeLoops.length; i++)
         {
@@ -228,8 +237,7 @@ public class Level0_Renderer extends GameRenderer
         //
         // Атака
         //
-
-        if(player_attack_animation.isAnimationFinished(elapsedAttackTime))
+        if (player_attack_animation.isAnimationFinished(elapsedAttackTime))
         {
             player.graphics.SetAttack(false);
             elapsedAttackTime = 0;
