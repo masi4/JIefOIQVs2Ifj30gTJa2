@@ -2,25 +2,32 @@ package com.masi4.gameobjects.objectRpg;
 
 /**
  * Created by OIEFIJM on 22.12.2017.
+ *
+ * Содержит "РПГ составляющую" персонажа, такую как: характеристики, хитбокс
  */
 
-import java.util.ArrayList;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-import com.masi4.gameobjectAbilities.Ability;
 
 public class CharacterRpg
 {
     protected Stats stats;
-
-    protected ArrayList<Ability> abilities;
-
-    protected Rectangle hitbox; // Важно: сначала выполнять дешевые проверки, затем дорогие (intersector)
+    protected Rectangle hitbox; // Важно: сначала выполнять дешевые проверки (rec.overlaps), затем дорогие (intersector)
 
     public CharacterRpg(Rectangle hitbox, Stats stats)
     {
         this.hitbox = hitbox;
         this.stats = stats;
-        this.abilities = new ArrayList<Ability>();
+    }
+
+    public void setHitboxCoords(float x, float y)
+    {
+        hitbox.setPosition(x, y);
+    }
+
+    public Rectangle getHitbox()
+    {
+        return hitbox;
     }
 
 }

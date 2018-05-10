@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by OIEFIJM on 22.12.2017.
+ *
+ * Представляет собой математическую модель графики персонажа - координаты, скорость
  */
 
 public class CharacterGraphics
@@ -13,15 +15,25 @@ public class CharacterGraphics
     protected Vector2 acceleration;     // Вектор ускорения
     protected int width;
     protected int height;
+
     protected boolean inJump;    // находится ли персонаж в прыжке
+    protected boolean isTurnedRight; // в какую сторону повернут
+
+    public CharacterGraphics(int width, int height, boolean isTurnedRight)
+    {
+        position = new Vector2();
+        velocity = new Vector2(0, 0);
+        acceleration = new Vector2(0, 0);
+        this.width = width;
+        this.height = height;
+
+        inJump = false;
+        this.isTurnedRight = isTurnedRight;
+    }
 
     public CharacterGraphics(int width, int height)
     {
-        this.width = width;
-        this.height = height;
-        inJump = false;
-        velocity = new Vector2(0, 0);
-        acceleration = new Vector2(0, 0);
+        this(width, height, true);
     }
 
     public void update_position(float delta)
@@ -113,5 +125,20 @@ public class CharacterGraphics
     public int getHeight()
     {
         return height;
+    }
+
+    public boolean isTurnedRight()
+    {
+        return isTurnedRight;
+    }
+
+    public void turnRight()
+    {
+        isTurnedRight = true;
+    }
+
+    public void turnLeft()
+    {
+        isTurnedRight = false;
     }
 }

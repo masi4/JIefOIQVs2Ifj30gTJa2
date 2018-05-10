@@ -16,7 +16,7 @@ public class InputHandler implements InputProcessor
 {
     private PlayerGraphics playerGraphics;
     public WalkingControl controller;
-    public InputHandler(WalkingControl controller,PlayerGraphics playerGraphics)
+    public InputHandler(WalkingControl controller, PlayerGraphics playerGraphics)
     {
         this.controller = controller;
         this.playerGraphics = playerGraphics;

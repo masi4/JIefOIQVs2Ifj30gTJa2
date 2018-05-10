@@ -17,6 +17,7 @@ public class GameWorld
     private Player player;
     private Level level;
 
+    // TODO: Свойства игрока (размеры, шмот etc) вынести в отдельный файл
     public GameWorld(Level.LevelNames levelName)
     {
         level = new Level(levelName);
@@ -26,7 +27,7 @@ public class GameWorld
 
     public void update(float delta)
     {
-        player.update_position(delta);
+        player.graphics.update_position(delta);
 
         // Обработка столкновений
         if ( player.graphics.getY() < level.getFloorHeight())   // сделать циклом для всех levelobjects
@@ -46,10 +47,11 @@ public class GameWorld
             player.graphics.handleRightCollision(level.getWidth());
         }
 
+        player.rpg.setHitboxCoords(player.graphics.getX(), player.graphics.getY());
 
     }
 
-    public PlayerGraphics getPlayerGraphics() { return player.graphics; }
+    public Player getPlayer() { return player; }
 
     public int getLevelWidth() { return level.getWidth(); }
 

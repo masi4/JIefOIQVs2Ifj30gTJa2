@@ -31,6 +31,7 @@ public class GameplayScreen implements Screen
 
     public GameplayScreen(GameMainClass gameCtrl, LevelNames levelName)
     {
+        runTime = 0;
         this.gameCtrl = gameCtrl;
         AssetLoader.load_Level(levelName);
         AssetLoader.load_Player();
@@ -48,7 +49,7 @@ public class GameplayScreen implements Screen
 
         controller = new WalkingControl();
         inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(new InputHandler(controller, world.getPlayerGraphics()));
+        inputMultiplexer.addProcessor(new InputHandler(controller, world.getPlayer().graphics));
         inputMultiplexer.addProcessor(controller.stage);
         Gdx.input.setInputProcessor(inputMultiplexer);
         Gdx.input.setCatchBackKey(true);

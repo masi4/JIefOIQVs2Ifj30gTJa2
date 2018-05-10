@@ -35,7 +35,6 @@ public class AssetLoader
             level_BG2,
             level_BG3,
             level_BG4,
-            level_BG5,
             level_floor,
             level_grassBack,
             level_grassBackLoop,
@@ -94,10 +93,21 @@ public class AssetLoader
         }
         MainMenu_Buttons = new Texture(Gdx.files.internal("menuButtons.png"));
         int m = GamePreferences.Options.getInteger("Language"); // Для локализации
-            Gdx.app.log("My tag",m+"");
-            playButtonTxrReg = new TextureRegion[]{new TextureRegion(MainMenu_Buttons, 0,96*m + 0, 138, 32), new TextureRegion(MainMenu_Buttons, 138, 96*m +0, 138, 32)};
-            optionsButtonTxrReg = new TextureRegion[]{new TextureRegion(MainMenu_Buttons, 0,96*m + 32, 138, 32), new TextureRegion(MainMenu_Buttons, 138,96*m + 32, 138, 32)};
-            exitButtonTxrReg = new TextureRegion[]{new TextureRegion(MainMenu_Buttons, 0, 96*m +64, 138, 32), new TextureRegion(MainMenu_Buttons, 138,96*m + 64, 138, 32)};
+        playButtonTxrReg = new TextureRegion[]
+                {
+                        new TextureRegion(MainMenu_Buttons, 0,96 * m , 138, 32),
+                        new TextureRegion(MainMenu_Buttons, 138, 96 * m, 138, 32)
+                };
+        optionsButtonTxrReg = new TextureRegion[]
+                {
+                        new TextureRegion(MainMenu_Buttons, 0, 96 * m + 32, 138, 32),
+                        new TextureRegion(MainMenu_Buttons, 138, 96 * m + 32, 138, 32)
+                };
+        exitButtonTxrReg = new TextureRegion[]
+                {
+                        new TextureRegion(MainMenu_Buttons, 0, 96 * m + 64, 138, 32),
+                        new TextureRegion(MainMenu_Buttons, 138, 96 * m + 64, 138, 32)
+                };
     }
 
     public static void dispose_MainMenu()
@@ -115,12 +125,18 @@ public class AssetLoader
         controller_Texture = new Texture(Gdx.files.internal("controller.png"));
         controller_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
-        controller_FrameActive = new TextureRegion(controller_Texture, 0, 0, controller_frame_Width, controller_frame_Height);
-        controller_CircleActive = new TextureRegion(controller_Texture,  controller_frame_Width, 0, controller_circle_Width, controller_circle_Height);
-        controller_FrameInactive1 = new TextureRegion(controller_Texture, 0,  controller_frame_Height, controller_frame_Width, controller_frame_Height);
-        controller_CircleInactive1 = new TextureRegion(controller_Texture, controller_frame_Width, controller_frame_Height, controller_circle_Width, controller_circle_Height);
-        controller_FrameInactive0 = new TextureRegion(controller_Texture, 0,  2*controller_frame_Height, controller_frame_Width, controller_frame_Height);
-        controller_CircleInactive0 = new TextureRegion(controller_Texture, controller_frame_Width, 2*controller_frame_Height, controller_circle_Width, controller_circle_Height);
+        controller_FrameActive = new TextureRegion(
+                controller_Texture, 0, 0, controller_frame_Width, controller_frame_Height);
+        controller_CircleActive = new TextureRegion(
+                controller_Texture,  controller_frame_Width, 0, controller_circle_Width, controller_circle_Height);
+        controller_FrameInactive1 = new TextureRegion(
+                controller_Texture, 0,  controller_frame_Height, controller_frame_Width, controller_frame_Height);
+        controller_CircleInactive1 = new TextureRegion(
+                controller_Texture, controller_frame_Width, controller_frame_Height, controller_circle_Width, controller_circle_Height);
+        controller_FrameInactive0 = new TextureRegion(
+                controller_Texture, 0,  2*controller_frame_Height, controller_frame_Width, controller_frame_Height);
+        controller_CircleInactive0 = new TextureRegion(
+                controller_Texture, controller_frame_Width, 2*controller_frame_Height, controller_circle_Width, controller_circle_Height);
     }
 
     public static void dispose_Controller()

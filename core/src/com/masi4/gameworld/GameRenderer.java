@@ -13,6 +13,7 @@ import static com.masi4.myGame.GameMainClass.*;
 
 public abstract class GameRenderer
 {
+
     protected int gameWidth;
     protected int gameHeight;
 
@@ -30,6 +31,7 @@ public abstract class GameRenderer
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
         this.world = world;
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         staticCam = new OrthographicCamera();
