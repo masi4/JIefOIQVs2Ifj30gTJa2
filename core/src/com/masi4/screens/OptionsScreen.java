@@ -26,7 +26,7 @@ import java.util.Locale;
 
 import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
 import static com.masi4.myGame.GameMainClass.SCREEN_WIDTH;
-
+import static com.masi4.myGame.GameMain.game;
 /**
  * Created by U1wknUzeU6 on 20.12.2017.
  */
@@ -36,7 +36,6 @@ public class OptionsScreen implements Screen
     private OrthographicCamera camera;
     SpriteBatch batch;
     protected Stage stage;
-    private GameMainClass gameCtrl;
     Label.LabelStyle labelActive;
     Label.LabelStyle labelInactive;
     Label.LabelStyle systemLabel;
@@ -46,10 +45,9 @@ public class OptionsScreen implements Screen
 
     private String[] prefNames = {"Sound","Controller","Language"};
 
-    public OptionsScreen(GameMainClass gameCtrl)
+    public OptionsScreen()
     {
         AssetLoader.load_Fonts();
-        this.gameCtrl = gameCtrl;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(new FillViewport(SCREEN_WIDTH/2,SCREEN_HEIGHT/2));
@@ -118,7 +116,7 @@ public class OptionsScreen implements Screen
              @Override
              public void clicked(InputEvent event, float x, float y) {
                  save_prefs();
-                 gameCtrl.setScreen(new MainMenuScreen(gameCtrl)); // Экран настроек
+                 game.setScreen(new MainMenuScreen()); // Экран настроек
                  dispose();
              }
         });
@@ -192,7 +190,7 @@ public class OptionsScreen implements Screen
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
         {
             save_prefs();
-            gameCtrl.setScreen(new MainMenuScreen(gameCtrl)); // Экран настроек
+            game.setScreen(new MainMenuScreen()); // Экран настроек
             dispose();
         }
 

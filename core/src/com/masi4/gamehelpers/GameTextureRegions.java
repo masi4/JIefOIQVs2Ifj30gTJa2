@@ -34,6 +34,9 @@ public class GameTextureRegions
     // TODO: померить смещение ноги относительно левого края и головы
     public static final int player_attack_X_offset = 50;
 
+    public static final int skeleton_frame_Width = 128;
+    public static final int skeleton_frame_Height = 128;
+
     public static final int player_attack_frame_Y = 0;
     public static final int player_attack_frame_Width = 174;
     public static final int player_attack_frame_Height = 128;
@@ -79,13 +82,21 @@ public class GameTextureRegions
     public static final int level_0_grassForeLoop_Width = 256;
     public static final int level_0_grassForeLoop_Height = 144;
 
-  // /controller - атлас с джойстиком
+    // /gameplay/level_0/torch_atlas_png
+    public static final int torch_width = 80;
+    public static final int torch_height = 77;
+
+    // controller - атлас с джойстиком
     public static final int controller_frame_Width = 242;
     public static final int controller_frame_Height = 242;
     public static final int controller_circle_Width = 70;
     public static final int controller_circle_Height = 70;
 
-    // /attackButton - атлас с кнопкой атаки
-    public static final int attackButton_Width = 90;
-    public static final int attackButton_Height = 90;
+    // attackButton - атлас с кнопкой атаки
+    public static final int GUI_Button_Width = 90;
+    public static final int GUI_Button_Height = 90;
+
+    // inventory
+    public static final int itemWidth = 32;
+    public static final int itemHeight = 32;
 }

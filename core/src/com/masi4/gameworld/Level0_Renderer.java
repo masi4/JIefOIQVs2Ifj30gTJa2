@@ -14,6 +14,7 @@ import static com.masi4.myGame.GameMainClass.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.GameTextureRegions;
 import com.masi4.gameobjects.Player;
 
 public class Level0_Renderer extends GameRenderer
@@ -217,7 +218,7 @@ public class Level0_Renderer extends GameRenderer
         // пол
         batcher.draw(level_floor, 0, 25, world.getLevelWidth(), world.getLevelFloorHeight());
 
-        // Пешера
+        // пещера (скорее нора (скорее дыра))
         batcher.draw(level_cave, world.getLevelWidth()-950,world.getLevelFloorHeight()-2, level_cave.getRegionWidth()*3, level_cave.getRegionHeight()*3);
         batcher.draw((TextureRegion) level_torch_animanion.getKeyFrame(runTime), world.getLevelWidth()-1000,world.getLevelFloorHeight()+30, GameTextureRegions.torch_width*2, GameTextureRegions.torch_height*2);
         batcher.draw((TextureRegion) level_torch_animanion.getKeyFrame(runTime+10), world.getLevelWidth()-800,world.getLevelFloorHeight()+30, GameTextureRegions.torch_width*2, GameTextureRegions.torch_height*2);
