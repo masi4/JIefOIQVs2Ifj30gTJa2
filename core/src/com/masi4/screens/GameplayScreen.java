@@ -6,6 +6,7 @@ package com.masi4.screens;
  * Экран непосредственно игрового процесса
  */
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Input;
 import com.masi4.GUI.GUI;
 import com.masi4.gamehelpers.AssetLoader;
@@ -14,10 +15,9 @@ import com.masi4.gameworld.GameRenderer;
 import com.masi4.gameworld.Level0_Renderer;
 import com.masi4.gameobjects.Level.LevelNames;
 
-import static com.masi4.myGame.GameMain.game;
+import static com.masi4.myGame.GameMain.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.masi4.myGame.GameMainClass;
 
 public class GameplayScreen implements Screen
 {
@@ -30,9 +30,11 @@ public class GameplayScreen implements Screen
     {
         AssetLoader.load_Level(levelName);
         AssetLoader.load_Player();
-        AssetLoader.load_PlayerAttack();
-        AssetLoader.load_Controller();
-        AssetLoader.load_GUI_Buttons();
+        AssetLoader.load_PlayerDefaultAttack();
+        if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
+            AssetLoader.load_Controller();
+            AssetLoader.load_GUI_Buttons();
+        }
 
         // возможно создать дочерние классы от GameWorld. Для каждого levelName свой.
         world = new GameWorld(levelName);
@@ -98,6 +100,7 @@ public class GameplayScreen implements Screen
         AssetLoader.dispose_Controller();
         AssetLoader.dispose_Player();
         AssetLoader.dispose_Level();
+        gui.dispose();
     }
 }
 

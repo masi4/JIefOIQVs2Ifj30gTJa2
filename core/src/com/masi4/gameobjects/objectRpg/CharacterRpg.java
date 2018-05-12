@@ -6,7 +6,6 @@ package com.masi4.gameobjects.objectRpg;
  * Содержит "РПГ составляющую" персонажа, такую как: характеристики, хитбокс
  */
 
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
 public class CharacterRpg

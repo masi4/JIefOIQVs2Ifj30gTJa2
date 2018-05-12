@@ -39,7 +39,7 @@ public class InventoryView extends Table
             @Override
             public void drag(InputEvent event, float x, float y, int pointer)
             {
-                if(getHeight()>STAGE_HEIGHT) {
+                if(getHeight() > STAGE_HEIGHT) {
                     if ((getTop() > STAGE_HEIGHT || yWhenTouched[0] - y < 0)&&(getTop()<getHeight()||yWhenTouched[0] - y > 0)) { // СОЙДЕТ!!!
                         setPosition(getX(), getY() - (yWhenTouched[0] - y));
                     }

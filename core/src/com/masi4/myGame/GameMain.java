@@ -1,6 +1,8 @@
 package com.masi4.myGame;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 
 /**
  * Created by U1wknUzeU6 on 10.05.2018.
@@ -17,14 +19,10 @@ public class GameMain implements ApplicationListener
     public static final GameMainClass game = new GameMainClass();
 
     @Override
-    public void create() {
-        game.create();
-    }
+    public void create() { game.create(); }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
+    public void resize(int width, int height) { }
 
     @Override
     public void render() {

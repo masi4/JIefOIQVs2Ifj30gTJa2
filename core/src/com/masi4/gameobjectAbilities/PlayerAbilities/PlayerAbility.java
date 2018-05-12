@@ -1,23 +1,13 @@
 package com.masi4.gameobjectAbilities.PlayerAbilities;
 
-/**
- * Created by OIEFIJM on 25.02.2018.
- */
-
 import com.masi4.gameobjects.Player;
 
-/**            +--------------------+
- *             | Player's abilities |
- * +-----------+--------------------+-----------------+
- * | Default_Sword_Attack - default attack for player |
- * +--------------------------------------------------+
- * |                                                  |
- * |                                                  |
- * |                                                  |
- * |                                                  |
- **/
-
-public abstract class PlayerAbility
+/**
+ * Created by OIEFIJM on 25.02.2018.
+ *
+ */
+public interface PlayerAbility
 {
-    public abstract void execute(Player player);
+    void execute(Player player);
+    boolean isCasting();
 }

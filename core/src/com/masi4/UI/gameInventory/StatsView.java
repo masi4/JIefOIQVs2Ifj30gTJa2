@@ -32,7 +32,9 @@ public class StatsView extends Table
         defaultStyle = new Label.LabelStyle(AssetLoader.default18, Color.WHITE);
         Label healthLabel = new Label(GamePreferences.loc.format("Inventory_Health"),defaultStyle);
 
-        ProgressBar.ProgressBarStyle healthBarStyle = new ProgressBar.ProgressBarStyle(new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarBoundsTextureRegion),new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarFillTextureRegion));
+        ProgressBar.ProgressBarStyle healthBarStyle = new ProgressBar.ProgressBarStyle(
+                new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarBoundsTextureRegion),
+                new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarFillTextureRegion));
         healthBarStyle.knobBefore = new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarFillTextureRegion);
         healthBarStyle.background.setLeftWidth(1);
         ProgressBar healthBar = new ProgressBar(0,1,0.01f,false,healthBarStyle);

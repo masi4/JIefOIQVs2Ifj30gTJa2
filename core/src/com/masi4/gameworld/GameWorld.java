@@ -21,9 +21,9 @@ public class GameWorld
     public GameWorld(Level.LevelNames levelName)
     {
         level = new Level(levelName);
-        player = new Player(player_default_frame_Width, player_default_frame_Height); //TODO: сделать ширину игрока не зависящей от ширины кадра
-        player.setCoords(0, level.getFloorHeight()-999999); // TODO: надо спавнить игрока пониже. (edit: для этого нужно понизить уровень пола в классе Level)
-    }   // )))
+        player = new Player(48, player_default_frame_Height); //TODO: сделать ширину игрока не зависящей от ширины кадра
+        player.setCoords(0, level.getFloorHeight()); // TODO: надо спавнить игрока пониже. (edit: для этого нужно понизить уровень пола в классе Level)
+    }
 
     public void update(float delta)
     {

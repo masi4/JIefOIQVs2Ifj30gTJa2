@@ -6,6 +6,8 @@ package com.masi4.screens;
  * Экран главного меню
  */
 
+
+// TODO: управление в меню по стрелочкам
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;

@@ -6,10 +6,30 @@ package com.masi4.gameobjectAbilities.PlayerAbilities;
 
 import com.masi4.gameobjects.Player;
 
-public class DefaultSwordAttack extends PlayerAbility
+
+/**
+ *  Default sword attack for player
+ */
+public class DefaultSwordAttack implements PlayerAbility
 {
+    public static float castTime = 0.25f;
+    private boolean isCasting;
+
+    public DefaultSwordAttack()
+    {
+        isCasting = false;
+    }
+
     public void execute(Player player)
     {
+        isCasting = true;
 
+        isCasting = false;
+    }
+
+    public boolean isCasting()
+    {
+
+        return isCasting;
     }
 }

@@ -6,8 +6,6 @@ package com.masi4.gameobjects.objectRpg;
 
 public class Stats
 {
-    public enum RecourceTypes { MANA, ENERGY };
-
     private int stamina;
     private int damage;
     private int intellect;
@@ -16,7 +14,9 @@ public class Stats
     private int defence;
     private int blocking;
 
-    public Stats(int stamina, int damage, int intellect, int haste, int defence, int blocking)
+    private int bonusSpeedProcent;
+
+    public Stats(int stamina, int damage, int intellect, int haste, int defence, int blocking, int bonusSpeedProcent)
     {
         this.damage = damage;
         this.stamina = stamina;
@@ -24,6 +24,7 @@ public class Stats
         this.haste = haste;
         this.defence = defence;
         this.blocking = blocking;
+        this.bonusSpeedProcent = bonusSpeedProcent;
     }
 
     public int getStamina() {
@@ -49,5 +50,7 @@ public class Stats
     public int getBlocking() {
         return blocking;
     }
+
+    public int getBonusSpeedProcent() { return bonusSpeedProcent; }
 
 }

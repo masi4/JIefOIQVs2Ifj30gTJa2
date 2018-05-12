@@ -7,8 +7,6 @@ import com.masi4.gamehelpers.AssetLoader;
 
 public class GameMainClass extends Game
 {
-
-
 	@Override
 	public void create ()
 	{
@@ -26,8 +24,8 @@ public class GameMainClass extends Game
 	}
 	
 	@Override
-	public void dispose () {
-
+	public void dispose ()
+	{
 		super.dispose();
 		AssetLoader.dispose();
 	}

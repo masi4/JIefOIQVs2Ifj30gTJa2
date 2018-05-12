@@ -20,8 +20,10 @@ import com.masi4.gamehelpers.GamePreferences;
 import static com.masi4.myGame.GameMain.*;
 /**
  * Created by U1wknUzeU6 on 20.12.2017.
+ *
  */
 
+// TODO: Если приложение запущено на компе, то: 1) убрать ненужные пункты меню; 2) Управление в меню по стрелочкам
 public class OptionsScreen implements Screen
 {
     private OrthographicCamera camera;

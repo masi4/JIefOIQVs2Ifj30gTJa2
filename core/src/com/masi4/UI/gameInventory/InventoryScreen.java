@@ -27,8 +27,8 @@ public class InventoryScreen implements Screen
     private InventoryView inventoryView;
     private StatsView statsView;
     private OrthographicCamera camera;
-    public static final int STAGE_WIDTH = SCREEN_WIDTH/2;
-    public static final int STAGE_HEIGHT = SCREEN_HEIGHT/2;
+    public static final int STAGE_WIDTH = SCREEN_WIDTH / 2;
+    public static final int STAGE_HEIGHT = SCREEN_HEIGHT / 2;
     private GameplayScreen gameplayScreen;
 
     public InventoryScreen( GameplayScreen gameplayScreen)
@@ -56,7 +56,7 @@ public class InventoryScreen implements Screen
 
         statsView = new StatsView();
 
-        container.add(statsView).top().left().width(140); /////////////////
+        container.add(statsView).top().left().width(140);
         container.add(inventoryView).right();
     }
 
@@ -64,13 +64,12 @@ public class InventoryScreen implements Screen
     public void show()
     {
         inventory = new Inventory();
-
         stage = new Stage(new FillViewport(STAGE_WIDTH,STAGE_HEIGHT));
 
         Gdx.input.setInputProcessor(stage);
 
-        inventory.slots.get(0).Set(new healing_potion(),33);
-        inventory.slots.get(1).Set(new healing_potion(),64);
+        inventory.slots.get(0).Set(new healing_potion(), 33);
+        inventory.slots.get(1).Set(new healing_potion(), 64);
         CreateTable();
         stage.addActor(container);
     }

@@ -6,7 +6,7 @@ package com.masi4.gamehelpers;
  * В этом классе содержатся информация об участках атласов
  * (X, Y) - координаты левого верхнего пикселя конкретного участка на атласе
  *  Width, Height - высота и ширина
- *  // TODO: убрать неиспользуемые константы
+ *  // u1wkn! ВАЖНО TODO: 1) выровнять ровно по пикселям атлас с анимациями (для корректного расположения хитбоксов) 2) сгруппировать атласы в один большой 3) сгруппировать файлы с атласами по папкам
  */
 
 public class GameTextureRegions
@@ -15,29 +15,17 @@ public class GameTextureRegions
     // /assets/
     //
 
-    // /gameplay/player/player_default - атлас с default анимацией персонажа
-
+    // /gameplay/player/player_default - атлас с default анимацией ходьбы игрока
     public static final int player_default_frame_Y = 0;
+    /** Ширина кадра дефолтной анимации ходьбы и стоящего на месте игрока **/
     public static final int player_default_frame_Width = 64;
     public static final int player_default_frame_Height = 96;
-    public static final int player_default_offset_left = 5;
-    public static final int player_default_offset_right = 14;
 
-    // /gameplay/player/player_attack1 - атлас с первой частью анимации атаки персонажа
-
-    public static final int player_attack1_frame1_X = 0;
-    public static final int player_attack1_frame2_X = 174;
-    public static final int player_attack1_frame3_X = 348;
-    public static final int player_attack1_frame4_X = 522;
-    public static final int player_attack1_frame5_X = 696;
-    public static final int player_attack1_frame_Y = 0;
-    public static final int player_attack1_frame_Width = 174;
-    public static final int player_attack1_frame_Height = 128;
-    public static final int player_attack_X_offset = 50;
-
+    // /gameplay/npc/skeleton - размер фрейма скелета
     public static final int skeleton_frame_Width = 128;
     public static final int skeleton_frame_Height = 128;
 
+    // /gameplay/player/player_attack1 - атлас с default анимацией атаки игрока
     public static final int player_attack_frame_Y = 0;
     public static final int player_attack_frame_Width = 174;
     public static final int player_attack_frame_Height = 128;
@@ -83,7 +71,7 @@ public class GameTextureRegions
     public static final int level_0_grassForeLoop_Width = 256;
     public static final int level_0_grassForeLoop_Height = 144;
 
-    // /gameplay/level_0/torch_atlas_png
+    // /gameplay/level_0/torch_atlas_png - атлас с факелом
     public static final int torch_width = 80;
     public static final int torch_height = 77;
 

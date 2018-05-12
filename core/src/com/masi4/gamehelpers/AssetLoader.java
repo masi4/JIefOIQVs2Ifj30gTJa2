@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
+import com.masi4.gameobjectAbilities.PlayerAbilities.DefaultSwordAttack;
 
 import java.io.IOException;
 
@@ -32,7 +33,7 @@ public class AssetLoader
 
     public static Texture
             player_Texture,
-            player_attack_Texture,
+            player_default_sword_attack_Texture,
             level_Texture,
             controller_Texture,
             attackButton_Texture,
@@ -44,6 +45,8 @@ public class AssetLoader
             GameInventory_HealthBarTexture,
             GameInventory_InventoryTexture,
             GameInventory_SlotTexture;
+
+    public static Texture[] MainMenu_Bg;
 
     public static TextureRegion
             // персонаж (стоит)
@@ -86,6 +89,7 @@ public class AssetLoader
             optionsButtonTxrReg,
             exitButtonTxrReg;
 
+
     public static BitmapFont
             default18,
             default12,
@@ -94,13 +98,13 @@ public class AssetLoader
     public static Array<TextureRegion>
             player_default_frames,
             player_default_startsWalking_frames,
-            player_attack_frames,
+            player_default_attack_frames,
             torch_frames;
 
     public static Animation<TextureRegion>
             player_default_animation,
             player_default_startsWalking_animation,
-            player_attack_animation,
+            player_default_attack_animation,
             torch_animation;
 
     public static Skin
@@ -109,7 +113,7 @@ public class AssetLoader
     // Методы
     //
 
-    // может быть пригодится load по умолчанию
+    // load по умолчанию
     public static void load() {
         load_Fonts();
     }
@@ -128,8 +132,7 @@ public class AssetLoader
         default22.dispose();
     }
 
-    //#MAIN MENU
-    public static Texture[] MainMenu_Bg;
+    // Главное меню
     public static void load_MainMenu()
     {
         MainMenu_Bg = new Texture[5];
@@ -194,7 +197,6 @@ public class AssetLoader
     }
 
     // Кнопка атаки
-
     public static void load_GUI_Buttons()
     {
         attackButton_Texture = new Texture(Gdx.files.internal("attackButton.png"));
@@ -203,8 +205,6 @@ public class AssetLoader
         inventoryButton_Texture = new Texture(Gdx.files.internal("inventoryButton.png"));
         inventoryButton_Down = new TextureRegion(inventoryButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
         inventoryButton_Up = new TextureRegion(inventoryButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
-
-
     }
     public static void dispose_Controller()
     {
@@ -212,7 +212,7 @@ public class AssetLoader
     }
 
 
-    // Player Graphics
+    // Графика игрока
     public static void load_Player()
     {
         player_Texture = new Texture(Gdx.files.internal("gameplay/player/player_default_BIG.png"));
@@ -225,28 +225,35 @@ public class AssetLoader
         player_default_startsWalking_frames = new Array<TextureRegion>(frames_count[1]);
 
         // анимация бега вправо
-        for(int i = 2; i<=frames_count[0];i++)
+        for(int i = 2; i <= frames_count[0];i++)
         {
-            player_default_frames.add(new TextureRegion(player_Texture, player_default_frame_Width*i,player_default_frame_Y, player_default_frame_Width, player_default_frame_Height));
+            player_default_frames.add(new TextureRegion(player_Texture, player_default_frame_Width * i,
+                    player_default_frame_Y, player_default_frame_Width, player_default_frame_Height));
         }
-        for(int i = 0; i<=frames_count[1];i++)
+        for(int i = 0; i <= frames_count[1];i++)
         {
-            player_default_startsWalking_frames.add(new TextureRegion(player_Texture, player_default_frame_Width*i,player_default_frame_Y, player_default_frame_Width, player_default_frame_Height));
+            player_default_startsWalking_frames.add(new TextureRegion(player_Texture, player_default_frame_Width * i,
+                    player_default_frame_Y, player_default_frame_Width, player_default_frame_Height));
         }
         // TODO: скорость смены кадров в зависимости от скорости игрока
         player_default_animation = new Animation(0.06f, player_default_frames, Animation.PlayMode.LOOP);
         player_default_startsWalking_animation = new Animation(0.06f,player_default_startsWalking_frames , Animation.PlayMode.NORMAL);
     }
 
-    public static void load_PlayerAttack()
+    // Default Sword Attack игрока
+    public static void load_PlayerDefaultAttack()
     {
-        player_attack_Texture = new Texture(Gdx.files.internal("gameplay/player/player_attack_1.png"));
-        player_attack_frames = new Array<TextureRegion>(5);
-        for(int i = 0; i< 5;i++)
+        player_default_sword_attack_Texture = new Texture(Gdx.files.internal("gameplay/player/player_attack_1.png"));
+        player_default_attack_frames = new Array<TextureRegion>(5);
+        for(int i = 0; i < 5; i++)
         {
-            player_attack_frames.add(new TextureRegion(player_attack_Texture,player_attack_frame_Width*i,player_attack_frame_Y,player_attack_frame_Width, player_attack_frame_Height));
+            player_default_attack_frames.add(new TextureRegion(player_default_sword_attack_Texture,
+                    player_attack_frame_Width * i, player_attack_frame_Y,player_attack_frame_Width,
+                    player_attack_frame_Height));
         }
-        player_attack_animation = new Animation(0.05f,player_attack_frames, Animation.PlayMode.NORMAL);
+        float frameTime = DefaultSwordAttack.castTime / player_default_attack_frames.size;
+        player_default_attack_animation =
+                new Animation(frameTime, player_default_attack_frames, Animation.PlayMode.LOOP_PINGPONG);
     }
 
     public static void dispose_Player()
@@ -254,7 +261,9 @@ public class AssetLoader
         player_Texture.dispose();
     }
 
-    // Level
+    //
+    // Графика уровней
+    //
     public static void load_Level(LevelNames levelName)
     {
         switch (levelName)
@@ -282,8 +291,8 @@ public class AssetLoader
         }
     }
 
-    // TODO: Всю анимацию окружения можно вынести в отдельный класс
-    ///
+    // TODO: Всю анимацию окружения можно вынести в отдельный класс (зачем? если не зачем, то удалить этот TODO)
+    // ФАКел (торч)
     private static void load_Torch()
     {
         level_torch_Texture = new Texture(Gdx.files.internal("gameplay/level_0/torch_atlas.png")); //TODO: Поместить в атлас
@@ -302,7 +311,8 @@ public class AssetLoader
 
         level_cave = new TextureRegion(level_cave_Teaxture);
     }
-    ///
+
+    // Инвентарь
     public static void load_Inventory()
     {
         GameInventory_InventoryTexture = new Texture(Gdx.files.internal("inventoryDefaultSkin.png"));

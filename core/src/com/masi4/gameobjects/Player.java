@@ -20,15 +20,24 @@ public class Player
     // Статы добавлять из расчета талантов etc.
     public Player(int width, int height, Stats stats)
     {
-        graphics = new PlayerGraphics(width, height);
+        int maxHorizontalVelocity = 300 * (1 + stats.getBonusSpeedProcent());
+        graphics = new PlayerGraphics(width, height, maxHorizontalVelocity);
+
         Rectangle hitbox = new Rectangle(graphics.getX(), graphics.getY(), width, height);
-        Progress razvitie = new Progress("Default_Sword_Attack");
-        rpg = new PlayerRpg(hitbox, stats, razvitie);
+        Progress progress = new Progress("Default_Sword_Attack");
+        rpg = new PlayerRpg(hitbox, stats, progress);
     }
 
     public Player(int width, int height)
     {
-        this(width, height, new Stats(130, 30, 50, 0, 0, 0));
+        // 1) stamina
+        // 2) damage
+        // 3) intellect
+        // 4) haste
+        // 5) defence
+        // 6) blocking
+        // 7) bonusSpeedProcent
+        this(width, height, new Stats(130, 30, 50, 0, 0, 0, 0));
     }
 
     public void setCoords(float x, float y)
@@ -37,28 +46,4 @@ public class Player
         rpg.setHitboxCoords(x, y);
     }
 
-    /*
-        В player.Graphics
-    ***************************
-
-    float bufferVelocity = 0; //Сохраняет скорость которая была до активации атаки, а применяет ее после того, как атака завершится. Связано с тем, что скорость персонажа зависит от ПЕРЕМЕЩЕНИЯ кноба. Исправить!
-    public void SetAttack(boolean Attack)
-    {
-        isAttack = Attack;
-        if(Attack) {
-            bufferVelocity = this.velocity.x;
-            setVelocityX(0);
-
-        }
-        else {
-            setVelocityX(bufferVelocity);
-            bufferVelocity = 0;
-        }
-    }
-
-    public boolean IsAttack()
-    {
-        return isAttack;
-    }
-     */
 }

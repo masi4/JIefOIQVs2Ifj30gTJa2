@@ -11,9 +11,9 @@ public class PlayerGraphics extends CharacterGraphics
     private float delta;
     private boolean isAttacking;
 
-    public PlayerGraphics(int width, int height)
+    public PlayerGraphics(int width, int height, int maxHorizontalVelocity)
     {
-        super(width, height);
+        super(width, height, maxHorizontalVelocity);
         isAttacking = false;
     }
 

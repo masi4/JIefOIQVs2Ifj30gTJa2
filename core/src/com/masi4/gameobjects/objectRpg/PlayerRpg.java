@@ -11,11 +11,16 @@ import com.masi4.gameobjects.Player;
  * Created by OIEFIJM on 22.12.2017.
  *
  * Содержит РПГ составляющую игрока
+ *
+ * TODO: Шмотки падают с боссов, с мобцов падает опыт (возможно и шмот, с небольшим шансом)
+ * TODO: Применять бонусы от предметов при их надевании (а не только в конструкторе player'a)
  */
 
 public class PlayerRpg extends CharacterRpg
 {
-    private int HP;
+    // TODO: max hp (на основе статов), current hp
+    private int maxHP;
+    private int currentHP;
 
     private Progress progress;
 
