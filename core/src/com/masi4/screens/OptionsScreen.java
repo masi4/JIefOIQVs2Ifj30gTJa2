@@ -2,9 +2,7 @@ package com.masi4.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,19 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.I18NBundle;
 
 
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.GamePreferences;
-import com.masi4.myGame.GameMainClass;
-
-import java.util.Locale;
-
-import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
-import static com.masi4.myGame.GameMainClass.SCREEN_WIDTH;
-import static com.masi4.myGame.GameMain.game;
+import static com.masi4.myGame.GameMain.*;
 /**
  * Created by U1wknUzeU6 on 20.12.2017.
  */

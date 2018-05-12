@@ -17,12 +17,12 @@ public class GameWorld
     private Player player;
     private Level level;
 
-    // TODO: Свойства игрока (размеры, шмот etc) вынести в отдельный файл
+    // Свойства игрока (размеры, шмот etc) возможно вынести в отдельный файл
     public GameWorld(Level.LevelNames levelName)
     {
         level = new Level(levelName);
         player = new Player(player_default_frame_Width, player_default_frame_Height); //TODO: сделать ширину игрока не зависящей от ширины кадра
-        player.setCoords(0, level.getFloorHeight()-999999);//я туплю или че. Почему это не на что не вляет. Короче TODO: надо спавнить игрока пониже.
+        player.setCoords(0, level.getFloorHeight()-999999); // TODO: надо спавнить игрока пониже. (edit: для этого нужно понизить уровень пола в классе Level)
     }   // )))
 
     public void update(float delta)

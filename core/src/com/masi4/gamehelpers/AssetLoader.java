@@ -4,6 +4,8 @@ package com.masi4.gamehelpers;
  * Created by OIEFIJM on 27.10.2017.
  *
  * Этот класс загружает ассеты
+ *
+ * u1wkn TODO: засунуть кнопки атаки, джойстика и т.д. в один атлас
  */
 
 import com.badlogic.gdx.Gdx;
@@ -18,15 +20,13 @@ import static com.masi4.gamehelpers.GameTextureRegions.*;
 import static com.masi4.gameobjects.Level.LevelNames;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.Array;
-import com.masi4.GUI.AttackButton;
 import com.badlogic.gdx.utils.XmlReader;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 
 import java.io.IOException;
 
-// TODO: Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
+// (?) Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
 public class AssetLoader
 {
 
@@ -129,7 +129,7 @@ public class AssetLoader
     }
 
     //#MAIN MENU
-    public static Texture[] MainMenu_Bg;   // TODO: засунуть кнопки в один атлас, использовать bg из /level_0/
+    public static Texture[] MainMenu_Bg;
     public static void load_MainMenu()
     {
         MainMenu_Bg = new Texture[5];

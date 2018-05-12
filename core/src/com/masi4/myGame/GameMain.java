@@ -8,6 +8,12 @@ import com.badlogic.gdx.ApplicationListener;
 
 public class GameMain implements ApplicationListener
 {
+    // DEBUG TODO: закоментить перед релизом
+    public static final boolean DEBUG = true;
+
+    public static final int SCREEN_HEIGHT = 450;
+    public static final int SCREEN_WIDTH = 800;
+
     public static final GameMainClass game = new GameMainClass();
 
     @Override

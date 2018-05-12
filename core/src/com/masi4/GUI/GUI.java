@@ -2,13 +2,12 @@ package com.masi4.GUI;
 
 import com.badlogic.gdx.Gdx;
 import com.masi4.UI.gameInventory.InventoryScreen;
-import com.masi4.gamehelpers.GamePreferences;
 import com.masi4.gameobjects.Player;
-import com.masi4.myGame.GameMainClass;
 import com.masi4.screens.GameplayScreen;
-import static com.masi4.myGame.GameMain.game;
+import static com.masi4.myGame.GameMain.*;
+
 /**
-    Отвечает за рендер. Проверяет состояние акторов.
+ *  Отвечает за рендер. Проверяет состояние акторов.
  */
 
 
@@ -35,7 +34,8 @@ public class GUI
 
         if(stageLayer.GetAttackButton().isPressed())
         {
-            player.SetAttack(true);
+            // TODO: реализовать атаку через абилити и вообще как надо.
+            player.graphics.SetAttack(true);
         }
 
         if(stageLayer.GetInventoryButton().isPressed())
@@ -49,7 +49,7 @@ public class GUI
         if(stageLayer.GetWalkingController().isTouched())
         {
             if (stageLayer.GetWalkingController().getKnobPercentY() > 0.5 && !jumpControl) {
-                player.jump();
+                player.graphics.jump();
                 jumpControl = true;
             }
             if (stageLayer.GetWalkingController().getKnobPercentY() < 0.5 && jumpControl) {
@@ -57,9 +57,9 @@ public class GUI
             }
         }
 
-        if(!player.IsAttack())
+        if(!player.graphics.isAttacking())
         {
-            player.setVelocityX(300 * stageLayer.GetWalkingController().getKnobPercentX());
+            player.graphics.setVelocityX(300 * stageLayer.GetWalkingController().getKnobPercentX());
         }
 
     }

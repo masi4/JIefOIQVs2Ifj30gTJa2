@@ -9,7 +9,7 @@ package com.masi4.gameworld;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import static com.masi4.myGame.GameMainClass.*;
+import static com.masi4.myGame.GameMain.*;
 
 public abstract class GameRenderer
 {

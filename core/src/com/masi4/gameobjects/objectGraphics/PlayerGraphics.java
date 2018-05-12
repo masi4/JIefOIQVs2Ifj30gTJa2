@@ -23,7 +23,7 @@ public class PlayerGraphics extends CharacterGraphics
         super.update_position(delta);
     }
 
-    // TODO: u1kwn исправь! какой то велосипед с bufferVelocity. Почему просто не оставить скорость?
+    // TODO: убрать остановку персонажа при атаке
     // Сохраняет скорость которая была до активации атаки, а применяет ее после того, как атака
     // завершится. Связано с тем, что скорость персонажа зависит от ПЕРЕМЕЩЕНИЯ кноба. Исправить!
     private float bufferVelocity = 0;

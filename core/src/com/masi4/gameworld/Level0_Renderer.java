@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import static com.masi4.myGame.GameMainClass.*;
+import static com.masi4.myGame.GameMain.*;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -28,9 +28,9 @@ public class Level0_Renderer extends GameRenderer
     // Assets
     private Animation
             player_animation,
-            player_startWalking_animation,
+            player_start_walking_animation,
             player_attack_animation,
-            level_torch_animanion; // TODO: typo
+            level_torch_animation;
     private TextureRegion
             player_standing,  // стоит на месте
             level_BG1,
@@ -103,7 +103,7 @@ public class Level0_Renderer extends GameRenderer
         level_BG4 = AssetLoader.level_BG4;
         level_grassBack = AssetLoader.level_grassBack;
         level_floor = AssetLoader.level_floor;
-        level_torch_animanion = AssetLoader.torch_animation;
+        level_torch_animation = AssetLoader.torch_animation;
         level_cave = AssetLoader.level_cave;
 
         grassBackLoops = new TextureRegion[3];
@@ -121,7 +121,7 @@ public class Level0_Renderer extends GameRenderer
     private void initPlayerAssets()
     {
         player_standing = AssetLoader.player_standing;
-        player_startWalking_animation = AssetLoader.player_default_startsWalking_animation;
+        player_start_walking_animation = AssetLoader.player_default_startsWalking_animation;
         player_animation = AssetLoader.player_default_animation;
         player_attack_animation = AssetLoader.player_attack_animation;
     }
@@ -154,7 +154,7 @@ public class Level0_Renderer extends GameRenderer
         batcher.setProjectionMatrix(camera.combined);
 
             // Отрисовка уровня
-            drawLevel();
+            drawLevel(runTime);
 
             // Отрисовка игрока
             drawPlayer(runTime);
@@ -206,7 +206,7 @@ public class Level0_Renderer extends GameRenderer
     /**
      * Отрисовка (декоративных) графических элементов уровня
      */
-    private void drawLevel()
+    private void drawLevel(float runTime)
     {
         // задняя трава
         batcher.draw(level_grassBack, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -219,9 +219,14 @@ public class Level0_Renderer extends GameRenderer
         batcher.draw(level_floor, 0, 25, world.getLevelWidth(), world.getLevelFloorHeight());
 
         // пещера (скорее нора (скорее дыра))
-        batcher.draw(level_cave, world.getLevelWidth()-950,world.getLevelFloorHeight()-2, level_cave.getRegionWidth()*3, level_cave.getRegionHeight()*3);
-        batcher.draw((TextureRegion) level_torch_animanion.getKeyFrame(runTime), world.getLevelWidth()-1000,world.getLevelFloorHeight()+30, GameTextureRegions.torch_width*2, GameTextureRegions.torch_height*2);
-        batcher.draw((TextureRegion) level_torch_animanion.getKeyFrame(runTime+10), world.getLevelWidth()-800,world.getLevelFloorHeight()+30, GameTextureRegions.torch_width*2, GameTextureRegions.torch_height*2);
+        batcher.draw(level_cave, world.getLevelWidth()-950,world.getLevelFloorHeight()-2,
+                level_cave.getRegionWidth() * 3, level_cave.getRegionHeight() * 3);
+        batcher.draw((TextureRegion) level_torch_animation.getKeyFrame(runTime),
+                world.getLevelWidth() - 1000,world.getLevelFloorHeight() + 30,
+                GameTextureRegions.torch_width * 2, GameTextureRegions.torch_height * 2);
+        batcher.draw((TextureRegion) level_torch_animation.getKeyFrame(runTime + 10),
+                world.getLevelWidth() - 800,world.getLevelFloorHeight() + 30,
+                GameTextureRegions.torch_width * 2, GameTextureRegions.torch_height * 2);
 
         // передняя трава
         for (int i = 0; i < grassForeLoops.length; i++)
@@ -262,15 +267,14 @@ public class Level0_Renderer extends GameRenderer
         // Ходьба
         //
 
-        // TODO: если остановился, elapsedTime = 0. Переименовать в elapsedWalkingTime
         // Если идет вправо
         if (player.graphics.getSpeedX() > 0)
         {
             elapsedWalkingTime += Gdx.graphics.getDeltaTime();
             // начало шага
-            if (!player_startWalking_animation.isAnimationFinished(elapsedWalkingTime))
+            if (!player_start_walking_animation.isAnimationFinished(elapsedWalkingTime))
             {
-                batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedWalkingTime), player.graphics.getX(),
+                batcher.draw((TextureRegion) player_start_walking_animation.getKeyFrame(elapsedWalkingTime), player.graphics.getX(),
                         player.graphics.getY(), (float) player.graphics.getWidth(), (float) player.graphics.getHeight());
             }
             else
@@ -288,9 +292,9 @@ public class Level0_Renderer extends GameRenderer
         {
             elapsedWalkingTime += Gdx.graphics.getDeltaTime();
             // начало шага
-            if (!player_startWalking_animation.isAnimationFinished(elapsedWalkingTime))
+            if (!player_start_walking_animation.isAnimationFinished(elapsedWalkingTime))
             {
-                batcher.draw((TextureRegion) player_startWalking_animation.getKeyFrame(elapsedWalkingTime),
+                batcher.draw((TextureRegion) player_start_walking_animation.getKeyFrame(elapsedWalkingTime),
                         player.graphics.getX() + player.graphics.getWidth(), player.graphics.getY(),
                         -(float) player.graphics.getWidth(), (float) player.graphics.getHeight());
             }

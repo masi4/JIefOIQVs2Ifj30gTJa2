@@ -5,25 +5,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.masi4.UI.gameInventory.model.Inventory;
-import com.masi4.UI.gameInventory.model.objects.Test_Item;
 import com.masi4.UI.gameInventory.model.objects.healing_potion;
 import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gamehelpers.BackgroundColor;
-import com.masi4.myGame.GameMainClass;
 import com.masi4.screens.GameplayScreen;
 
-import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
-import static com.masi4.myGame.GameMainClass.SCREEN_WIDTH;
-import static com.masi4.myGame.GameMain.game;
+import static com.masi4.myGame.GameMain.*;
 
 /**
  * Created by U1wknUzeU6 on 23.04.2018.

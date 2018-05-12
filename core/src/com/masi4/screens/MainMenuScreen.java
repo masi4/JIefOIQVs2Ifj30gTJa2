@@ -1,6 +1,6 @@
 package com.masi4.screens;
 
-/*
+/**
  * Created by OIEFIJM on 23.10.2017.
  *
  * Экран главного меню
@@ -18,15 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
-import com.masi4.UI.gameInventory.InventoryScreen;
 import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.myGame.GameMain;
-import com.masi4.myGame.GameMainClass;
 import com.masi4.gameobjects.Level.LevelNames;
 
-import static com.masi4.myGame.GameMain.game;
-import static com.masi4.myGame.GameMainClass.SCREEN_HEIGHT;
-import static com.masi4.myGame.GameMainClass.SCREEN_WIDTH;
+import static com.masi4.myGame.GameMain.*;
 
 public class MainMenuScreen implements Screen
 {

@@ -6,6 +6,7 @@ package com.masi4.gamehelpers;
  * В этом классе содержатся информация об участках атласов
  * (X, Y) - координаты левого верхнего пикселя конкретного участка на атласе
  *  Width, Height - высота и ширина
+ *  // TODO: убрать неиспользуемые константы
  */
 
 public class GameTextureRegions
@@ -23,6 +24,7 @@ public class GameTextureRegions
     public static final int player_default_offset_right = 14;
 
     // /gameplay/player/player_attack1 - атлас с первой частью анимации атаки персонажа
+
     public static final int player_attack1_frame1_X = 0;
     public static final int player_attack1_frame2_X = 174;
     public static final int player_attack1_frame3_X = 348;
@@ -31,7 +33,6 @@ public class GameTextureRegions
     public static final int player_attack1_frame_Y = 0;
     public static final int player_attack1_frame_Width = 174;
     public static final int player_attack1_frame_Height = 128;
-    // TODO: померить смещение ноги относительно левого края и головы
     public static final int player_attack_X_offset = 50;
 
     public static final int skeleton_frame_Width = 128;

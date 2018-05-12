@@ -38,8 +38,12 @@ public class CharacterGraphics
 
     public void update_position(float delta)
     {
-        velocity.add(acceleration.cpy().scl(delta));    // TODO: прибавление вручную, без cpy()
-        position.add(velocity.cpy().scl(delta));
+        velocity.x += acceleration.x * delta;
+        velocity.y += acceleration.y * delta;
+
+        position.x += velocity.x * delta;
+        position.y += velocity.y * delta;
+
     }
 
     public void setCoords(float x, float y)    // Координаты левого нижнего угла
@@ -73,7 +77,6 @@ public class CharacterGraphics
         }
     }
 
-    // TODO: посмотреть, как сделано в птице
     public void handleDownCollision(float y)
     {
         position.y = y;
