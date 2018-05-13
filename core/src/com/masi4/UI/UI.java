@@ -2,14 +2,17 @@ package com.masi4.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.masi4.UI.gameInventory.InventoryMain;
+import com.masi4.gameobjects.Player;
 
 public class UI
 {
+    public static Player player;
 
     public InventoryMain inventoryMain;
 
-    public UI()
+    public UI(Player player)
     {
+        this.player = player;
     }
 
     private void ShowInventory()

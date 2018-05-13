@@ -44,6 +44,7 @@ public class PlayerRpg extends CharacterRpg
         abilities.get(progress.getCurrentDefaultAbility()).execute(player);
     }
 
-
+    public int getMaxHP(){ return maxHP; }
+    public int getCurrentHP(){ return currentHP; }
 
 }

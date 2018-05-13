@@ -8,6 +8,5 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public interface _InventoryItem
 {
-    boolean isUseable();
     TextureRegion GetTexture();
 }

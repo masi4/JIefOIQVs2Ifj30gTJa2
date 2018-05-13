@@ -19,11 +19,6 @@ public class Test_Item implements _InventoryItem
     //     //
 
     @Override
-    public boolean isUseable() {
-        return false;
-    }
-
-    @Override
     public TextureRegion GetTexture()
     {
         return AssetLoader.Inventory_GetItemTexture(this); //// TODO: 30.04.2018 че то до меня туго дохолит как сделать это в родительском классе.

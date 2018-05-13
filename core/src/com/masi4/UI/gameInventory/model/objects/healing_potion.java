@@ -1,5 +1,6 @@
 package com.masi4.UI.gameInventory.model.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.masi4.gamehelpers.AssetLoader;
 
@@ -7,16 +8,12 @@ import com.masi4.gamehelpers.AssetLoader;
  * Created by U1wknUzeU6 on 01.05.2018.
  */
 
-public class healing_potion implements _InventoryItem
+public class healing_potion implements _InventoryItem, _Useable
 {
+    @Override
     public void Use()
     {
-
-    }
-
-    @Override
-    public boolean isUseable() {
-        return true;
+        Gdx.app.log("healing_potion", "Use()");
     }
 
     @Override

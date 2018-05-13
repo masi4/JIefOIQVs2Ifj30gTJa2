@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.GamePreferences;
 
+import static com.masi4.UI.UI.player;
+import static com.masi4.UI.gameInventory.InventoryWindow.INVENTORY_WIDTH;
+
 
 /**
  * Created by U1wknUzeU6 on 01.05.2018.
@@ -20,14 +23,22 @@ import com.masi4.gamehelpers.GamePreferences;
 
 public class StatsView extends Table
 {
-    int MAX_HP = 200;
-    int HP = 120;
+    private float defaultScale = 2.5f;
+    int MAX_HP;
+    int HP;
     /*...*/
 
+
     Label.LabelStyle defaultStyle;
-    public StatsView()//// TODO: 01.05.2018 Передавать плеера через параметры и узнавать его статы. Не могу сделать это сейчас, потому что не знаю, что ты изменил в своей ветке.
-    {                 //// Так как инвентарь вызывается из GUI с этим не должно возникнуть проблем
+
+    public StatsView()
+    {
+        LoadStats();
+
         pad(10,30,10,10);
+        /*BackgroundColor bc = new BackgroundColor("UI/Inventory/inventoryDefaultSkin.png");
+        bc.setColor(29, 29, 29, 255);
+        setBackground(bc);*/
 
         defaultStyle = new Label.LabelStyle(AssetLoader.default18, Color.WHITE);
         Label healthLabel = new Label(GamePreferences.loc.format("Inventory_Health"),defaultStyle);
@@ -37,12 +48,27 @@ public class StatsView extends Table
                 new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarFillTextureRegion));
         healthBarStyle.knobBefore = new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarFillTextureRegion);
         healthBarStyle.background.setLeftWidth(1);
+
+        healthBarStyle.background.setMinHeight(healthBarStyle.background.getMinHeight() * defaultScale);
+        healthBarStyle.knobBefore.setMinHeight(healthBarStyle.knobBefore.getMinHeight() * defaultScale);
+        healthBarStyle.knob.setMinHeight(healthBarStyle.knob.getMinHeight() * defaultScale);
+
         ProgressBar healthBar = new ProgressBar(0,1,0.01f,false,healthBarStyle);
         healthBar.setValue((float)HP/(float)MAX_HP);
-        healthBar.setScale(0.5f);
+        healthBar.setScale(defaultScale);
+        healthLabel.setFontScale(defaultScale);
+
 
         this.add(healthLabel);
         this.row();
-        this.add(healthBar).width(100);
+        this.add(healthBar).width(INVENTORY_WIDTH/3);
+
+        this.pack();
+    }
+
+    void LoadStats()
+    {
+        int MAX_HP =  player.rpg.getMaxHP();
+        int HP = player.rpg.getCurrentHP();
     }
 }

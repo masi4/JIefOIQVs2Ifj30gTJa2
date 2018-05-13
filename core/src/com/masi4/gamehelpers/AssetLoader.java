@@ -38,6 +38,7 @@ public class AssetLoader
             controller_Texture,
             attackButton_Texture,
             inventoryButton_Texture,
+            inventoryCloseButton_Texture,
             MainMenu_Buttons,
             level_torch_Texture,
             level_cave_Teaxture,
@@ -76,6 +77,9 @@ public class AssetLoader
             // кнопка инвентаря
             inventoryButton_Up,
             inventoryButton_Down,
+            // кнопка закрытия инвентаря
+            inventoryCloseButton_Up,
+            inventoryCloseButton_Down,
 
             // инвентарь
             GameInventory_InventoryTextureRegion,
@@ -92,7 +96,9 @@ public class AssetLoader
 
     public static BitmapFont
             default18,
+            default18_outline,
             default12,
+            default12_outline,
             default22;
 
     public static Array<TextureRegion>
@@ -123,6 +129,8 @@ public class AssetLoader
         default12 = new BitmapFont(Gdx.files.internal("fonts/default12.fnt"));
         default18 = new BitmapFont(Gdx.files.internal("fonts/default18.fnt"));
         default22 = new BitmapFont(Gdx.files.internal("fonts/default22.fnt"));
+        default18_outline = new BitmapFont(Gdx.files.internal("fonts/default18_outline.fnt"));
+        default12_outline = new BitmapFont(Gdx.files.internal("fonts/default12_outline.fnt"));
     }
 
     public static void dispose_Fonts()
@@ -130,6 +138,8 @@ public class AssetLoader
         default12.dispose();
         default18.dispose();
         default22.dispose();
+        default18_outline.dispose();
+        default12_outline.dispose();
     }
 
     // Главное меню
@@ -322,8 +332,13 @@ public class AssetLoader
         items_Texture = new Texture(Gdx.files.internal("UI/Inventory/Items_atlas.png"));
         items_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
         GameInventory_HealthBarTexture = new Texture(Gdx.files.internal("UI/Inventory/healthbar.png"));
+        GameInventory_HealthBarTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
         GameInventory_HealthBarBoundsTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,0,90,10);
         GameInventory_HealthBarFillTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,10,1,8);
+        inventoryCloseButton_Texture =  new Texture(Gdx.files.internal("buttons/inventoryCloseButton.png"));
+        inventoryCloseButton_Up = new TextureRegion(inventoryCloseButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
+        inventoryCloseButton_Down = new TextureRegion(inventoryCloseButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
+
     }
     public static TextureRegion Inventory_GetItemTexture(_InventoryItem item)
     {

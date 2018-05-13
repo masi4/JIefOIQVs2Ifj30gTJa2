@@ -16,10 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.masi4.UI.gameInventory.model.Slot;
+import com.masi4.UI.gameInventory.model.objects._Useable;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.BackgroundColor;
 
 import static com.masi4.UI.gameInventory.InventoryMain.InventoryViewport;
+import static com.masi4.UI.gameInventory.InventoryMain.contextMenu;
+import static com.masi4.UI.gameInventory.InventoryWindow.INVENTORY_HEIGHT;
 import static com.masi4.gamehelpers.GameTextureRegions.itemWidth;
 
 /**
@@ -28,15 +31,22 @@ import static com.masi4.gamehelpers.GameTextureRegions.itemWidth;
 
 public class SlotView extends Table
 {
-    public SlotView(Slot slot)
+    Slot slot;
+    public SlotView(final Slot slot)
     {
-        setBackground(new TextureRegionDrawable(AssetLoader.GameInventory_SlotTextureRegion));
-        setSize(InventoryViewport.getWorldHeight()/8, InventoryViewport.getWorldHeight()/8);
+        this.slot = slot;
+
+        BackgroundColor bc = new BackgroundColor("UI/Inventory/inventoryDefaultSkin.png");
+        bc.setColor(69, 69, 69, 255);
+        setBackground(bc);
+
+        //setBackground(new TextureRegionDrawable(AssetLoader.GameInventory_SlotTextureRegion));
+        setSize(INVENTORY_HEIGHT/8, INVENTORY_HEIGHT/8);
         if(!slot.isEmpty()) {
             //this.add(new ItemView(slot.GetItem())).fill(true);
-            Label.LabelStyle labelStyle = new Label.LabelStyle(AssetLoader.default12, Color.WHITE);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(AssetLoader.default12_outline, Color.WHITE);
+
             Label count = new Label(String.valueOf(slot.GetCount()), labelStyle);
-            count.setFontScale(1f);
             count.setAlignment(Align.bottomRight);
 
             ItemView itemView = new ItemView(slot.GetItem());
@@ -51,6 +61,14 @@ public class SlotView extends Table
             this.add(stack);
         }
 
+        addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                contextMenu.Show(slot.GetItem());
+                contextMenu.isTrueClick = true;
+                return true;
+            }});
 
     }
 

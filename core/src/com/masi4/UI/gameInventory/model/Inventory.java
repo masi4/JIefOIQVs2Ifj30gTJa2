@@ -22,7 +22,7 @@ public class Inventory {
         }
 
         slots.get(0).Set(new healing_potion(), 33);
-        slots.get(1).Set(new healing_potion(), 64);
+        slots.get(5).Set(new healing_potion(), 64);
     }
     /// Здесь написать связь с хранилищем объектов
 

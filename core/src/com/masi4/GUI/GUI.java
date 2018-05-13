@@ -3,15 +3,9 @@ package com.masi4.GUI;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.masi4.UI.UI;
 import com.masi4.UI.gameInventory.InventoryMain;
-import com.masi4.UI.gameInventory.InventoryScreen;
-import com.masi4.UI.gameInventory.model.Inventory;
 import com.masi4.gameobjects.Player;
-import com.masi4.screens.GameplayScreen;
-import static com.masi4.myGame.GameMain.*;
 
 /**
  *  Отвечает за рендер. Проверяет состояние акторов.
@@ -21,10 +15,8 @@ public class GUI
 {
     private UI ui;
     private StageLayer stageLayer;
-    private InventoryMain inventoryMain;
 
     private Player player;
-    private boolean isInventoryOpened;
 
     /** Determines if the current running platform is Desktop **/
     private static boolean isDesktop;
@@ -40,9 +32,10 @@ public class GUI
     public GUI(Player player)
     {
         if (!isDesktop) stageLayer = new StageLayer();
-        ui = new UI();
+
+        ui = new UI(player);
         this.player = player;
-        isInventoryOpened = false;
+
         Gdx.input.setInputProcessor(stageLayer);
         Gdx.input.setCatchBackKey(true);
     }
@@ -78,13 +71,16 @@ public class GUI
             {
                 ui.ShowHideInventory();
                 SwitchInputProcessors();
-
-                //game.setScreen(new InventoryScreen(gameplayScreen));
             }
 
+            // Кнопка в самом инвенторе
             if(ui.IsInventoryVisible())
             {
-                ui.inventoryMain.render(delta);
+                if(ui.inventoryMain.GetCloseButton().IsJustPressed())
+                {
+                    ui.ShowHideInventory();
+                    SwitchInputProcessors();
+                }
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
@@ -135,14 +131,16 @@ public class GUI
             // Инвентарь
             // TODO: сделать, чтобы выход из инвентаря работал
             if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-                if (!isInventoryOpened) {
-                   // game.setScreen(new InventoryScreen(gameplayScreen));
-                    isInventoryOpened = true;
-                } else {
-                   // game.setScreen(gameplayScreen);
-                    isInventoryOpened = false;
-                }
+                ui.ShowHideInventory();
+                SwitchInputProcessors();
             }
+        }
+
+        // Обработка UI объектов
+
+        if(ui.IsInventoryVisible())
+        {
+            ui.inventoryMain.render(delta);
         }
     }
 
@@ -150,6 +148,7 @@ public class GUI
     {
         if(ui.IsInventoryVisible())
         {
+            stageLayer.dispose();
             Gdx.input.setInputProcessor(ui.inventoryMain);
             return;
         }
