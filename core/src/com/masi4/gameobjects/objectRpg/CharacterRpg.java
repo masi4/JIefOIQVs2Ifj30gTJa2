@@ -10,23 +10,36 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class CharacterRpg
 {
+    protected int maxHP;
+    protected int currentHP;
+
     protected Stats stats;
-    protected Rectangle hitbox; // Важно: сначала выполнять дешевые проверки (rec.overlaps), затем дорогие (intersector)
 
-    public CharacterRpg(Rectangle hitbox, Stats stats)
+
+    public CharacterRpg(Stats stats)
     {
-        this.hitbox = hitbox;
         this.stats = stats;
+        applyStats();
+        currentHP = maxHP;
     }
 
-    public void setHitboxCoords(float x, float y)
+    public void applyStats()
     {
-        hitbox.setPosition(x, y);
+        maxHP = Math.round(stats.getStamina() * 1.5f * (1 + stats.getDefence()));
     }
 
-    public Rectangle getHitbox()
+    public int getMaxHP() {
+        return maxHP;
+    }
+
+    public int getCurrentHP() {
+        return currentHP;
+    }
+
+    // TODO: обработка смерти
+    public void TakeDamage(int damage)
     {
-        return hitbox;
+        // При 100 защиты урон будет уменьшен в два раза
+        currentHP -= Math.round(damage / (1 + 1.5 * Math.log(stats.getDefence() / 100f + 1)));
     }
-
 }

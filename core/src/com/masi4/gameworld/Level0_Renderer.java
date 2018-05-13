@@ -4,36 +4,20 @@ package com.masi4.gameworld;
  * Created by OIEFIJM on 19.12.2017.
  */
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.masi4.myGame.GameMain.*;
-import static com.masi4.gamehelpers.GameTextureRegions.*;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.GameTextureRegions;
-import com.masi4.gameobjects.Player;
 
 public class Level0_Renderer extends GameRenderer
 {
-    // DEBUG TODO: закоментить перед релизом
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
-
-    // Objects
-    private Player player;
-
     // Assets
     private Animation
-            player_animation,
-            player_start_walking_animation,
-            player_attack_animation,
             level_torch_animation;
+
     private TextureRegion
-            player_standing,  // стоит на месте
             level_BG1,
             level_BG2,
             level_BG3,
@@ -43,10 +27,7 @@ public class Level0_Renderer extends GameRenderer
             level_cave;
     private TextureRegion[] grassBackLoops, grassForeLoops;
 
-    /** Время, прошедшее со старта анимации ходьбы **/
-    private float elapsedWalkingTime;
-    /** Время, прошедшее со старта анимации атаки **/
-    private float elapsedAttackTime;
+
 
     /** Прикреплена ли камера к игроку **/
     private boolean cameraAttached;
@@ -69,19 +50,16 @@ public class Level0_Renderer extends GameRenderer
         backgroundsOffset = 0;
         attachedSegment = world.getLevelWidth() - SCREEN_WIDTH;
 
-        elapsedWalkingTime = 0;
-        elapsedAttackTime = 0;
-
         initGameObjects();
         initAssets();
     }
 
     /**
-     * Инициализация игровых объектов (игрок, мобы etc.)
+     * Инициализация игровых объектов (мобы etc.)
      */
     private void initGameObjects()
     {
-        player = world.getPlayer();
+
     }
 
     /**
@@ -90,7 +68,6 @@ public class Level0_Renderer extends GameRenderer
     private void initAssets()
     {
         initWorldAssets();
-        initPlayerAssets();
     }
 
     /**
@@ -116,16 +93,7 @@ public class Level0_Renderer extends GameRenderer
             grassForeLoops[i] = new TextureRegion(AssetLoader.level_grassForeLoop);
     }
 
-    /**
-     * Инициализация asset'ов игрока
-     */
-    private void initPlayerAssets()
-    {
-        player_standing = AssetLoader.player_standing;
-        player_start_walking_animation = AssetLoader.player_default_startsWalking_animation;
-        player_animation = AssetLoader.player_default_animation;
-        player_attack_animation = AssetLoader.player_default_attack_animation;
-    }
+
 
     // ***********************************************
     //                    Отрисовка
@@ -133,10 +101,6 @@ public class Level0_Renderer extends GameRenderer
 
     public void render(float runTime)
     {
-        // Чистим вилкой
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         // Открепляем/прикрепляем камеру к персонажу и вычисляем смещение фонов ("параллакс")
         AttachCameraAndCalculateParallax();
 
@@ -234,129 +198,5 @@ public class Level0_Renderer extends GameRenderer
         {
             batcher.draw(grassForeLoops[i],  SCREEN_WIDTH * i, -185, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
-    }
-
-    /**
-     * Отрисовка игрока
-     */
-    private void drawPlayer(float runTime)
-    {
-        // При отрисовке игрока учитывается следующий факт: размер кадра анимации, как правило,
-        // отличается от размера хитбокса игрока. Поэтому кадр сдвигается так, чтобы его середина
-        // и середина хитбокса совпадали.
-        //
-        // Вообще говоря, это нужно учитывать при отрисовке любых персонажей.
-
-        //
-        // Атака
-        //
-        if (player_attack_animation.isAnimationFinished(elapsedAttackTime))
-        {
-            player.graphics.SetAttack(false);
-            elapsedAttackTime = 0;
-        }
-        else if(player.graphics.isAttacking())
-        {
-            elapsedAttackTime += Gdx.graphics.getDeltaTime();
-            if (player.graphics.isTurnedRight())
-            {
-                batcher.draw((TextureRegion) player_attack_animation.getKeyFrame(elapsedAttackTime),
-                        player.graphics.getX() - (player_attack_frame_Width - player.graphics.getWidth()) / 2,
-                        player.graphics.getY(), player_attack_frame_Width, player_attack_frame_Height);
-            }
-            else
-            {
-                batcher.draw((TextureRegion) player_attack_animation.getKeyFrame(elapsedAttackTime),
-                        player.graphics.getX() + 174/2 - (player_attack_frame_Width - player.graphics.getWidth()) / 2,
-                        player.graphics.getY(), -player_attack_frame_Width, player_attack_frame_Height);
-            }
-        }
-
-        //
-        // Ходьба
-        //
-
-        // Если идет вправо
-        if (player.graphics.getVelocityX() > 0)
-        {
-            elapsedWalkingTime += Gdx.graphics.getDeltaTime();
-            // начало шага
-            if (!player_start_walking_animation.isAnimationFinished(elapsedWalkingTime))
-            {
-                batcher.draw((TextureRegion) player_start_walking_animation.getKeyFrame(elapsedWalkingTime),
-                        player.graphics.getX() - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                        player.graphics.getY(), player_default_frame_Width, player_default_frame_Height);
-            }
-            else
-            {
-                batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime),
-                        player.graphics.getX() - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                        player.graphics.getY(), player_default_frame_Width, player_default_frame_Height);
-            }
-            if (!player.graphics.isTurnedRight())
-                player.graphics.turnRight();
-            else {}
-        }
-
-        // Если идет влево
-        else if (player.graphics.getVelocityX() < 0)
-        {
-            elapsedWalkingTime += Gdx.graphics.getDeltaTime();
-            // начало шага
-            if (!player_start_walking_animation.isAnimationFinished(elapsedWalkingTime))
-            {
-                batcher.draw((TextureRegion) player_start_walking_animation.getKeyFrame(elapsedWalkingTime),
-                        player.graphics.getX() + player_default_frame_Width - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                        player.graphics.getY(), -player_default_frame_Width, player_default_frame_Height);
-            }
-            else
-            {
-                batcher.draw((TextureRegion) player_animation.getKeyFrame(runTime),
-                        player.graphics.getX() + player_default_frame_Width - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                        player.graphics.getY(), -player_default_frame_Width, player_default_frame_Height);
-            }
-            if (player.graphics.isTurnedRight()) player.graphics.turnLeft();
-            else {}
-        }
-
-        // Если стоит на месте
-        else if (player.graphics.getVelocityX() == 0 && !player.graphics.isAttacking())
-        {
-            if (player.graphics.isTurnedRight())
-            {
-                batcher.draw(player_standing,
-                        player.graphics.getX() - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                        player.graphics.getY(), player_default_frame_Width, player_default_frame_Height);
-
-                elapsedWalkingTime = 0;
-            }
-            else
-            {
-                batcher.draw(player_standing,
-                        player.graphics.getX() + player_default_frame_Width - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                        player.graphics.getY(), -player_default_frame_Width, player_default_frame_Height);
-
-                elapsedWalkingTime = 0;
-            }
-        }
-
-        // DEBUG: Отрисовка хитбокса игрока
-        if (DEBUG)
-        {
-            Rectangle hitbox = player.rpg.getHitbox();
-
-            batcher.end();
-            camera.update();
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-
-                shapeRenderer.setColor(Color.GREEN);
-                shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-
-            shapeRenderer.end();
-            batcher.begin();
-        }
-
-
     }
 }

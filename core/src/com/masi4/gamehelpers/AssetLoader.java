@@ -23,7 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
-import com.masi4.gameobjectAbilities.PlayerAbilities.DefaultSwordAttack;
+import com.masi4.Abilities.PlayerAbilities.MeleeSwordAttack;
 
 import java.io.IOException;
 
@@ -251,9 +251,9 @@ public class AssetLoader
                     player_attack_frame_Width * i, player_attack_frame_Y,player_attack_frame_Width,
                     player_attack_frame_Height));
         }
-        float frameTime = DefaultSwordAttack.castTime / player_default_attack_frames.size;
+        float frameTime = MeleeSwordAttack.castTime / player_default_attack_frames.size;
         player_default_attack_animation =
-                new Animation(frameTime, player_default_attack_frames, Animation.PlayMode.LOOP_PINGPONG);
+                new Animation(frameTime, player_default_attack_frames, Animation.PlayMode.NORMAL);
     }
 
     public static void dispose_Player()
@@ -328,9 +328,7 @@ public class AssetLoader
         XmlReader reader = new XmlReader();
         XmlReader.Element root = null;
         FileHandle file = Gdx.files.internal("xml/Items.xml");
-        try {
-            root = reader.parse(file);
-        } catch (IOException e) {        }
+        root = reader.parse(file);
 
         int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
 

@@ -16,6 +16,8 @@ public class Level {
     private int width;
     private int height;
     private int floorHeight;
+    private int worldGravity;
+
     private ArrayList<Rectangle> levelObjects;  // (возможно) сделать отдельный класс. isRemovable true false
 
     public enum LevelNames { TEST }
@@ -29,6 +31,7 @@ public class Level {
                 width = 3200;
                 height = 480;
                 floorHeight = 90;
+                worldGravity = 1560;
 
                 // Границы отдельно. прямоугольники с нулевой шириной высотой нельзя
 /*
@@ -61,5 +64,7 @@ public class Level {
     {
         return height;
     }
+
+    public int getWorldGravity() { return worldGravity; }
 
 }

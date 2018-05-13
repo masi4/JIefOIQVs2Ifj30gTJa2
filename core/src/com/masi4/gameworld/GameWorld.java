@@ -9,24 +9,25 @@ package com.masi4.gameworld;
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 
 import com.masi4.gameobjects.Player;
-import com.masi4.gameobjects.objectGraphics.PlayerGraphics;
 import com.masi4.gameobjects.Level;
 
 public class GameWorld
 {
     private Player player;
     private Level level;
+    // "private gdxArray<Mob> mobs"
 
     // Свойства игрока (размеры, шмот etc) возможно вынести в отдельный файл
     public GameWorld(Level.LevelNames levelName)
     {
         level = new Level(levelName);
-        player = new Player(48, player_default_frame_Height); //TODO: сделать ширину игрока не зависящей от ширины кадра
+        player = new Player(48, player_default_frame_Height, level.getWorldGravity(), true);
         player.setCoords(0, level.getFloorHeight()); // TODO: надо спавнить игрока пониже. (edit: для этого нужно понизить уровень пола в классе Level)
     }
 
     public void update(float delta)
     {
+        // Обновление позиции
         player.graphics.update_position(delta);
 
         // Обработка столкновений
@@ -46,8 +47,10 @@ public class GameWorld
         {
             player.graphics.handleRightCollision(level.getWidth());
         }
+        player.setCoords(player.graphics.getX(), player.graphics.getY());
 
-        player.rpg.setHitboxCoords(player.graphics.getX(), player.graphics.getY());
+        // Обработка способностей
+        player.updateAbilities(delta);
 
     }
 

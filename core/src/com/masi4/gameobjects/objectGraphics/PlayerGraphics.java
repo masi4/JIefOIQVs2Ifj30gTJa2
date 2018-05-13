@@ -1,5 +1,7 @@
 package com.masi4.gameobjects.objectGraphics;
 
+import com.masi4.Directions;
+
 /**
  * Created by OIEFIJM on 13.10.2017.
  *
@@ -9,12 +11,11 @@ package com.masi4.gameobjects.objectGraphics;
 public class PlayerGraphics extends CharacterGraphics
 {
     private float delta;
-    private boolean isAttacking;
 
-    public PlayerGraphics(int width, int height, int maxHorizontalVelocity)
+    public PlayerGraphics(int width, int height, int worldGravity, int initialJumpSpeed, int horizontalVelocityGain,
+                          float maxHorizontalVelocity, Directions turnedSide, boolean isOnGround)
     {
-        super(width, height, maxHorizontalVelocity);
-        isAttacking = false;
+        super(width, height, worldGravity, initialJumpSpeed, horizontalVelocityGain, maxHorizontalVelocity, turnedSide, isOnGround);
     }
 
     public void update_position(float delta)
@@ -23,30 +24,22 @@ public class PlayerGraphics extends CharacterGraphics
         super.update_position(delta);
     }
 
-    // TODO: убрать остановку персонажа при атаке
-    // Сохраняет скорость которая была до активации атаки, а применяет ее после того, как атака
-    // завершится. Связано с тем, что скорость персонажа зависит от ПЕРЕМЕЩЕНИЯ кноба. Исправить!
-    private float bufferVelocity = 0;
-    public void SetAttack(boolean isAttacking)
+    public void controlByJoystick(float knobPercentX, float knobPercentY, boolean allowedToJump)
     {
-        this.isAttacking = isAttacking;
-        if (isAttacking)
-        {
-            bufferVelocity = this.velocity.x;
-            setVelocityX(0);
-        }
+        if (knobPercentY > 0.4 && allowedToJump)
+            jump();
+
+        setVelocityX(getMaxHorizontalVelocity() * knobPercentX);
+
+        if (knobPercentX > 0)
+            controlsDirection = Directions.RIGHT;
+        else if (knobPercentX < 0)
+            controlsDirection = Directions.LEFT;
         else
-        {
-            setVelocityX(bufferVelocity);
-            bufferVelocity = 0;
-        }
+            controlsDirection = Directions.NONE;
     }
 
-    public boolean isAttacking()
-    {
-        return isAttacking;
-    }
-
+    // Возможно просто заменить единственное место использования на Gdx.graphics.getDelta()
     public float getDelta()
     {
         return delta;

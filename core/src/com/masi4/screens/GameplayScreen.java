@@ -65,6 +65,7 @@ public class GameplayScreen implements Screen
             dispose();
         }
         runTime += delta;
+
         world.update(delta);
         renderer.render(runTime);
         gui.render(delta);

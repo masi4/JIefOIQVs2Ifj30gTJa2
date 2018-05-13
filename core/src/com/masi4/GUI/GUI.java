@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.masi4.UI.gameInventory.InventoryScreen;
+import com.masi4.Abilities.AbilityName;
 import com.masi4.gameobjects.Player;
 import com.masi4.screens.GameplayScreen;
 import static com.masi4.myGame.GameMain.*;
@@ -17,9 +18,12 @@ public class GUI
     private StageLayer stageLayer;
     private Player player;
     private GameplayScreen gameplayScreen;
-    private boolean isInventoryOpened;
+    // Чтобы прыгнуть еще раз, нужно сначала опустить пипку джойстика пониже, а потом опять поднять
+    private boolean jumpCtrl;
+    private boolean jumpCtrl_W;
+    private boolean jumpCtrl_SPACE;
 
-    /** Determines if the current running platform is Desktop **/
+    /** Определяет, является ли платформа, на которой запущено приложение Desktop, или нет **/
     private static boolean isDesktop;
     static
     {
@@ -35,89 +39,80 @@ public class GUI
         if (!isDesktop) stageLayer = new StageLayer();
         this.player = player;
         this.gameplayScreen = gameplayScreen;
-        isInventoryOpened = false;
+        jumpCtrl = true;
 
         Gdx.input.setInputProcessor(stageLayer);
         Gdx.input.setCatchBackKey(true);
     }
 
-    public void render(float delta) {
-        //***********************
-        // Touchscreen controls
-        //***********************
+    public void render(float delta)
+    {
         if (!isDesktop) {
+            //***********************
+            // Touchscreen controls
+            //***********************
             stageLayer.render(delta);
 
-            if (stageLayer.GetWalkingController().isTouched()) {
-                if (stageLayer.GetWalkingController().getKnobPercentY() > 0.5) {
-                    player.graphics.jump();
-                }
-                if (!player.graphics.isAttacking()) {
-                    player.graphics.setVelocityX(player.graphics.getMaxHorizontalVelocity() * stageLayer.GetWalkingController().getKnobPercentX());
-                }
+            jumpCtrl = !(stageLayer.GetWalkingController().getKnobPercentY() > 0.4);
+
+            if (stageLayer.GetWalkingController().isTouched())
+            {
+                player.graphics.controlByJoystick(
+                        stageLayer.GetWalkingController().getKnobPercentX(),
+                        stageLayer.GetWalkingController().getKnobPercentY(),
+                        jumpCtrl
+                );
             }
+            else
+                player.graphics.releaseMovementControls();
 
             if (stageLayer.GetAttackButton().isPressed()) {
-                // TODO: реализовать атаку через абилити и вообще как надо.
-                player.graphics.SetAttack(true);
+                player.executeAbility(AbilityName.Player_MeleeSwordAttack);
             }
 
             if (stageLayer.GetInventoryButton().isPressed()) {
                 game.setScreen(new InventoryScreen(gameplayScreen));
             }
-
-            // Не работает (?)
-            if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) && isInventoryOpened) {
-                game.setScreen(gameplayScreen);
-            }
         }
+        else {
+            //********************
+            //  Keyboard controls
+            //********************
 
-        //********************
-        //  Keyboard controls
-        //********************
-        else
-        {
             // Передвижение
-            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                if (player.graphics.getVelocityX() < 0)
-                    player.graphics.setVelocityX(-player.graphics.getVelocityX());
-                player.graphics.setAccelerationX(600);
+           if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                player.graphics.moveRight();
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                if (player.graphics.getVelocityX() > 0)
-                    player.graphics.setVelocityX(-player.graphics.getVelocityX());
-                player.graphics.setAccelerationX(-600);
+                player.graphics.moveLeft();
             }
 
             if (!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)) {
-                player.graphics.setVelocityX(0);
+                player.graphics.releaseMovementControls();
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                player.graphics.jump();
+                if (jumpCtrl_W) player.graphics.jump();
+                    jumpCtrl_W = false;
+            }
+            else {
+               jumpCtrl_W = true;
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                player.graphics.jump();
+                if (jumpCtrl_SPACE) player.graphics.jump();
+                    jumpCtrl_SPACE = false;
+            }
+            else {
+               jumpCtrl_SPACE = true;
             }
 
             // Атака
             if (Gdx.input.isKeyPressed(Input.Keys.J)) {
-                player.graphics.SetAttack(true);
+                player.executeAbility(AbilityName.Player_MeleeSwordAttack);
             }
 
-            // Инвентарь
-            // TODO: сделать, чтобы выход из инвентаря работал
-            if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-                if (!isInventoryOpened) {
-                    game.setScreen(new InventoryScreen(gameplayScreen));
-                    isInventoryOpened = true;
-                } else {
-                    game.setScreen(gameplayScreen);
-                    isInventoryOpened = false;
-                }
-            }
         }
     }
 

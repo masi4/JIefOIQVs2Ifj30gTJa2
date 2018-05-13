@@ -1,11 +1,9 @@
 package com.masi4.gameobjects.objectRpg;
 
-import com.badlogic.gdx.math.Rectangle;
-
-import java.util.HashMap;
-import com.masi4.gameobjectAbilities.PlayerAbilities.DefaultSwordAttack;
-import com.masi4.gameobjectAbilities.PlayerAbilities.PlayerAbility;
-import com.masi4.gameobjects.Player;
+import com.badlogic.gdx.utils.OrderedMap;
+import com.masi4.Abilities.AbilityName;
+import com.masi4.Abilities.PlayerAbilities.MeleeSwordAttack;
+import com.masi4.Abilities.PlayerAbilities.PlayerAbility;
 
 /**
  * Created by OIEFIJM on 22.12.2017.
@@ -18,32 +16,16 @@ import com.masi4.gameobjects.Player;
 
 public class PlayerRpg extends CharacterRpg
 {
-    // TODO: max hp (на основе статов), current hp
-    private int maxHP;
-    private int currentHP;
+    private OrderedMap<AbilityName, PlayerAbility> abilities;
 
-    private Progress progress;
-
-    private HashMap<String, PlayerAbility> abilities;
-
-    public PlayerRpg(Rectangle hitbox, Stats stats, Progress progress)
+    public PlayerRpg(Stats stats)
     {
-        super(hitbox, stats);
-        this.progress = progress;
-        abilities = new HashMap<String, PlayerAbility>();
-        abilities.put("Default_Sword_Attack", new DefaultSwordAttack());
+        super(stats);
+        abilities = new OrderedMap<AbilityName, PlayerAbility>();
+        abilities.put(AbilityName.Player_MeleeSwordAttack, new MeleeSwordAttack());
     }
 
-    public void setHitboxCoords(float x, float y)
-    {
-        hitbox.setPosition(x, y);
+    public OrderedMap<AbilityName, PlayerAbility> getAbilities() {
+        return abilities;
     }
-
-    public void executeDefaultAttack(Player player, String abilityName)
-    {
-        abilities.get(progress.getCurrentDefaultAbility()).execute(player);
-    }
-
-
-
 }

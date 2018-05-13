@@ -1,6 +1,8 @@
 package com.masi4.gameobjects.objectGraphics;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.masi4.Directions;
 
 /**
  * Created by OIEFIJM on 22.12.2017.
@@ -15,45 +17,78 @@ public class CharacterGraphics
     protected Vector2 acceleration;     // Вектор ускорения
     protected int width;
     protected int height;
+    protected Rectangle hitbox; // Важно: сначала выполнять дешевые проверки (rec.overlaps), затем дорогие (intersector)
 
+    /** Начальная скорость по вертикали при прыжке **/
+    protected int initialJumpSpeed;
+    /** Модуль вертикального ускорения, возникающего при прыжке и действующего вниз**/
+    protected int worldGravity;
+    /** Максимальная скорость по X **/
     protected float maxHorizontalVelocity;
-    protected boolean inJump;    // находится ли персонаж в прыжке
-    protected boolean isTurnedRight; // в какую сторону повернут
+    /** Как быстро набирает максимальную скорость по X**/
+    protected int horizontalVelocityGain;
+    /** В какую сторону повернут **/
+    protected Directions turnedSide;
+    /** Находится ли персонаж на земле **/
+    protected boolean isOnGround; // TODO: Сделать какую-то универсальную проверку на случай, если его будет отбрасывать. Пока что на это влияет только прыжок.
+    /** Управляют ли персонажем в эту сторону, или он двигается потому что его, например, оттолкнули **/
+    protected Directions controlsDirection;
 
-    public CharacterGraphics(int width, int height, float maxHorizontalVelocity, boolean isTurnedRight)
+    public CharacterGraphics(int width, int height, int worldGravity, int initialJumpSpeed, int horizontalVelocityGain,
+                             float maxHorizontalVelocity, Directions turnedSide, boolean isOnGround)
     {
-        position = new Vector2();
+        position = new Vector2(0, 0);
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
         this.width = width;
         this.height = height;
+        hitbox = new Rectangle(position.x, position.y, width, height);
 
+        this.worldGravity = worldGravity;
+        this.initialJumpSpeed = initialJumpSpeed;
+        this.horizontalVelocityGain = horizontalVelocityGain;
         this.maxHorizontalVelocity = maxHorizontalVelocity;
-        inJump = false;
-        this.isTurnedRight = isTurnedRight;
-    }
-
-    public CharacterGraphics(int width, int height, int maxHorizontalVelocity)
-    {
-        // isTurnedRight = true
-        this(width, height, maxHorizontalVelocity, true);
+        this.turnedSide = turnedSide;
+        this.isOnGround = isOnGround;
+        controlsDirection = Directions.NONE;
     }
 
     public void update_position(float delta)
     {
-        velocity.y += acceleration.y * delta;
+        // ускорение
+        if (!isOnGround) setAccelerationY(-worldGravity);
+
+        // скорость
         velocity.x += acceleration.x * delta;
         if (Math.abs(velocity.x) > Math.abs(maxHorizontalVelocity))
             if (velocity.x > 0) velocity.x = maxHorizontalVelocity;
             else velocity.x = -maxHorizontalVelocity;
+        velocity.y += acceleration.y * delta;
 
-        position.y += velocity.y * delta;
-        position.x += velocity.x * delta;
+        if (isOnGround() &&  controlsDirection == Directions.NONE)
+            setVelocityX(0);
+
+        // координаты
+        setPosition(position.x + velocity.x * delta, position.y + velocity.y * delta);
     }
 
-    public void setCoords(float x, float y)    // Координаты левого нижнего угла
+    public void setPosition(float x, float y)    // Координаты левого нижнего угла
     {
         position = new Vector2(x, y);
+        hitbox.x = position.x;
+        hitbox.y = position.y;
+    }
+
+    public void setPositionX(float x)
+    {
+        position.x = x;
+        hitbox.x = x;
+    }
+
+    public void setPositionY(float y)
+    {
+        position.y = y;
+        hitbox.y = y;
     }
 
     public void setAcceleration (float accelX, float accelY)
@@ -99,51 +134,77 @@ public class CharacterGraphics
 
     public void jump()
     {
-        if(!inJump)
+        if(isOnGround)
         {
-            setAcceleration(0, -1560);
-            setVelocityY(640);
-            inJump = true;
+            setVelocityY(initialJumpSpeed);
+            setAcceleration(0, -worldGravity);
+            isOnGround = false;
         }
     }
 
-    public void turnRight()
+    public void moveRight()
     {
-        isTurnedRight = true;
+        if (controlsDirection == Directions.LEFT)
+            setVelocityX(-getVelocityX());
+        else if (controlsDirection == Directions.NONE)
+            setVelocityX(0);
+
+        setAccelerationX(horizontalVelocityGain);
+        turnedSide = Directions.RIGHT;
+        controlsDirection = Directions.RIGHT;
     }
 
-    public void turnLeft()
+    public void moveLeft()
     {
-        isTurnedRight = false;
+        if (controlsDirection == Directions.RIGHT)
+            setVelocityX(-getVelocityX());
+        else if (controlsDirection == Directions.NONE)
+            setVelocityX(0);
+
+        setAccelerationX(-horizontalVelocityGain);
+        turnedSide = Directions.LEFT;
+        controlsDirection = Directions.LEFT;
+    }
+
+    public void releaseMovementControls()
+    {
+        // разделить для вынуждденного ускорения (очень потом)
+        setAccelerationX(0);
+        controlsDirection = Directions.NONE;
     }
 
     public void handleDownCollision(float y)
     {
         if (acceleration.y < 0) setAccelerationY(0);
         if (velocity.y < 0) setVelocityY(0);
-        position.y = y;
-        if (inJump) inJump = false;
+        setPositionY(y);
+        if (!isOnGround) isOnGround = true;
     }
 
     public void handleUpCollision(float y)
     {
         if (acceleration.y > 0) setAccelerationY(0);
         if (velocity.y > 0) setVelocityY(0);
-        position.y = y - height;
+        setPositionY(y - height);
     }
 
     public void handleLeftCollision(float x)
     {
         if (acceleration.x < 0) setAccelerationX(0);
         if (velocity.x < 0) setVelocityX(0);
-        position.x = x;
+        setPositionX(x);
     }
 
     public void handleRightCollision(float x)
     {
         if (acceleration.x > 0) setAccelerationX(0);
         if (velocity.x > 0) setVelocityX(0);
-        position.x = x - width;
+        setPositionX(x - width);
+    }
+
+    public Rectangle getHitbox()
+    {
+        return hitbox;
     }
 
     public int getWidth()
@@ -172,12 +233,14 @@ public class CharacterGraphics
 
     public float getMaxHorizontalVelocity() { return maxHorizontalVelocity; }
 
-    public boolean isInJump() { return inJump; }
+    public boolean isOnGround() { return isOnGround; }
 
-    public boolean isTurnedRight()
+    public Directions getTurnedSide()
     {
-        return isTurnedRight;
+        return turnedSide;
     }
 
-
+    public Directions getControlsDirection() {
+        return controlsDirection;
+    }
 }
