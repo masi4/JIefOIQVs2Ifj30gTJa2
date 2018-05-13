@@ -46,7 +46,7 @@ public class GameplayScreen implements Screen
             }
         }
 
-        gui = new GUI(world.getPlayer(),this); //TODO: this(?) InventoryScreen сделать не screen
+        gui = new GUI(world.getPlayer()); //TODO: this(?) InventoryScreen сделать не screen
 
     }
 
@@ -59,15 +59,16 @@ public class GameplayScreen implements Screen
     @Override
     public void render(float delta)
     {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
-        {
-            game.setScreen(new MainMenuScreen());
-            dispose();
-        }
         runTime += delta;
         world.update(delta);
         renderer.render(runTime);
         gui.render(delta);
+        // Конфликтует с GUI рендером. TODO: Исправить
+        /*if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        {
+            game.setScreen(new MainMenuScreen());
+            dispose();
+        }*/
     }
 
     @Override

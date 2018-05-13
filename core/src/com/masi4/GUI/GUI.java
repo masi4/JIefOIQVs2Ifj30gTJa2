@@ -3,7 +3,12 @@ package com.masi4.GUI;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.masi4.UI.UI;
+import com.masi4.UI.gameInventory.InventoryMain;
 import com.masi4.UI.gameInventory.InventoryScreen;
+import com.masi4.UI.gameInventory.model.Inventory;
 import com.masi4.gameobjects.Player;
 import com.masi4.screens.GameplayScreen;
 import static com.masi4.myGame.GameMain.*;
@@ -14,9 +19,11 @@ import static com.masi4.myGame.GameMain.*;
 
 public class GUI
 {
+    private UI ui;
     private StageLayer stageLayer;
+    private InventoryMain inventoryMain;
+
     private Player player;
-    private GameplayScreen gameplayScreen;
     private boolean isInventoryOpened;
 
     /** Determines if the current running platform is Desktop **/
@@ -30,13 +37,12 @@ public class GUI
             isDesktop = true;
     }
 
-    public GUI(Player player, GameplayScreen gameplayScreen)
+    public GUI(Player player)
     {
         if (!isDesktop) stageLayer = new StageLayer();
+        ui = new UI();
         this.player = player;
-        this.gameplayScreen = gameplayScreen;
         isInventoryOpened = false;
-
         Gdx.input.setInputProcessor(stageLayer);
         Gdx.input.setCatchBackKey(true);
     }
@@ -56,22 +62,41 @@ public class GUI
                     player.graphics.setVelocityX(player.graphics.getMaxHorizontalVelocity() * stageLayer.GetWalkingController().getKnobPercentX());
                 }
             }
+            else
+            {
+                player.graphics.setVelocityX(0);
+            }
 
-            if (stageLayer.GetAttackButton().isPressed()) {
+
+            if (stageLayer.GetAttackButton().isPressed())
+            {
                 // TODO: реализовать атаку через абилити и вообще как надо.
                 player.graphics.SetAttack(true);
             }
 
-            if (stageLayer.GetInventoryButton().isPressed()) {
-                game.setScreen(new InventoryScreen(gameplayScreen));
+            if (stageLayer.GetInventoryButton().IsJustPressed())
+            {
+                ui.ShowHideInventory();
+                SwitchInputProcessors();
+
+                //game.setScreen(new InventoryScreen(gameplayScreen));
             }
 
-            // Не работает (?)
-            if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) && isInventoryOpened) {
-                game.setScreen(gameplayScreen);
+            if(ui.IsInventoryVisible())
+            {
+                ui.inventoryMain.render(delta);
             }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+            {
+                if(ui.IsInventoryVisible())
+                {
+                    ui.ShowHideInventory();
+                    SwitchInputProcessors();
+                }
+            }
+
         }
-
         //********************
         //  Keyboard controls
         //********************
@@ -111,13 +136,27 @@ public class GUI
             // TODO: сделать, чтобы выход из инвентаря работал
             if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
                 if (!isInventoryOpened) {
-                    game.setScreen(new InventoryScreen(gameplayScreen));
+                   // game.setScreen(new InventoryScreen(gameplayScreen));
                     isInventoryOpened = true;
                 } else {
-                    game.setScreen(gameplayScreen);
+                   // game.setScreen(gameplayScreen);
                     isInventoryOpened = false;
                 }
             }
+        }
+    }
+
+    private void SwitchInputProcessors()
+    {
+        if(ui.IsInventoryVisible())
+        {
+            Gdx.input.setInputProcessor(ui.inventoryMain);
+            return;
+        }
+        // ....
+        else {
+            stageLayer = new StageLayer();
+            Gdx.input.setInputProcessor(stageLayer);
         }
     }
 

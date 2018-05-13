@@ -8,8 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.masi4.gamehelpers.BackgroundColor;
 
+import static com.masi4.UI.gameInventory.InventoryMain.InventoryViewport;
 import static com.masi4.UI.gameInventory.InventoryScreen.STAGE_HEIGHT;
-import static com.masi4.UI.gameInventory.InventoryScreen.STAGE_WIDTH;
+
 
 /**
  * Created by U1wknUzeU6 on 01.05.2018.
@@ -22,7 +23,8 @@ public class InventoryView extends Table
         setTouchable(Touchable.enabled);
         right().top().pad(10,10,10,10);
 
-        BackgroundColor bc = new BackgroundColor("inventoryDefaultSkin.png");
+
+        BackgroundColor bc = new BackgroundColor("UI/Inventory/inventoryDefaultSkin.png");
         bc.setColor(2, 179, 228, 255);
         setBackground(bc);
 
@@ -39,11 +41,22 @@ public class InventoryView extends Table
             @Override
             public void drag(InputEvent event, float x, float y, int pointer)
             {
-                if(getHeight() > STAGE_HEIGHT) {
-                    if ((getTop() > STAGE_HEIGHT || yWhenTouched[0] - y < 0)&&(getTop()<getHeight()||yWhenTouched[0] - y > 0)) { // СОЙДЕТ!!!
-                        setPosition(getX(), getY() - (yWhenTouched[0] - y));
-                    }
+                setPosition(getX(),
+                        (getY() - (yWhenTouched[0] - y)) > 0 ? 0:
+                                (getY() - (yWhenTouched[0] - y) + getHeight() < InventoryViewport.getWorldHeight()-20) ? InventoryViewport.getWorldHeight()-20 - getHeight() :
+                                        (getY() - (yWhenTouched[0] - y)));
+               
+                if(getY() - (yWhenTouched[0] - y) > 0  ||
+                   getY() - (yWhenTouched[0] - y) + getHeight() < InventoryViewport.getWorldHeight()-20)
+                {
+                    yWhenTouched[0] = y;
                 }
+
+
+                Gdx.app.log("sa ", getTop()+" "+(getY() - (yWhenTouched[0] - y)));
+                Gdx.app.log("sa ", getTop()+" "+ getY());
+                Gdx.app.log("sa ", getTop()+" "+(yWhenTouched[0] - y));
+                Gdx.app.log("asd", getHeight()+"");
             }
         });
         /// Убогий скролл....

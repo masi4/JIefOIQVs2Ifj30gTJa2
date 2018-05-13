@@ -27,4 +27,18 @@ public class InventoryButton extends ImageButton
         this.setPosition(20,viewport.getWorldHeight()-120);
     }
 
+    private boolean switcher = false;
+    public boolean IsJustPressed()
+    {
+        if(isPressed() && !switcher)
+        {
+            switcher = true;
+            return true;
+        }
+        if(!isPressed() && switcher)
+        {
+            switcher = false;
+        }
+        return false;
+    }
 }

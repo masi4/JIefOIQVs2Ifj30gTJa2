@@ -48,7 +48,8 @@ public class InventoryScreen implements Screen
         container.left().top();
 
         inventoryView = new InventoryView();
-        for(int i = 0; i< inventory.slots.size; i++) {
+        for(int i = 0; i< inventory.slots.size; i++)
+        {
             inventoryView.add(new SlotView(inventory.slots.get(i))).width(34).height(34).space(5);
             if((i+1)%6==0)// по 6 айтемов в строке
                 inventoryView.row();

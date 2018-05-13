@@ -140,7 +140,7 @@ public class AssetLoader
         {
             MainMenu_Bg[i] =  new Texture(Gdx.files.internal("gameplay/main_menu_BG/bg_0"+i+".png"));
         }
-        MainMenu_Buttons = new Texture(Gdx.files.internal("menuButtons.png"));
+        MainMenu_Buttons = new Texture(Gdx.files.internal("buttons/menuButtons.png"));
         int m = GamePreferences.Options.getInteger("Language"); // Для локализации
         playButtonTxrReg = new TextureRegion[]
                 {
@@ -171,7 +171,7 @@ public class AssetLoader
     // Джойстик
     public static void load_Controller()
     {
-        controller_Texture = new Texture(Gdx.files.internal("controller.png"));
+        controller_Texture = new Texture(Gdx.files.internal("buttons/controller.png"));
         controller_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
         controller_FrameActive = new TextureRegion(controller_Texture, 0, 0, controller_frame_Width, controller_frame_Height);
@@ -199,10 +199,10 @@ public class AssetLoader
     // Кнопка атаки
     public static void load_GUI_Buttons()
     {
-        attackButton_Texture = new Texture(Gdx.files.internal("attackButton.png"));
+        attackButton_Texture = new Texture(Gdx.files.internal("buttons/attackButton.png"));
         attackButton_Down = new TextureRegion(attackButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
         attackButton_Up = new TextureRegion(attackButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
-        inventoryButton_Texture = new Texture(Gdx.files.internal("inventoryButton.png"));
+        inventoryButton_Texture = new Texture(Gdx.files.internal("buttons/inventoryButton.png"));
         inventoryButton_Down = new TextureRegion(inventoryButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
         inventoryButton_Up = new TextureRegion(inventoryButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
     }
@@ -315,28 +315,39 @@ public class AssetLoader
     // Инвентарь
     public static void load_Inventory()
     {
-        GameInventory_InventoryTexture = new Texture(Gdx.files.internal("inventoryDefaultSkin.png"));
+        GameInventory_InventoryTexture = new Texture(Gdx.files.internal("UI/Inventory/inventoryDefaultSkin.png"));
         GameInventory_InventoryTextureRegion = new TextureRegion(GameInventory_InventoryTexture,0,0,52,52);
-        GameInventory_SlotTexture = new Texture(Gdx.files.internal("slotDefaultSkin.png"));
+        GameInventory_SlotTexture = new Texture(Gdx.files.internal("UI/Inventory/slotDefaultSkin.png"));
         GameInventory_SlotTextureRegion = new TextureRegion(GameInventory_InventoryTexture,0,0,52,52);
-        items_Texture = new Texture(Gdx.files.internal("Items_atlas.png"));
-        GameInventory_HealthBarTexture = new Texture(Gdx.files.internal("healthbar.png"));
+        items_Texture = new Texture(Gdx.files.internal("UI/Inventory/Items_atlas.png"));
+        items_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        GameInventory_HealthBarTexture = new Texture(Gdx.files.internal("UI/Inventory/healthbar.png"));
         GameInventory_HealthBarBoundsTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,0,90,10);
         GameInventory_HealthBarFillTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,10,1,8);
     }
-    public static TextureRegion Inventory_GetItemTexture(_InventoryItem item) {
-        XmlReader reader = new XmlReader();
-        XmlReader.Element root = null;
-        FileHandle file = Gdx.files.internal("xml/Items.xml");
-        try {
-            root = reader.parse(file);
-        } catch (IOException e) {        }
+    public static TextureRegion Inventory_GetItemTexture(_InventoryItem item)
+    {
+        if (items_Texture.isManaged())
+        {
+            XmlReader reader = new XmlReader();
+            XmlReader.Element root = null;
+            FileHandle file = Gdx.files.internal("xml/Items.xml");
+            try {
+                root = reader.parse(file);
+            } catch (IOException e) {
+            }
 
-        int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
+            int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
 
-        int x = (id%(items_Texture.getWidth()/itemWidth))*itemWidth;
-        int y = (id/(items_Texture.getHeight()/itemHeight))*itemHeight;
-        return new TextureRegion(items_Texture,x,y,itemWidth,itemHeight);
+            int x = (id % (items_Texture.getWidth() / itemWidth)) * itemWidth;
+            int y = (id / (items_Texture.getHeight() / itemHeight)) * itemHeight;
+            return new TextureRegion(items_Texture, x, y, itemWidth, itemHeight);
+        }
+        else
+        {
+            Gdx.app.log("AssetLoader", items_Texture.toString());
+            return null;
+        }
     }
     public static void dispose_Level()
     {
