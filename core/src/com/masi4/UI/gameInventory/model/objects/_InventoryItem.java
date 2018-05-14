@@ -9,4 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public interface _InventoryItem
 {
     TextureRegion GetTexture();
+
+    void Split();
+
+    void Throw();
 }

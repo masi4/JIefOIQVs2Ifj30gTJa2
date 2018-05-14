@@ -1,6 +1,7 @@
 package com.masi4.UI.gameInventory.model;
 
 import com.badlogic.gdx.utils.Array;
+import com.masi4.UI.gameInventory.model.data.InventoryDataManager;
 import com.masi4.UI.gameInventory.model.objects.Test_Item;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 import com.masi4.UI.gameInventory.model.objects.healing_potion;
@@ -13,17 +14,57 @@ public class Inventory {
 
     public Array<Slot> slots;
 
+    private static int size = 64;
+
+    InventoryDataManager dataManager;
+
     public Inventory()
     {
-        slots = new Array<Slot>();
-
-        for(int i =0;i<64;i++){
-            slots.add(new Slot());
-        }
-
-        slots.get(0).Set(new healing_potion(), 33);
-        slots.get(5).Set(new healing_potion(), 64);
+        dataManager = new InventoryDataManager();
+        Load();
     }
-    /// Здесь написать связь с хранилищем объектов
 
+    public Slot GetFirstEmptySlot()
+    {
+        for(int i = 0; i < size; i++)
+        {
+            if(slots.get(i).isEmpty())
+            {
+                return slots.get(i);
+            }
+        }
+        return null;
+    }
+
+    /// Здесь написать связь с хранилищем объектов
+    public void Save()
+    {
+        dataManager.Save(slots);
+    }
+
+    private void Load()
+    {
+        slots = dataManager.Load();
+
+        if(slots != null)
+        {
+            boolean state = false;
+            for (int i = 0; i < slots.size;i++)
+                if(!slots.get(i).isEmpty())
+                    state = true;
+
+
+            if(!state)
+                LoadDeafult();
+        }
+        else
+        {
+            LoadDeafult();
+        }
+    }
+
+    private void LoadDeafult()
+    {
+        slots.get(0).Set(new healing_potion(), 64);
+    }
 }

@@ -1,14 +1,19 @@
 package com.masi4.UI.gameInventory.model;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
+import com.masi4.UI.gameInventory.InventoryMain;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 import com.masi4.gamehelpers.AssetLoader;
+
+
 
 /**
  * Created by U1wknUzeU6 on 23.04.2018.
  */
 
-public class Slot {
+public class Slot
+{
     private int count;
     private _InventoryItem item;
 
@@ -45,6 +50,17 @@ public class Slot {
             item = null;
     }
 
+    public boolean Split(Slot slot0)
+    {
+        if(count > 1)
+        {
+            slot0.Set(item, count % 2 == 0 ? count / 2 : (count - 1) / 2);
+            count = (count + 1) / 2;
+            return true;
+        }
+        return false;
+    }
+
     public _InventoryItem GetItem()
     {
         return item;
@@ -55,7 +71,8 @@ public class Slot {
         return count;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty()
+    {
         if(item == null) return true;
         else return false;
     }

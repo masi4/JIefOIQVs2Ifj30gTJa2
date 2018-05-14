@@ -63,7 +63,7 @@ public class GameplayScreen implements Screen
         world.update(delta);
         renderer.render(runTime);
         gui.render(delta);
-        // Конфликтует с GUI рендером. TODO: Исправить
+        // Конфликтует с GUI рендером. TODO: Исправить UPD: Кнопка перекачевала в GUI
         /*if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
         {
             game.setScreen(new MainMenuScreen());

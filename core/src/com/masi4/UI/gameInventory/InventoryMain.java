@@ -1,11 +1,14 @@
 package com.masi4.UI.gameInventory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.masi4.UI.gameInventory.model.Inventory;
@@ -15,18 +18,23 @@ import com.masi4.gameobjects.Player;
 public class InventoryMain extends Stage
 {
     static final Viewport InventoryViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
     static ContextMenu contextMenu;
+
     private InventoryWindow inventoryWindow;
+
     private Inventory inventory;
+
     private InventoryCloseButton inventoryCloseButton;
+
     public boolean IsDisplayed = false; // Показывается ли в данный момент инвентарь
+
     private Stage layout; // Для контекстного меню
 
     public InventoryMain()
     {
         AssetLoader.load_Inventory();
         AssetLoader.load_Fonts();
-        CreateContextMenu();
 
         inventory = new Inventory();
 
@@ -34,9 +42,12 @@ public class InventoryMain extends Stage
 
         inventoryWindow = new InventoryWindow(inventory, inventoryCloseButton);
 
+        CreateContextMenu();
+
         this.addActor(inventoryWindow);
 
-        addListener(new ClickListener(){
+        addListener(new ClickListener()
+        {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -48,14 +59,15 @@ public class InventoryMain extends Stage
                 contextMenu.isTrueClick = false;
 
                 return super.touchDown(event, x, y, pointer, button);
-            }});
+            }
+        });
 
         IsDisplayed = true;
     }
 
     private void CreateContextMenu()
     {
-        contextMenu = new ContextMenu();
+        contextMenu = new ContextMenu(this);
         contextMenu.setPosition(0, 0);
         contextMenu.setZIndex(100);
 
@@ -65,14 +77,18 @@ public class InventoryMain extends Stage
 
     public void render(float delta)
     {
-        this.act(delta);
-        this.draw();
         layout.act(delta);
+
+        this.act(delta);
+
+        this.draw();
+
         layout.draw();
     }
 
     public void Hide()
     {
+        inventory.Save();
         this.dispose();
         IsDisplayed = false;
     }
@@ -80,5 +96,20 @@ public class InventoryMain extends Stage
     public InventoryCloseButton GetCloseButton()
     {
         return inventoryCloseButton;
+    }
+
+    public Array<InputProcessor> GetInputProcessor()
+    {
+        Array<InputProcessor> array = new Array<InputProcessor>();
+        array.addAll(layout,this);
+        return array;
+    }
+
+    public InventoryWindow GetInventoryWindow() {
+        return inventoryWindow;
+    }
+
+    public Inventory GetInventory() {
+        return inventory;
     }
 }

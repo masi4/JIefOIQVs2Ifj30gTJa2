@@ -3,9 +3,14 @@ package com.masi4.GUI;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.masi4.UI.UI;
 import com.masi4.UI.gameInventory.InventoryMain;
 import com.masi4.gameobjects.Player;
+import com.masi4.screens.MainMenuScreen;
+
+import static com.badlogic.gdx.scenes.scene2d.InputEvent.Type.keyDown;
+import static com.masi4.myGame.GameMain.game;
 
 /**
  *  Отвечает за рендер. Проверяет состояние акторов.
@@ -90,6 +95,10 @@ public class GUI
                     ui.ShowHideInventory();
                     SwitchInputProcessors();
                 }
+                else
+                {
+                    game.setScreen(new MainMenuScreen());
+                }
             }
 
         }
@@ -149,7 +158,9 @@ public class GUI
         if(ui.IsInventoryVisible())
         {
             stageLayer.dispose();
-            Gdx.input.setInputProcessor(ui.inventoryMain);
+            InputMultiplexer inputMultiplexer = new InputMultiplexer();
+            inputMultiplexer.setProcessors(ui.inventoryMain.GetInputProcessor());
+            Gdx.input.setInputProcessor(inputMultiplexer);
             return;
         }
         // ....

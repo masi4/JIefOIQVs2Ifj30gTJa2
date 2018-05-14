@@ -80,6 +80,9 @@ public class InventoryWindow extends Window
         this.add(inventoryView).right().space(0, 0,0 ,10 );
         this.pack();*/
 
+    }
 
+    public InventoryView GetInventoryView() {
+        return inventoryView;
     }
 }
