@@ -42,29 +42,33 @@ public class Inventory {
 
     private void Load()
     {
-        slots = dataManager.Load();
-        if(isEmpty())
-            LoadDeafult();
-    }
+        slots =  dataManager.Load();
 
-    private boolean isEmpty()
-    {
-        if(slots != null)
+        if(dataManager.Load() == null)
         {
-            boolean state = false;
-            for (int i = 0; i < slots.size;i++)
-                if(!slots.get(i).isEmpty())
-                    state = true;
-            if(!state)
-                return true;
-            else
-                return false;
+             slots = new Array<Slot>();
+             for(int i = 0; i < 64 ; i++)
+             {
+                 slots.add(new Slot());
+             }
+             LoadDeafult();
+        }
+        else if(isEmpty())
+        {
+            LoadDeafult();
         }
         else
-        {
-            return true;
-        }
+            {
+                slots = dataManager.Load();
+            }
+    }
 
+    private boolean isEmpty() {
+
+        for (int i = 0; i < slots.size; i++)
+            if (!slots.get(i).isEmpty())
+                return false;
+        return true;
     }
 
     private void LoadDeafult()

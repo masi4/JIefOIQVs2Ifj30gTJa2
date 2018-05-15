@@ -30,7 +30,7 @@ public class InventoryDataManager
 
         if(raw == null) return null;
 
-        return json.fromJson(Array.class, raw);
+        else return json.fromJson(Array.class, raw);
     }
 
 }
