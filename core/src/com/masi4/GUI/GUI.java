@@ -58,106 +58,103 @@ public class GUI
 
     public void render(float delta)
     {
-        if (!isDesktop) {
-            //***********************
-            // Touchscreen controls
-            //***********************
-            stageLayer.render(delta);
+        // TODO: сделать событием (наверное)
+        if (!player.isDead()) {
 
-            if (stageLayer.GetWalkingController().isTouched())
-            {
-                player.graphics.controlByJoystick(
-                        player,
-                        stageLayer.GetWalkingController().getKnobPercentX(),
-                        stageLayer.GetWalkingController().getKnobPercentY(),
-                        jumpCtrl
-                );
-                jumpCtrl = !(stageLayer.GetWalkingController().getKnobPercentY() > 0.4);
-            }
-            else
-                player.graphics.releaseMovementControls();
+            // region Touchpad controls
+            if (!isDesktop) {
+                //***********************
+                // Touchscreen controls
+                //***********************
+                stageLayer.render(delta);
 
-            if (stageLayer.GetAttackButton().isPressed()) {
+                if (stageLayer.GetWalkingController().isTouched()) {
+                    player.graphics.controlByJoystick(
+                            player,
+                            stageLayer.GetWalkingController().getKnobPercentX(),
+                            stageLayer.GetWalkingController().getKnobPercentY(),
+                            jumpCtrl
+                    );
+                    jumpCtrl = !(stageLayer.GetWalkingController().getKnobPercentY() > 0.4);
+                } else
+                    player.graphics.releaseMovementControls();
+
+                if (stageLayer.GetAttackButton().isPressed()) {
                     player.executeAbility(AbilityName.Player_MeleeSwordAttack);
-            }
+                }
 
-            if (stageLayer.GetInventoryButton().IsJustPressed())
-            {
-                ui.ShowHideInventory();
-                SwitchInputProcessors();
-            }
+                if (stageLayer.GetInventoryButton().IsJustPressed()) {
+                    ui.ShowHideInventory();
+                    SwitchInputProcessors();
+                }
 
-            // Кнопка в самом инвенторе
-            if(ui.IsInventoryVisible())
-            {
-                if(ui.inventoryMain.GetCloseButton().IsJustPressed())
-                {
+                // Кнопка в самом инвенторе
+                if (ui.IsInventoryVisible()) {
+                    if (ui.inventoryMain.GetCloseButton().IsJustPressed()) {
+                        ui.ShowHideInventory();
+                        SwitchInputProcessors();
+                    }
+                }
+
+                if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+                    if (ui.IsInventoryVisible()) {
+                        ui.ShowHideInventory();
+                        SwitchInputProcessors();
+                    } else {
+                        game.setScreen(new MainMenuScreen());
+                    }
+                }
+
+            }
+            //endregion
+
+            // region Keyboard controls
+            else {
+                // Передвижение
+                if (Gdx.input.isKeyPressed(Input.Keys.D))
+                    player.graphics.moveRight(player);
+
+                if (Gdx.input.isKeyPressed(Input.Keys.A))
+                    player.graphics.moveLeft(player);
+
+                if (!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A))
+                    player.graphics.releaseMovementControls();
+
+                if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                    if (jumpCtrl_W) player.graphics.jump();
+                    jumpCtrl_W = false;
+                } else
+                    jumpCtrl_W = true;
+
+                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                    if (jumpCtrl_SPACE) player.graphics.jump();
+                    jumpCtrl_SPACE = false;
+                } else
+                    jumpCtrl_SPACE = true;
+
+                // Атака
+                if (Gdx.input.isKeyPressed(Input.Keys.J)) {
+                    player.executeAbility(AbilityName.Player_MeleeSwordAttack);
+                }
+
+                // Инвентарь
+                if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
                     ui.ShowHideInventory();
                     SwitchInputProcessors();
                 }
             }
+            // endregion
 
-            if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
-            {
-                if(ui.IsInventoryVisible())
-                {
-                    ui.ShowHideInventory();
-                    SwitchInputProcessors();
-                }
-                else
-                {
-                    game.setScreen(new MainMenuScreen());
-                }
+            // Обработка UI объектов
+
+            if (ui.IsInventoryVisible()) {
+                ui.inventoryMain.render(delta);
             }
-
         }
-        //********************
-        //  Keyboard controls
-        //********************
         else
         {
-            // Передвижение
-           if (Gdx.input.isKeyPressed(Input.Keys.D))
-                player.graphics.moveRight(player);
-
-            if (Gdx.input.isKeyPressed(Input.Keys.A))
-                player.graphics.moveLeft(player);
-
-            if (!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A))
-                player.graphics.releaseMovementControls();
-
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                if (jumpCtrl_W) player.graphics.jump();
-                    jumpCtrl_W = false;
-            }
-            else
-               jumpCtrl_W = true;
-
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                if (jumpCtrl_SPACE) player.graphics.jump();
-                    jumpCtrl_SPACE = false;
-            }
-            else
-               jumpCtrl_SPACE = true;
-
-            // Атака
-            if (Gdx.input.isKeyPressed(Input.Keys.J)) {
-                    player.executeAbility(AbilityName.Player_MeleeSwordAttack);
-            }
-
-            // Инвентарь
-            // TODO: сделать, чтобы выход из инвентаря работал
-            if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-                ui.ShowHideInventory();
-                SwitchInputProcessors();
-            }
-        }
-
-        // Обработка UI объектов
-
-        if(ui.IsInventoryVisible())
-        {
-            ui.inventoryMain.render(delta);
+            player.graphics.releaseMovementControls();
+            player.graphics.setVelocityX(0);
         }
     }
 

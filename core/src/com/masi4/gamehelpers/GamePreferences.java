@@ -15,6 +15,7 @@ public class GamePreferences
 {
     public static Preferences InventoryData = Gdx.app.getPreferences("InventoryData");
     public static Preferences Options = Gdx.app.getPreferences("GameOptions");
+
     public static I18NBundle loc = I18NBundle.createBundle( Gdx.files.internal("lang/lang"),new Locale("ru"));
     public static void SwitchToEn(){
         loc = I18NBundle.createBundle( Gdx.files.internal("lang/lang"),new Locale("en"));

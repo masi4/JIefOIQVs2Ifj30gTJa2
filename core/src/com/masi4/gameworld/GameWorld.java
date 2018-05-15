@@ -56,14 +56,15 @@ public class GameWorld
     {
         // Спавним скелетов
         // TODO: спавнить разного размера
-        if (skeletonsAlive < 10)
-            if (skeletonsAlive < 3) {
-                spawnSkeletonRandomPos();
-                spawnSkeletonRandomPos();
-            }
-            else
-                if (random.nextInt(30000) < 50)
+        if (SPAWN_SKELETONS)
+        {
+            if (skeletonsAlive < 10)
+                if (skeletonsAlive < 3) {
                     spawnSkeletonRandomPos();
+                    spawnSkeletonRandomPos();
+                } else if (random.nextInt(30000) < 50)
+                    spawnSkeletonRandomPos();
+        }
 
         //
         // Обновляем игрока

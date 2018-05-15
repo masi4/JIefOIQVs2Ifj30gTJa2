@@ -1,8 +1,7 @@
 package com.masi4.UI;
 
-import com.badlogic.gdx.Gdx;
 import com.masi4.UI.gameInventory.InventoryMain;
-import com.masi4.gameobjects.Player;
+import com.masi4.gameobjects.objects.Player;
 
 public class UI
 {
@@ -29,7 +28,7 @@ public class UI
 
     public void ShowHideInventory()
     {
-        if(inventoryMain == null || !inventoryMain.IsDisplayed)
+        if (inventoryMain == null || !inventoryMain.IsDisplayed)
             ShowInventory();
         else
             HideInventory();

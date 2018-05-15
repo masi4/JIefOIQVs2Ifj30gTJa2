@@ -10,8 +10,9 @@ import com.badlogic.gdx.Gdx;
 
 public class GameMain implements ApplicationListener
 {
-    // DEBUG TODO: закоментить перед релизом
+    // DEBUG TODO: вынести в Preferences
     public static final boolean DEBUG = false;
+    public static final boolean SPAWN_SKELETONS = true;
 
     public static final int SCREEN_HEIGHT = 450;
     public static final int SCREEN_WIDTH = 800;

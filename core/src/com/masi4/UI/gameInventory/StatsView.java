@@ -73,7 +73,7 @@ public class StatsView extends Table
 
     void LoadStats()
     {
-        int MAX_HP =  player.rpg.getMaxHP();
-        int HP = player.rpg.getCurrentHP();
+        int MAX_HP =  player.getMaxHP();
+        int HP = player.getCurrentHP();
     }
 }
