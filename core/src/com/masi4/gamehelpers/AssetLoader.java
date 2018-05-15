@@ -43,6 +43,7 @@ public class AssetLoader
             level_torch_Texture,
             level_cave_Teaxture,
             items_Texture,
+            GUI_HealthBar_Texture,
             GameInventory_HealthBarTexture,
             GameInventory_InventoryTexture,
             GameInventory_SlotTexture;
@@ -80,6 +81,11 @@ public class AssetLoader
             // кнопка закрытия инвентаря
             inventoryCloseButton_Up,
             inventoryCloseButton_Down,
+            // хп бар
+            GUI_HealthBar_BoundsTextureRegion,
+            GUI_HealthBar_KnobTextureRegion,
+            GUI_HealthBar_FillTextureRegion,
+
 
             // инвентарь
             GameInventory_InventoryTextureRegion,
@@ -215,6 +221,11 @@ public class AssetLoader
         inventoryButton_Texture = new Texture(Gdx.files.internal("buttons/inventoryButton.png"));
         inventoryButton_Down = new TextureRegion(inventoryButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
         inventoryButton_Up = new TextureRegion(inventoryButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
+        GUI_HealthBar_Texture = new Texture(Gdx.files.internal("UI/Inventory/healthbar.png")); // TODO: заменить
+        GUI_HealthBar_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        GUI_HealthBar_BoundsTextureRegion = new TextureRegion(GUI_HealthBar_Texture,0,0,90,10);
+        GUI_HealthBar_KnobTextureRegion = new TextureRegion(GUI_HealthBar_Texture,0,10,1,8);
+        GUI_HealthBar_FillTextureRegion = new TextureRegion(GUI_HealthBar_Texture,1,10,1,8);
     }
     public static void dispose_Controller()
     {

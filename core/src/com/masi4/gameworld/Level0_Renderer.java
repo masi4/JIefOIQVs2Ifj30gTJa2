@@ -74,6 +74,7 @@ public class Level0_Renderer extends GameRenderer
 
         initGameObjects();
         initAssets();
+
     }
 
     /**
@@ -137,10 +138,12 @@ public class Level0_Renderer extends GameRenderer
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
         // Открепляем/прикрепляем камеру к персонажу и вычисляем смещение фонов ("параллакс")
         AttachCameraAndCalculateParallax();
 
         batcher.begin();
+
 
         // Прикрепляемся к неподвижной камере
         staticCam.update();
@@ -159,6 +162,7 @@ public class Level0_Renderer extends GameRenderer
 
             // Отрисовка игрока
             drawPlayer(runTime);
+
 
 
         batcher.end();

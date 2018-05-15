@@ -6,8 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.masi4.GUI.Elements.HealthBar;
 import com.masi4.GUI.Elements.WalkingController;
-
+import com.masi4.GUI.Elements.AttackButton;
+import com.masi4.GUI.Elements.InventoryButton;
 /**
     Отвечает за события.
  */
@@ -16,9 +18,10 @@ public class StageLayer extends Stage
 {
     private Viewport viewport;
 
-    private com.masi4.GUI.Elements.AttackButton attackButton;
-    private com.masi4.GUI.Elements.InventoryButton inventoryButton;
+    private AttackButton attackButton;
+    private InventoryButton inventoryButton;
     private WalkingController walkingControl;
+    private HealthBar healthBar;
     private int controllerPointer;
 
     public StageLayer()
@@ -28,10 +31,12 @@ public class StageLayer extends Stage
         attackButton = new com.masi4.GUI.Elements.AttackButton(viewport);
         inventoryButton = new com.masi4.GUI.Elements.InventoryButton(viewport);
         walkingControl = new WalkingController(viewport);
+        healthBar = new HealthBar(viewport);
 
         this.addActor(inventoryButton);
         this.addActor(attackButton);
         this.addActor(walkingControl);
+        this.addActor(healthBar);
 
         LoadEvents();
     }
@@ -65,11 +70,15 @@ public class StageLayer extends Stage
         });
     }
 
-    public com.masi4.GUI.Elements.AttackButton GetAttackButton(){ return attackButton; }
+    public AttackButton GetAttackButton(){ return attackButton; }
 
-    public com.masi4.GUI.Elements.InventoryButton GetInventoryButton(){ return inventoryButton; }
+    public InventoryButton GetInventoryButton(){ return inventoryButton; }
 
     public WalkingController GetWalkingController() { return walkingControl; }
+
+    public HealthBar getHealthBar() {
+        return healthBar;
+    }
 
     public void render(float delta)
     {
