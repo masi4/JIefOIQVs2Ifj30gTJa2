@@ -14,8 +14,6 @@ public class Inventory {
 
     public Array<Slot> slots;
 
-    private static int size = 64;
-
     InventoryDataManager dataManager;
 
     public Inventory()
@@ -26,7 +24,7 @@ public class Inventory {
 
     public Slot GetFirstEmptySlot()
     {
-        for(int i = 0; i < size; i++)
+        for(int i = 0; i < slots.size; i++)
         {
             if(slots.get(i).isEmpty())
             {
@@ -45,22 +43,28 @@ public class Inventory {
     private void Load()
     {
         slots = dataManager.Load();
+        if(isEmpty())
+            LoadDeafult();
+    }
 
+    private boolean isEmpty()
+    {
         if(slots != null)
         {
             boolean state = false;
             for (int i = 0; i < slots.size;i++)
                 if(!slots.get(i).isEmpty())
                     state = true;
-
-
             if(!state)
-                LoadDeafult();
+                return true;
+            else
+                return false;
         }
         else
         {
-            LoadDeafult();
+            return true;
         }
+
     }
 
     private void LoadDeafult()

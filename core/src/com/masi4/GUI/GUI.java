@@ -65,7 +65,6 @@ public class GUI
                 player.graphics.setVelocityX(0);
             }
 
-
             if (stageLayer.GetAttackButton().isPressed())
             {
                 // TODO: реализовать атаку через абилити и вообще как надо.

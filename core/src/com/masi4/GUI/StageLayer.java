@@ -24,6 +24,7 @@ public class StageLayer extends Stage
     public StageLayer()
     {
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         attackButton = new com.masi4.GUI.Elements.AttackButton(viewport);
         inventoryButton = new com.masi4.GUI.Elements.InventoryButton(viewport);
         walkingControl = new WalkingController(viewport);

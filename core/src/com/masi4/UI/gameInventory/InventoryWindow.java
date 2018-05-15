@@ -19,16 +19,19 @@ public class InventoryWindow extends Window
 {
     protected static final float INVENTORY_WIDTH = InventoryViewport.getWorldWidth()-20;
     protected static final float INVENTORY_HEIGHT = InventoryViewport.getWorldHeight()-20;
-    private static final Window.WindowStyle windownStyle;
 
     private InventoryView inventoryView;
     private StatsView statsView;
+
     private InventoryCloseButton inventoryCloseButton;
+
     private Inventory inventory;
 
     private Table leftContainer;
 
     private static float bgOpacity = 0.7f; // 0 ... 1
+
+    private static final Window.WindowStyle windownStyle;
     static
     {
         BackgroundColor bc = new BackgroundColor("UI/Inventory/inventoryDefaultSkin.png");
@@ -43,14 +46,20 @@ public class InventoryWindow extends Window
     public InventoryWindow(Inventory inventory, InventoryCloseButton inventoryCloseButton)
     {
         super("",windownStyle);
-        this.pad(10);
-        this.setBounds(10, 10, INVENTORY_WIDTH, INVENTORY_HEIGHT );
+        SetStyle();
+
         this.inventory = inventory;
         this.inventoryCloseButton = inventoryCloseButton;
 
-
         CreateTable();
         this.top();
+    }
+
+    private void SetStyle()
+    {
+        this.pad(10);
+        this.setBounds(10, 10, INVENTORY_WIDTH, INVENTORY_HEIGHT );
+        this.align(Align.left);
     }
 
     private void CreateTable()
@@ -60,17 +69,21 @@ public class InventoryWindow extends Window
         inventoryView = new InventoryView(inventory);
 
         statsView = new StatsView();
-
         statsView.setWidth(inventoryView.getWidth()-100);
 
-        this.align(Align.left);
         statsView.left();
         inventoryView.right();
 
-        leftContainer.add(inventoryCloseButton).left().top();
+        leftContainer.add(inventoryCloseButton)
+                .left()
+                .top();
         leftContainer.row();
-        leftContainer.add(statsView).left().top();
+        leftContainer.add(statsView)
+                .left()
+                .top();
+
         leftContainer.align(Align.left);
+
         this.add(leftContainer).left().top().width(INVENTORY_WIDTH - inventoryView.getWidth());
         this.add(inventoryView).right().space(0, 0,0 ,10 );
         /*

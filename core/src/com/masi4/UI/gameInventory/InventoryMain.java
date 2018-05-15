@@ -1,19 +1,15 @@
 package com.masi4.UI.gameInventory;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.masi4.UI.gameInventory.model.Inventory;
 import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gameobjects.Player;
 
 public class InventoryMain extends Stage
 {
@@ -29,7 +25,7 @@ public class InventoryMain extends Stage
 
     public boolean IsDisplayed = false; // Показывается ли в данный момент инвентарь
 
-    private Stage layout; // Для контекстного меню
+    private Stage contextMenuStage; // Для контекстного меню
 
     public InventoryMain()
     {
@@ -71,19 +67,19 @@ public class InventoryMain extends Stage
         contextMenu.setPosition(0, 0);
         contextMenu.setZIndex(100);
 
-        layout = new Stage();
-        layout.addActor(contextMenu);
+        contextMenuStage = new Stage();
+        contextMenuStage.addActor(contextMenu);
     }
 
     public void render(float delta)
     {
-        layout.act(delta);
+        contextMenuStage.act(delta);
 
         this.act(delta);
 
         this.draw();
 
-        layout.draw();
+        contextMenuStage.draw();
     }
 
     public void Hide()
@@ -101,7 +97,7 @@ public class InventoryMain extends Stage
     public Array<InputProcessor> GetInputProcessor()
     {
         Array<InputProcessor> array = new Array<InputProcessor>();
-        array.addAll(layout,this);
+        array.addAll(contextMenuStage,this);
         return array;
     }
 

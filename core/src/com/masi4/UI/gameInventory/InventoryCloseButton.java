@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.masi4.gamehelpers.AssetLoader;
 
+import java.util.Set;
+
 public class InventoryCloseButton extends ImageButton
 {
     final static TextureRegionDrawable imageUp;
@@ -18,6 +20,11 @@ public class InventoryCloseButton extends ImageButton
     public InventoryCloseButton()
     {
         super(imageUp, imageDown);
+        SetStyle();
+    }
+
+    private void SetStyle()
+    {
         this.getImage().setFillParent(true);
         this.setSize(95,95);
         this.getImageCell().size(100,100);

@@ -35,34 +35,48 @@ public class ContextMenu extends Window
     private _InventoryItem item;
 
     private Slot slot;
-
     private SlotView slotView;
 
-    private InventoryMain inventoryMain;
-
+    private Inventory inventory;
     private InventoryView inventoryView;
 
-    private Inventory inventory;
+    private InventoryMain inventoryMain;
 
     public ContextMenu(InventoryMain inventoryMain)
     {
         super("", contextMenuStyle);
-        this.setTouchable(Touchable.enabled);
-        this.pad(5);
+        SetStyle();
         this.inventoryMain = inventoryMain;
         inventoryView = inventoryMain.GetInventoryWindow().GetInventoryView();
         inventory = inventoryMain.GetInventory();
+    }
+
+    private void SetStyle()
+    {
+        this.setTouchable(Touchable.enabled);
+        this.pad(5);
     }
 
     public void Show(final SlotView slotView0)
     {
         this.clear();
         this.setVisible(true);
-
+        slotView = slotView0;
         slot = slotView0.slot;
         item = slotView0.slot.GetItem();
-        slotView = slotView0;
 
+        LoadMenu();
+        this.pack();
+    }
+
+    public void Hide()
+    {
+        this.clear();
+        this.setVisible(false);
+    }
+
+    private void LoadMenu()
+    {
         ////////////////////////////////////////////////////////////////////////////////////////////
         if(item instanceof _Useable)
         {
@@ -110,14 +124,14 @@ public class ContextMenu extends Window
                     Slot slot1 = inventory.GetFirstEmptySlot();
                     if(slot1 != null) {
                         if(slot.Split(slot1));
-                            inventoryView.UpdateView();
+                        inventoryView.UpdateView();
                     }
                     Hide();
                 }
             });
             this.add(label1).left();
             this.row();
-
+            ////////////////////////////////////////////////////////////////////////////////////////
             ContextMenuLabel label2 = new ContextMenuLabel("Выбросить");
 
             label2.addListener(new ClickListener()
@@ -134,15 +148,8 @@ public class ContextMenu extends Window
             this.row();
         }
         ////////////////////////////////////////////////////////////////////////////////////////////
-
-        this.pack();
     }
 
-    public void Hide()
-    {
-        this.clear();
-        this.setVisible(false);
-    }
     ////////////////////////////////// ПРАВИЛЬНЫЕ ПОЗИЦИИ //////////////////////////////////////////
     @Override
     public void setPosition(float x,float y)
@@ -150,6 +157,7 @@ public class ContextMenu extends Window
         super.setPosition(x, y-getHeight());
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
 
 class ContextMenuLabel extends Label
@@ -159,14 +167,12 @@ class ContextMenuLabel extends Label
     static
     {
         labelStyle = new Label.LabelStyle(AssetLoader.default18, Color.WHITE);
-
     }
 
     public ContextMenuLabel(CharSequence text)
     {
         super(text, labelStyle);
-        this.setFontScale(2.5f);
-        this.setTouchable(Touchable.enabled);
+        SetStyle();
 
         this.addListener(new ClickListener()
         {
@@ -184,5 +190,9 @@ class ContextMenuLabel extends Label
             }
         });
     }
-
+    private void SetStyle()
+    {
+        this.setFontScale(2.5f);
+        this.setTouchable(Touchable.enabled);
+    }
 }

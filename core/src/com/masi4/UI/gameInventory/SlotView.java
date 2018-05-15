@@ -37,28 +37,23 @@ public class SlotView extends Table
     public SlotView(Slot slot0)
     {
         this.slot = slot0;
+        SetStyle();
+        Create();
+    }
+
+    private void SetStyle()
+    {
         this.setTouchable(Touchable.enabled);
         BackgroundColor bc = new BackgroundColor("UI/Inventory/inventoryDefaultSkin.png");
         bc.setColor(69, 69, 69, 255);
         setBackground(bc);
 
         setSize(INVENTORY_HEIGHT/8, INVENTORY_HEIGHT/8);
-        Create();
-
-    }
-    public void UpdateView()
-    {
-        for (Cell cell: this.getCells()) {
-            cell.clearActor();
-        }
-        Create();
     }
 
     private void Create()
     {
         this.setVisible(false);
-
-
         if(!slot.isEmpty())
         {
             Label.LabelStyle labelStyle = new Label.LabelStyle(AssetLoader.default12_outline, Color.WHITE);
@@ -92,4 +87,11 @@ public class SlotView extends Table
         this.setVisible(true);
     }
 
+    public void UpdateView()
+    {
+        for (Cell cell: this.getCells()) {
+            cell.clearActor();
+        }
+        Create();
+    }
 }

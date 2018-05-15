@@ -10,7 +10,4 @@ public interface _InventoryItem
 {
     TextureRegion GetTexture();
 
-    void Split();
-
-    void Throw();
 }

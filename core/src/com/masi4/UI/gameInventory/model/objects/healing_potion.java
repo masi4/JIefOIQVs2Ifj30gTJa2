@@ -24,16 +24,4 @@ public class healing_potion implements _InventoryItem, _Useable
         Gdx.app.log("healing_potion", "Use()");
     }
 
-    @Override
-    public void Split()
-    {
-        Gdx.app.log("healing_potion", "Split()");
-    }
-
-    @Override
-    public void Throw()
-    {
-
-        Gdx.app.log("healing_potion", "Throw()");
-    }
 }

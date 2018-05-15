@@ -28,18 +28,23 @@ public class StatsView extends Table
     int HP;
     /*...*/
 
-
     Label.LabelStyle defaultStyle;
 
     public StatsView()
     {
         LoadStats();
+        SetStyle();
+        Create();
+    }
 
+    private void SetStyle()
+    {
         pad(10,30,10,10);
-        /*BackgroundColor bc = new BackgroundColor("UI/Inventory/inventoryDefaultSkin.png");
-        bc.setColor(29, 29, 29, 255);
-        setBackground(bc);*/
 
+    }
+
+    private void Create()
+    {
         defaultStyle = new Label.LabelStyle(AssetLoader.default18, Color.WHITE);
         Label healthLabel = new Label(GamePreferences.loc.format("Inventory_Health"),defaultStyle);
 

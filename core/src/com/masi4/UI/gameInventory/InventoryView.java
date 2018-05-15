@@ -24,12 +24,18 @@ import static com.masi4.UI.gameInventory.InventoryWindow.INVENTORY_HEIGHT;
 public class InventoryView extends Table
 {
     private Inventory inventory;
-    private int[] lastClickedIndex = {-1,-1};
+    private int[] lastClickedIndex = {-1,-1}; // Для того, чтобы можно было перетаскивать айтемы в инвентаре
 
     public InventoryView(Inventory inventory)
     {
         this.inventory = inventory;
+        SetStyle();
+        LoadScroll();
+        Create();
+    }
 
+    private void SetStyle()
+    {
         setTouchable(Touchable.enabled);
         right().top().pad(10,10,10,30);
 
@@ -37,6 +43,10 @@ public class InventoryView extends Table
         bc.setColor(29, 29, 29, 255);
         setBackground(bc);
 
+    }
+
+    private void LoadScroll()
+    {
         final float[] yWhenTouched = new float[1];
         addListener(new ClickListener(){
             @Override
@@ -52,29 +62,16 @@ public class InventoryView extends Table
             {
                 setPosition(getX(),
                         (getY() - (yWhenTouched[0] - y)) > 0 ? 0:
-                            (getY() - (yWhenTouched[0] - y) + getHeight() < INVENTORY_HEIGHT-10) ? INVENTORY_HEIGHT-10 - getHeight() :
-                                (getY() - (yWhenTouched[0] - y)));
+                                (getY() - (yWhenTouched[0] - y) + getHeight() < INVENTORY_HEIGHT-10) ? INVENTORY_HEIGHT-10 - getHeight() :
+                                        (getY() - (yWhenTouched[0] - y)));
 
                 if(getY() - (yWhenTouched[0] - y) > 0  ||
                         getY() - (yWhenTouched[0] - y) + getHeight() < InventoryViewport.getWorldHeight()-20)
                 {
                     yWhenTouched[0] = y;
                 }
-
-                /*
-                setPosition(getX(),
-                        (getY() - (yWhenTouched[0] - y)) < 100 ? 100:
-                                (getHeight() - getY() - (yWhenTouched[0] - y) > INVENTORY_HEIGHT-10) ?  getHeight() -INVENTORY_HEIGHT-10 :
-                                        (getY() - (yWhenTouched[0] - y)));*/
-
-               // if(getY() - (yWhenTouched[0] - y) > 0  || getY() - (yWhenTouched[0] - y) + getHeight() < INVENTORY_HEIGHT-10)
-               // {
-              //      yWhenTouched[0] = y;
-               // }
             }
         });
-
-       Create();
     }
 
     private void Create()
@@ -92,7 +89,6 @@ public class InventoryView extends Table
             if((i+1)%6==0)// по 6 айтемов в строке
                 this.row();
 
-
         }
 
         addListener(new ClickListener()
@@ -103,7 +99,7 @@ public class InventoryView extends Table
                 if(lastClickedIndex[0] != -1 && lastClickedIndex[1] != -1)
                 {
                     inventory.slots.swap(lastClickedIndex[0], lastClickedIndex[1]);
-                    //swapActor(lastClickedIndex[0], lastClickedIndex[1]);
+                    //swapActor(lastClickedIndex[0], lastClickedIndex[1]); Не работает!!
                     for(int i = 0; i<2 ;i++){
                         SlotView slotView = new SlotView(inventory.slots.get(lastClickedIndex[i]));
                         getCells().get(lastClickedIndex[i]).clearActor();
@@ -117,7 +113,6 @@ public class InventoryView extends Table
                     UpdateView();
                     lastClickedIndex[0] = -1;
                     lastClickedIndex[1] = -1;
-                    Gdx.app.log("MASAKA","ALLAH"  );
                 }
             }
         });
@@ -128,6 +123,8 @@ public class InventoryView extends Table
 
         this.pack();
     }
+
+
 
     void SetClickListener(final Cell cell) // КЭЛЛ)))))))
     {

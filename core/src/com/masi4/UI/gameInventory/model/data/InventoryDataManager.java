@@ -27,7 +27,9 @@ public class InventoryDataManager
     public Array<Slot> Load()
     {
         String raw = GamePreferences.InventoryData.getString("data");
+
         if(raw == null) return null;
+
         return json.fromJson(Array.class, raw);
     }
 
