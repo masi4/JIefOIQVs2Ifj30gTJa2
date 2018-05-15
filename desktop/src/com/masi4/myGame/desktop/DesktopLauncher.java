@@ -8,7 +8,7 @@ public class DesktopLauncher {
 
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Game";
+		config.title = "DankQuest";
 		config.width = GameMain.SCREEN_WIDTH;
 		config.height = GameMain.SCREEN_HEIGHT;
 		new LwjglApplication(new GameMain(), config);

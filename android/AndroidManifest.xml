@@ -14,7 +14,7 @@
         android:theme="@style/GdxTheme" >
         <activity
             android:name="com.masi4.myGame.AndroidLauncher"
-            android:label="Game"
+            android:label="DankQuest"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <intent-filter>

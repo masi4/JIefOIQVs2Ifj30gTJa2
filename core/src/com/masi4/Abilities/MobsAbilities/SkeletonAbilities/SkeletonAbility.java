@@ -1,22 +1,16 @@
-package com.masi4.Abilities.PlayerAbilities;
+package com.masi4.Abilities.MobsAbilities.SkeletonAbilities;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.masi4.gameobjects.SkeletonListener;
 import com.masi4.gameobjects.objects.Player;
 import com.masi4.gameobjects.objects.Skeleton;
-import com.masi4.gameworld.GameWorld;
 
-/**
- * Created by OIEFIJM on 25.02.2018.
- * TODO: заменить на шаблон интерфейса (?)
- */
-public interface PlayerAbility
+public interface SkeletonAbility
 {
-    void execute(Player player);
+    void execute(Skeleton skeleton);
 
     /** Обновляет состояние хитбоксов и прочих элементов, которые создает способность **/
-    void update(Player player, float delta);
+    void update(Skeleton skeleton, float delta);
 
     Array<Rectangle> getHitboxes();
 
@@ -37,7 +31,5 @@ public interface PlayerAbility
     /** @return Время, через которое способность будет готова **/
     float getCurrentCooldown();
 
-    int dealDamage(Skeleton skeleton);
-
-    void subscribeAbility(GameWorld gameWorld);
+    int dealDamage(Player player);
 }

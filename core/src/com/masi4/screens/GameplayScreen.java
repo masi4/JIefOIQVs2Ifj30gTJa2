@@ -10,27 +10,33 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Input;
 import com.masi4.GUI.GUI;
 import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gameobjects.objects.Skeleton;
 import com.masi4.gameworld.GameWorld;
-import com.masi4.gameworld.GameRenderer;
-import com.masi4.gameworld.Level0_Renderer;
+import com.masi4.gameworld.renderers.GameRenderer;
+import com.masi4.gameworld.renderers.Level1_Renderer;
 import com.masi4.gameobjects.Level.LevelNames;
 
 import static com.masi4.myGame.GameMain.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.masi4.gameobjects.SkeletonListener;
 
-public class GameplayScreen implements Screen
+public class GameplayScreen implements Screen, SkeletonListener
 {
     private GameWorld world;
+    private LevelNames levelName;
     private GameRenderer renderer;
     private GUI gui;
     private float runTime;
 
     public GameplayScreen(LevelNames levelName)
     {
+        this.levelName = levelName;
+
         AssetLoader.load_Level(levelName);
         AssetLoader.load_Player();
         AssetLoader.load_PlayerDefaultAttack();
+
         if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
             AssetLoader.load_Controller();
             AssetLoader.load_GUI_Buttons();
@@ -40,14 +46,18 @@ public class GameplayScreen implements Screen
         world = new GameWorld(levelName);
         switch (levelName)
         {
-            case TEST:
+            case LEVEL_1:
             {
-                renderer = new Level0_Renderer(world, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                AssetLoader.load_SkeletonTextures();
+
+                renderer = new Level1_Renderer(world, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                world.addSkeletonListener((Level1_Renderer) renderer);
             }
         }
 
         gui = new GUI(world.getPlayer(),this); //TODO: this(?) InventoryScreen сделать не screen
 
+        world.addSkeletonListener(this);
     }
 
     @Override
@@ -59,7 +69,7 @@ public class GameplayScreen implements Screen
     @Override
     public void render(float delta)
     {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             game.setScreen(new MainMenuScreen());
             dispose();
@@ -100,8 +110,37 @@ public class GameplayScreen implements Screen
     {
         AssetLoader.dispose_Controller();
         AssetLoader.dispose_Player();
-        AssetLoader.dispose_Level();
+        AssetLoader.dispose_PlayerDefaultAttack();
+
+
+        switch (levelName)
+        {
+            case LEVEL_1:
+            {
+                AssetLoader.dispose_Level1();
+                AssetLoader.dispose_Skeleton_Textures();
+                AssetLoader.dispose_SkeletonSwordAttack_Texture();
+
+                // dispose all remaining skeletons (mobs)
+            }
+        }
+
         gui.dispose();
+    }
+
+    // TODO: перенести в рендерер
+    @Override
+    public void skeletonSpawned(Skeleton skeleton)
+    {
+        AssetLoader.load_NewSkeleton(skeleton);
+        AssetLoader.load_NewSkeleton_MeleeSwordAttack(skeleton);
+    }
+
+    @Override
+    public void skeletonDead(Skeleton skeleton)
+    {
+        AssetLoader.remove_Skeleton(skeleton);
+        AssetLoader.remove_SkeletonMeleeSwordAttack(skeleton);
     }
 }
 

@@ -169,7 +169,6 @@ public class OptionsScreen implements Screen
     }
     private void load_lableStyles()
     {
-
         labelActive.font = AssetLoader.default18;
         labelActive.fontColor = Color.WHITE;
         labelInactive.font = AssetLoader.default18;

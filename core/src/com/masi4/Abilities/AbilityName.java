@@ -2,8 +2,13 @@ package com.masi4.Abilities;
 
 public enum AbilityName
 {
-    NULL_ABILITY(0),
-    Player_MeleeSwordAttack(101);
+    NONE(0),
+    // Player abilities
+    Player_MeleeSwordAttack(101),
+    Player_RushSwordAttack(102),
+
+    // Skeleton abilities
+    Skeleton_MeleeSwordAttack(1001);
 
     private int abilityCode;
 

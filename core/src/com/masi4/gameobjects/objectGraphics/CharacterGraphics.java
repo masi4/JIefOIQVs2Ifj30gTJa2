@@ -142,7 +142,7 @@ public class CharacterGraphics
         }
     }
 
-    public void moveRight()
+    protected void moveRight()
     {
         if (controlsDirection == Directions.LEFT)
             setVelocityX(-getVelocityX());
@@ -154,7 +154,7 @@ public class CharacterGraphics
         controlsDirection = Directions.RIGHT;
     }
 
-    public void moveLeft()
+    protected void moveLeft()
     {
         if (controlsDirection == Directions.RIGHT)
             setVelocityX(-getVelocityX());
@@ -168,7 +168,7 @@ public class CharacterGraphics
 
     public void releaseMovementControls()
     {
-        // разделить для вынуждденного ускорения (очень потом)
+        // разделить для вынужденного ускорения (если его отбро (очень потом)
         setAccelerationX(0);
         controlsDirection = Directions.NONE;
     }

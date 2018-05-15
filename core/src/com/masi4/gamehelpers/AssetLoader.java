@@ -21,26 +21,32 @@ import static com.masi4.gameobjects.Level.LevelNames;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
-import com.masi4.Abilities.PlayerAbilities.MeleeSwordAttack;
+import com.masi4.gameobjects.objects.Skeleton;
 
-import java.io.IOException;
-
-// (?) Сделать дочерние классы для каждого level'a. А еще лучше использовать готовый Loader
+// TODO: Использовать готовый Loader из libgdx
 public class AssetLoader
 {
-
-    public static Texture
+    private static Texture
+            // Игрок
             player_Texture,
             player_default_sword_attack_Texture,
-            level_Texture,
+            // Скелет
+            skeleton_WalkingTexture,
+            skeleton_dead_Texture,
+            skeleton_sword_attack_Texture,
+            // Уровень
+            level1_Texture,
+            level_torch_Texture,
+            level_cave_Texture,
+            // Кнопки
             controller_Texture,
             attackButton_Texture,
             inventoryButton_Texture,
             MainMenu_Buttons,
-            level_torch_Texture,
-            level_cave_Teaxture,
+            // Предметы и инвентарь
             items_Texture,
             GameInventory_HealthBarTexture,
             GameInventory_InventoryTexture,
@@ -61,7 +67,6 @@ public class AssetLoader
             level_grassBackLoop,
             level_grassForeLoop,
             level_cave,
-
             // джойстик
             controller_FrameActive,
             controller_CircleActive,
@@ -69,14 +74,12 @@ public class AssetLoader
             controller_CircleInactive0,
             controller_FrameInactive1,
             controller_CircleInactive1,
-
             // кнопка атаки
             attackButton_Up,
             attackButton_Down,
             // кнопка инвентаря
             inventoryButton_Up,
             inventoryButton_Down,
-
             // инвентарь
             GameInventory_InventoryTextureRegion,
             GameInventory_HealthBarBoundsTextureRegion,
@@ -89,26 +92,46 @@ public class AssetLoader
             optionsButtonTxrReg,
             exitButtonTxrReg;
 
-
     public static BitmapFont
             default18,
             default12,
             default22;
 
-    public static Array<TextureRegion>
-            player_default_frames,
-            player_default_startsWalking_frames,
+    // Кадры для анимаций
+    private static Array<TextureRegion>
+            // игрок
+            player_default_walking_frames,
+            player_default_start_walking_frames,
             player_default_attack_frames,
+            // скелетон
+            skeleton_walking_frames,
+            skeleton_dead_frames,
+            skeleton_attack_frames,
+            // факел
             torch_frames;
 
     public static Animation<TextureRegion>
+            // игрок
             player_default_animation,
-            player_default_startsWalking_animation,
+            player_default_start_walking_animation,
             player_default_attack_animation,
+            // факел
             torch_animation;
+
+    // Анимации скелетов
+    public static ObjectMap<Skeleton, Animation>
+            skeleton_walking_animations = new ObjectMap<Skeleton, Animation>(),
+            skeleton_melee_sword_attack_animations = new ObjectMap<Skeleton, Animation>();
+
+    // Скелеты стоят
+    public static ObjectMap<Skeleton, TextureRegion>
+        skeletons_standing = new ObjectMap<Skeleton, TextureRegion>(),
+        skeletons_remains = new ObjectMap<Skeleton, TextureRegion>();
+
 
     public static Skin
             controllerSkin;
+
     //
     // Методы
     //
@@ -117,6 +140,7 @@ public class AssetLoader
     public static void load() {
         load_Fonts();
     }
+
 
     public static void load_Fonts()
     {
@@ -206,52 +230,58 @@ public class AssetLoader
         inventoryButton_Down = new TextureRegion(inventoryButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
         inventoryButton_Up = new TextureRegion(inventoryButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
     }
+
     public static void dispose_Controller()
     {
         controller_Texture.dispose();
     }
 
+    //
+    // Игрок
+    //
 
-    // Графика игрока
     public static void load_Player()
     {
-        player_Texture = new Texture(Gdx.files.internal("gameplay/player/player_default_BIG.png"));
+        player_Texture = new Texture(Gdx.files.internal("gameplay/player/player_walking.png"));
         player_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
         player_standing = new TextureRegion(player_Texture, 0, player_default_frame_Y,
                 player_default_frame_Width, player_default_frame_Height);
 
-        int[] frames_count = new int[] {8,  2}; //{бег, начало бега}
-        player_default_frames = new Array<TextureRegion>(frames_count[0]);
-        player_default_startsWalking_frames = new Array<TextureRegion>(frames_count[1]);
+        int[] frames_count = new int[] {8,  2}; // {бег, начало бега}
+        player_default_walking_frames = new Array<TextureRegion>(frames_count[0]);
+        player_default_start_walking_frames = new Array<TextureRegion>(frames_count[1]);
 
         // анимация бега вправо
-        for(int i = 2; i <= frames_count[0];i++)
+        for(int i = 2; i <= frames_count[0]; i++)
         {
-            player_default_frames.add(new TextureRegion(player_Texture, player_default_frame_Width * i,
+            player_default_walking_frames.add(new TextureRegion(player_Texture, player_default_frame_Width * i,
                     player_default_frame_Y, player_default_frame_Width, player_default_frame_Height));
         }
         for(int i = 0; i <= frames_count[1];i++)
         {
-            player_default_startsWalking_frames.add(new TextureRegion(player_Texture, player_default_frame_Width * i,
+            player_default_start_walking_frames.add(new TextureRegion(player_Texture, player_default_frame_Width * i,
                     player_default_frame_Y, player_default_frame_Width, player_default_frame_Height));
         }
-        // TODO: скорость смены кадров в зависимости от скорости игрока
-        player_default_animation = new Animation(0.06f, player_default_frames, Animation.PlayMode.LOOP);
-        player_default_startsWalking_animation = new Animation(0.06f,player_default_startsWalking_frames , Animation.PlayMode.NORMAL);
+
+        player_default_animation = new Animation(0.06f, player_default_walking_frames, Animation.PlayMode.LOOP);
+        player_default_start_walking_animation = new Animation(0.06f, player_default_start_walking_frames, Animation.PlayMode.NORMAL);
     }
 
-    // Default Sword Attack игрока
+    // Default Sword Attack
     public static void load_PlayerDefaultAttack()
     {
         player_default_sword_attack_Texture = new Texture(Gdx.files.internal("gameplay/player/player_attack_1.png"));
         player_default_attack_frames = new Array<TextureRegion>(5);
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
             player_default_attack_frames.add(new TextureRegion(player_default_sword_attack_Texture,
-                    player_attack_frame_Width * i, player_attack_frame_Y,player_attack_frame_Width,
+                    player_attack_frame_Width * i, player_attack_frame_Y, player_attack_frame_Width,
                     player_attack_frame_Height));
         }
-        float frameTime = MeleeSwordAttack.castTime / player_default_attack_frames.size;
+
+        // default cast time, actual cast time depends on current cast time of that ability,
+        // which depends on player's stats
+        float frameTime = 0.15f / player_default_attack_frames.size;
         player_default_attack_animation =
                 new Animation(frameTime, player_default_attack_frames, Animation.PlayMode.NORMAL);
     }
@@ -261,28 +291,122 @@ public class AssetLoader
         player_Texture.dispose();
     }
 
+
+    public static void dispose_PlayerDefaultAttack()
+    {
+        player_default_sword_attack_Texture.dispose();
+    }
+
     //
-    // Графика уровней
+    // Скелетон
+    //
+
+    public static void load_SkeletonTextures()
+    {
+        skeleton_WalkingTexture = new Texture(Gdx.files.internal("gameplay/npc/skeleton/skeleton_shag_128.png"));
+        skeleton_WalkingTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
+        skeleton_sword_attack_Texture = new Texture(Gdx.files.internal("gameplay/npc/skeleton/skeleton_attack_128.png"));
+        skeleton_sword_attack_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
+        skeleton_dead_Texture = new Texture(Gdx.files.internal("gameplay/npc/skeleton/skeleton_umer_128.png"));
+        skeleton_dead_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    }
+
+    public static void load_NewSkeleton(Skeleton skeleton) {
+        skeletons_standing.put(
+                skeleton,
+                new TextureRegion(skeleton_WalkingTexture, 0, 0, skeleton_frame_Width, skeleton_frame_Height)
+        );
+        skeletons_remains.put(
+                skeleton,
+                new TextureRegion(skeleton_dead_Texture, skeleton_frame_Width * 7, 0, skeleton_frame_Width, skeleton_frame_Height)
+        );
+
+        skeleton_walking_frames = new Array<TextureRegion>(11);
+
+        for (int i = 0; i < 11; i++)
+            skeleton_walking_frames.add(new TextureRegion(skeleton_WalkingTexture, skeleton_frame_Width * i,
+                    0, skeleton_frame_Width, skeleton_frame_Height));
+
+        skeleton_walking_animations.put(
+                skeleton,
+                new Animation(0.06f, skeleton_walking_frames, Animation.PlayMode.LOOP)
+        );
+    }
+
+    public static void load_NewSkeletonRemains(SkeletonDeath deathPoint)
+    {
+        // umer
+        skeleton_dead_frames = new Array<TextureRegion>(8);
+
+        for (int i = 0; i < 8; i++ )
+            skeleton_dead_frames.add(new TextureRegion(skeleton_dead_Texture, skeleton_frame_Width * i,
+                    0, skeleton_frame_Width, skeleton_frame_Height));
+
+        deathPoint.skeletonDeathAnimation =  new Animation(0.1f, skeleton_dead_frames, Animation.PlayMode.NORMAL);
+        deathPoint.skeletonDeathRemains = skeleton_dead_frames.get(7);
+    }
+
+    public static void load_NewSkeleton_MeleeSwordAttack(Skeleton skeleton)
+    {
+        skeleton_attack_frames = new Array<TextureRegion>(13);
+
+        for (int i = 0; i < 13; i++)
+            skeleton_attack_frames.add(new TextureRegion(skeleton_sword_attack_Texture,
+                    skeleton_frame_Width * i, 0, skeleton_frame_Width, skeleton_frame_Height));
+
+        float frameTime = 0.2f / skeleton_attack_frames.size;
+        skeleton_melee_sword_attack_animations.put(
+                skeleton,
+                new Animation(frameTime, skeleton_attack_frames, Animation.PlayMode.NORMAL)
+        );
+    }
+
+    public static void remove_Skeleton(Skeleton skeleton)
+    {
+        skeletons_standing.remove(skeleton);
+        skeleton_walking_animations.remove(skeleton);
+    }
+
+    public static void remove_SkeletonMeleeSwordAttack(Skeleton skeleton)
+    {
+        skeleton_melee_sword_attack_animations.remove(skeleton);
+    }
+
+    public static void dispose_Skeleton_Textures()
+    {
+        skeleton_WalkingTexture.dispose();
+        skeleton_dead_Texture.dispose();
+    }
+
+    public static void dispose_SkeletonSwordAttack_Texture()
+    {
+        skeleton_sword_attack_Texture.dispose();
+    }
+
+    //
+    // Игровые уровни
     //
     public static void load_Level(LevelNames levelName)
     {
         switch (levelName)
         {
-            case TEST:
+            case LEVEL_1:
             {
-                level_Texture = new Texture(Gdx.files.internal("gameplay/level_0/level0_atlas.png"));
-                level_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-                level_BG1 = new TextureRegion(level_Texture, level_0_1_X, level_0_1_Y, level_0_1_Width, level_0_1_Height);
-                level_BG2 = new TextureRegion(level_Texture, level_0_2_X, level_0_2_Y, level_0_2_Width, level_0_2_Height);
-                level_BG3 = new TextureRegion(level_Texture, level_0_3_X, level_0_3_Y, level_0_3_Width, level_0_3_Height);
-                level_BG4 = new TextureRegion(level_Texture, level_0_4_X, level_0_4_Y, level_0_4_Width, level_0_4_Height);
-                level_grassBack = new TextureRegion(level_Texture, level_0_grassBack_X, level_0_grassBack_Y,
+                level1_Texture = new Texture(Gdx.files.internal("gameplay/level_0/level0_atlas.png"));
+                level1_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+                level_BG1 = new TextureRegion(level1_Texture, level_0_1_X, level_0_1_Y, level_0_1_Width, level_0_1_Height);
+                level_BG2 = new TextureRegion(level1_Texture, level_0_2_X, level_0_2_Y, level_0_2_Width, level_0_2_Height);
+                level_BG3 = new TextureRegion(level1_Texture, level_0_3_X, level_0_3_Y, level_0_3_Width, level_0_3_Height);
+                level_BG4 = new TextureRegion(level1_Texture, level_0_4_X, level_0_4_Y, level_0_4_Width, level_0_4_Height);
+                level_grassBack = new TextureRegion(level1_Texture, level_0_grassBack_X, level_0_grassBack_Y,
                         level_0_grassBack_Width, level_0_grassBack_Height);
-                level_grassBackLoop = new TextureRegion(level_Texture, level_0_grassBackLoop_X, level_0_grassBackLoop_Y,
+                level_grassBackLoop = new TextureRegion(level1_Texture, level_0_grassBackLoop_X, level_0_grassBackLoop_Y,
                         level_0_grassBackLoop_Width, level_0_grassBackLoop_Height);
-                level_floor = new TextureRegion(level_Texture, level_0_floor_X, level_0_floor_Y,
+                level_floor = new TextureRegion(level1_Texture, level_0_floor_X, level_0_floor_Y,
                         level_0_floor_Width, level_0_floor_Height);
-                level_grassForeLoop = new TextureRegion(level_Texture, level_0_grassForeLoop_X, level_0_grassForeLoop_Y,
+                level_grassForeLoop = new TextureRegion(level1_Texture, level_0_grassForeLoop_X, level_0_grassForeLoop_Y,
                         level_0_grassForeLoop_Width, level_0_grassForeLoop_Height);
 
                 load_Torch();
@@ -291,8 +415,6 @@ public class AssetLoader
         }
     }
 
-    // TODO: Всю анимацию окружения можно вынести в отдельный класс (зачем? если не зачем, то удалить этот TODO)
-    // ФАКел (торч)
     private static void load_Torch()
     {
         level_torch_Texture = new Texture(Gdx.files.internal("gameplay/level_0/torch_atlas.png")); //TODO: Поместить в атлас
@@ -305,13 +427,13 @@ public class AssetLoader
         }
         torch_animation = new Animation(0.09f, torch_frames,Animation.PlayMode.LOOP);
     }
+
     private static void load_Cave()
     {
-        level_cave_Teaxture = new Texture(Gdx.files.internal("gameplay/level_0/cave.png")); //TODO: Поместить в атлас
+        level_cave_Texture = new Texture(Gdx.files.internal("gameplay/level_0/cave.png")); //TODO: Поместить в атлас
 
-        level_cave = new TextureRegion(level_cave_Teaxture);
+        level_cave = new TextureRegion(level_cave_Texture);
     }
-
     // Инвентарь
     public static void load_Inventory()
     {
@@ -324,6 +446,7 @@ public class AssetLoader
         GameInventory_HealthBarBoundsTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,0,90,10);
         GameInventory_HealthBarFillTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,10,1,8);
     }
+
     public static TextureRegion Inventory_GetItemTexture(_InventoryItem item) {
         XmlReader reader = new XmlReader();
         XmlReader.Element root = null;
@@ -336,10 +459,13 @@ public class AssetLoader
         int y = (id/(items_Texture.getHeight()/itemHeight))*itemHeight;
         return new TextureRegion(items_Texture,x,y,itemWidth,itemHeight);
     }
-    public static void dispose_Level()
+
+
+    public static void dispose_Level1()
     {
-        level_Texture.dispose();
+        level1_Texture.dispose();
     }
+
 
     // dispose по умолчанию, запускается при закрытии приложения
     public static void dispose()

@@ -59,7 +59,7 @@ public class MainMenuScreen implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                game.setScreen(new GameplayScreen(LevelNames.TEST)); // Экран выбора уровня
+                game.setScreen(new GameplayScreen(LevelNames.LEVEL_1)); // Экран выбора уровня
                 dispose();
             }
         });

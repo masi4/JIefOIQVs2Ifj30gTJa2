@@ -1,7 +1,5 @@
 package com.masi4.gameobjects;
 
-import com.masi4.gamehelpers.AssetLoader;
-
 /**
  * Created by OIEFIJM on 13.10.2017.
  *
@@ -20,17 +18,17 @@ public class Level {
 
     private ArrayList<Rectangle> levelObjects;  // (возможно) сделать отдельный класс. isRemovable true false
 
-    public enum LevelNames { TEST }
+    public enum LevelNames {LEVEL_1}
 
     public Level(LevelNames name)
     {
         switch (name)
         {
-            case TEST:
+            case LEVEL_1:
             {
                 width = 3200;
                 height = 480;
-                floorHeight = 90;
+                floorHeight = 75;
                 worldGravity = 1560;
 
                 // Границы отдельно. прямоугольники с нулевой шириной высотой нельзя

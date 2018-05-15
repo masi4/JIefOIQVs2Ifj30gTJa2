@@ -1,6 +1,8 @@
 package com.masi4.gameobjects.objectGraphics;
 
+import com.masi4.Abilities.AbilityName;
 import com.masi4.Directions;
+import com.masi4.gameobjects.objects.Player;
 
 /**
  * Created by OIEFIJM on 13.10.2017.
@@ -10,8 +12,6 @@ import com.masi4.Directions;
 
 public class PlayerGraphics extends CharacterGraphics
 {
-    private float delta;
-
     public PlayerGraphics(int width, int height, int worldGravity, int initialJumpSpeed, int horizontalVelocityGain,
                           float maxHorizontalVelocity, Directions turnedSide, boolean isOnGround)
     {
@@ -20,29 +20,58 @@ public class PlayerGraphics extends CharacterGraphics
 
     public void update_position(float delta)
     {
-        this.delta = delta;
         super.update_position(delta);
     }
 
-    public void controlByJoystick(float knobPercentX, float knobPercentY, boolean allowedToJump)
+    public void controlByJoystick(Player player, float knobPercentX, float knobPercentY, boolean allowedToJump)
     {
-        if (knobPercentY > 0.4 && allowedToJump)
-            jump();
+        if (!player.isDead())
+        {
+            if (knobPercentY > 0.4 && allowedToJump)
+                jump();
 
-        setVelocityX(getMaxHorizontalVelocity() * knobPercentX);
+            setVelocityX(getMaxHorizontalVelocity() * knobPercentX);
 
-        if (knobPercentX > 0)
-            controlsDirection = Directions.RIGHT;
-        else if (knobPercentX < 0)
-            controlsDirection = Directions.LEFT;
-        else
-            controlsDirection = Directions.NONE;
+            if (knobPercentX > 0) {
+                controlsDirection = Directions.RIGHT;
+                if (player.getCastingAbilityName() != AbilityName.Player_MeleeSwordAttack)
+                    turnedSide = Directions.RIGHT;
+            } else if (knobPercentX < 0) {
+                controlsDirection = Directions.LEFT;
+                if (player.getCastingAbilityName() != AbilityName.Player_MeleeSwordAttack)
+                    turnedSide = Directions.LEFT;
+            } else {
+                controlsDirection = Directions.NONE;
+            }
+        }
     }
 
-    // Возможно просто заменить единственное место использования на Gdx.graphics.getDelta()
-    public float getDelta()
+    // TODO: возможно организовать более правильным способом
+    public void moveRight(Player player)
     {
-        return delta;
+        if (controlsDirection == Directions.LEFT)
+            setVelocityX(-getVelocityX());
+        else if (controlsDirection == Directions.NONE)
+            setVelocityX(0);
+
+        setAccelerationX(horizontalVelocityGain);
+        controlsDirection = Directions.RIGHT;
+
+        if (player.getCastingAbilityName() != AbilityName.Player_MeleeSwordAttack)
+            turnedSide = Directions.RIGHT;
+    }
+
+    public void moveLeft(Player player)
+    {
+        if (controlsDirection == Directions.RIGHT)
+            setVelocityX(-getVelocityX());
+        else if (controlsDirection == Directions.NONE)
+            setVelocityX(0);
+
+        setAccelerationX(-horizontalVelocityGain);
+        controlsDirection = Directions.LEFT;
+        if (player.getCastingAbilityName() != AbilityName.Player_MeleeSwordAttack)
+            turnedSide = Directions.LEFT;
     }
 
 }

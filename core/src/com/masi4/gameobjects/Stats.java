@@ -1,4 +1,4 @@
-package com.masi4.gameobjects.objectRpg;
+package com.masi4.gameobjects;
 
 /**
  * Created by OIEFIJM on 25.02.2018.
