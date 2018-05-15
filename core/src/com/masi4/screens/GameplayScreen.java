@@ -55,7 +55,7 @@ public class GameplayScreen implements Screen, SkeletonListener
             }
         }
 
-        gui = new GUI(world.getPlayer(),this); //TODO: this(?) InventoryScreen сделать не screen
+        gui = new GUI(world.getPlayer()); //TODO: this(?) InventoryScreen сделать не screen
 
         world.addSkeletonListener(this);
     }
@@ -79,6 +79,12 @@ public class GameplayScreen implements Screen, SkeletonListener
         world.update(delta);
         renderer.render(runTime);
         gui.render(delta);
+        // Конфликтует с GUI рендером. TODO: Исправить UPD: Кнопка перекачевала в GUI
+        /*if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        {
+            game.setScreen(new MainMenuScreen());
+            dispose();
+        }*/
     }
 
     @Override

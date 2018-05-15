@@ -17,6 +17,7 @@ public class ItemView extends ImageButton
     public ItemView(_InventoryItem item)
     {
         super(new TextureRegionDrawable(item.GetTexture()), new TextureRegionDrawable(item.GetTexture()));
+
         this.getImage().setFillParent(true);
     }
 }

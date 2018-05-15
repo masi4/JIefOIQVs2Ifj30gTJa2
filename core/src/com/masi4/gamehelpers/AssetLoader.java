@@ -26,6 +26,8 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 import com.masi4.gameobjects.objects.Skeleton;
 
+import java.io.IOException;
+
 // TODO: Использовать готовый Loader из libgdx
 public class AssetLoader
 {
@@ -45,9 +47,11 @@ public class AssetLoader
             controller_Texture,
             attackButton_Texture,
             inventoryButton_Texture,
+            inventoryCloseButton_Texture,
             MainMenu_Buttons,
             // Предметы и инвентарь
             items_Texture,
+            GUI_HealthBar_Texture,
             GameInventory_HealthBarTexture,
             GameInventory_InventoryTexture,
             GameInventory_SlotTexture;
@@ -80,6 +84,13 @@ public class AssetLoader
             // кнопка инвентаря
             inventoryButton_Up,
             inventoryButton_Down,
+            // кнопка закрытия инвентаря
+            inventoryCloseButton_Up,
+            inventoryCloseButton_Down,
+            // хп бар
+            GUI_HealthBar_BoundsTextureRegion,
+            GUI_HealthBar_KnobTextureRegion,
+            GUI_HealthBar_FillTextureRegion,
             // инвентарь
             GameInventory_InventoryTextureRegion,
             GameInventory_HealthBarBoundsTextureRegion,
@@ -94,7 +105,9 @@ public class AssetLoader
 
     public static BitmapFont
             default18,
+            default18_outline,
             default12,
+            default12_outline,
             default22;
 
     // Кадры для анимаций
@@ -147,6 +160,8 @@ public class AssetLoader
         default12 = new BitmapFont(Gdx.files.internal("fonts/default12.fnt"));
         default18 = new BitmapFont(Gdx.files.internal("fonts/default18.fnt"));
         default22 = new BitmapFont(Gdx.files.internal("fonts/default22.fnt"));
+        default18_outline = new BitmapFont(Gdx.files.internal("fonts/default18_outline.fnt"));
+        default12_outline = new BitmapFont(Gdx.files.internal("fonts/default12_outline.fnt"));
     }
 
     public static void dispose_Fonts()
@@ -154,6 +169,8 @@ public class AssetLoader
         default12.dispose();
         default18.dispose();
         default22.dispose();
+        default18_outline.dispose();
+        default12_outline.dispose();
     }
 
     // Главное меню
@@ -164,7 +181,7 @@ public class AssetLoader
         {
             MainMenu_Bg[i] =  new Texture(Gdx.files.internal("gameplay/main_menu_BG/bg_0"+i+".png"));
         }
-        MainMenu_Buttons = new Texture(Gdx.files.internal("menuButtons.png"));
+        MainMenu_Buttons = new Texture(Gdx.files.internal("buttons/menuButtons.png"));
         int m = GamePreferences.Options.getInteger("Language"); // Для локализации
         playButtonTxrReg = new TextureRegion[]
                 {
@@ -195,7 +212,7 @@ public class AssetLoader
     // Джойстик
     public static void load_Controller()
     {
-        controller_Texture = new Texture(Gdx.files.internal("controller.png"));
+        controller_Texture = new Texture(Gdx.files.internal("buttons/controller.png"));
         controller_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
         controller_FrameActive = new TextureRegion(controller_Texture, 0, 0, controller_frame_Width, controller_frame_Height);
@@ -223,12 +240,17 @@ public class AssetLoader
     // Кнопка атаки
     public static void load_GUI_Buttons()
     {
-        attackButton_Texture = new Texture(Gdx.files.internal("attackButton.png"));
+        attackButton_Texture = new Texture(Gdx.files.internal("buttons/attackButton.png"));
         attackButton_Down = new TextureRegion(attackButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
         attackButton_Up = new TextureRegion(attackButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
-        inventoryButton_Texture = new Texture(Gdx.files.internal("inventoryButton.png"));
+        inventoryButton_Texture = new Texture(Gdx.files.internal("buttons/inventoryButton.png"));
         inventoryButton_Down = new TextureRegion(inventoryButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
         inventoryButton_Up = new TextureRegion(inventoryButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
+        GUI_HealthBar_Texture = new Texture(Gdx.files.internal("UI/Inventory/healthbar.png")); // TODO: заменить
+        GUI_HealthBar_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        GUI_HealthBar_BoundsTextureRegion = new TextureRegion(GUI_HealthBar_Texture,0,0,90,10);
+        GUI_HealthBar_KnobTextureRegion = new TextureRegion(GUI_HealthBar_Texture,0,10,1,8);
+        GUI_HealthBar_FillTextureRegion = new TextureRegion(GUI_HealthBar_Texture,1,10,1,8);
     }
 
     public static void dispose_Controller()
@@ -437,27 +459,41 @@ public class AssetLoader
     // Инвентарь
     public static void load_Inventory()
     {
-        GameInventory_InventoryTexture = new Texture(Gdx.files.internal("inventoryDefaultSkin.png"));
+        GameInventory_InventoryTexture = new Texture(Gdx.files.internal("UI/Inventory/inventoryDefaultSkin.png"));
         GameInventory_InventoryTextureRegion = new TextureRegion(GameInventory_InventoryTexture,0,0,52,52);
-        GameInventory_SlotTexture = new Texture(Gdx.files.internal("slotDefaultSkin.png"));
+        GameInventory_SlotTexture = new Texture(Gdx.files.internal("UI/Inventory/slotDefaultSkin.png"));
         GameInventory_SlotTextureRegion = new TextureRegion(GameInventory_InventoryTexture,0,0,52,52);
-        items_Texture = new Texture(Gdx.files.internal("Items_atlas.png"));
-        GameInventory_HealthBarTexture = new Texture(Gdx.files.internal("healthbar.png"));
+        items_Texture = new Texture(Gdx.files.internal("UI/Inventory/Items_atlas.png"));
+        items_Texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        GameInventory_HealthBarTexture = new Texture(Gdx.files.internal("UI/Inventory/healthbar.png"));
+        GameInventory_HealthBarTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
         GameInventory_HealthBarBoundsTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,0,90,10);
         GameInventory_HealthBarFillTextureRegion = new TextureRegion(GameInventory_HealthBarTexture,0,10,1,8);
+        inventoryCloseButton_Texture =  new Texture(Gdx.files.internal("buttons/inventoryCloseButton.png"));
+        inventoryCloseButton_Up = new TextureRegion(inventoryCloseButton_Texture,0,0, GUI_Button_Width, GUI_Button_Height);
+        inventoryCloseButton_Down = new TextureRegion(inventoryCloseButton_Texture,0, GUI_Button_Height, GUI_Button_Width, GUI_Button_Height);
+
     }
+    public static TextureRegion Inventory_GetItemTexture(_InventoryItem item)
+    {
+        if (items_Texture.isManaged())
+        {
+            XmlReader reader = new XmlReader();
+            XmlReader.Element root = null;
+            FileHandle file = Gdx.files.internal("xml/Items.xml");
+            root = reader.parse(file);
 
-    public static TextureRegion Inventory_GetItemTexture(_InventoryItem item) {
-        XmlReader reader = new XmlReader();
-        XmlReader.Element root = null;
-        FileHandle file = Gdx.files.internal("xml/Items.xml");
-        root = reader.parse(file);
+            int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
 
-        int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
-
-        int x = (id%(items_Texture.getWidth()/itemWidth))*itemWidth;
-        int y = (id/(items_Texture.getHeight()/itemHeight))*itemHeight;
-        return new TextureRegion(items_Texture,x,y,itemWidth,itemHeight);
+            int x = (id % (items_Texture.getWidth() / itemWidth)) * itemWidth;
+            int y = (id / (items_Texture.getHeight() / itemHeight)) * itemHeight;
+            return new TextureRegion(items_Texture, x, y, itemWidth, itemHeight);
+        }
+        else
+        {
+            Gdx.app.log("AssetLoader", items_Texture.toString());
+            return null;
+        }
     }
 
 

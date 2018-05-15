@@ -3,10 +3,14 @@ package com.masi4.GUI;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.masi4.UI.gameInventory.InventoryScreen;
+import com.badlogic.gdx.InputMultiplexer;
+import com.masi4.UI.UI;
+import com.masi4.UI.gameInventory.InventoryMain;
 import com.masi4.Abilities.AbilityName;
 import com.masi4.gameobjects.objects.Player;
-import com.masi4.screens.GameplayScreen;
+import com.masi4.screens.MainMenuScreen;
+
+import static com.badlogic.gdx.scenes.scene2d.InputEvent.Type.keyDown;
 import static com.masi4.myGame.GameMain.*;
 
 /**
@@ -15,9 +19,10 @@ import static com.masi4.myGame.GameMain.*;
 
 public class GUI
 {
+    private UI ui;
     private StageLayer stageLayer;
+
     private Player player;
-    private GameplayScreen gameplayScreen;
     // Чтобы прыгнуть еще раз, нужно сначала опустить пипку джойстика пониже, а потом опять поднять
     private boolean jumpCtrl;
     private boolean jumpCtrl_W;
@@ -37,11 +42,12 @@ public class GUI
             isDesktop = true;
     }
 
-    public GUI(Player player, GameplayScreen gameplayScreen)
+    public GUI(Player player)
     {
         if (!isDesktop) stageLayer = new StageLayer();
+
+        ui = new UI(player);
         this.player = player;
-        this.gameplayScreen = gameplayScreen;
         jumpCtrl = true;
         jumpCtrl_W = true;
         jumpCtrl_SPACE = true;
@@ -75,14 +81,41 @@ public class GUI
                     player.executeAbility(AbilityName.Player_MeleeSwordAttack);
             }
 
-            if (stageLayer.GetInventoryButton().isPressed())
-                game.setScreen(new InventoryScreen(gameplayScreen));
-        }
-        else {
-            //********************
-            //  Keyboard controls
-            //********************
+            if (stageLayer.GetInventoryButton().IsJustPressed())
+            {
+                ui.ShowHideInventory();
+                SwitchInputProcessors();
+            }
 
+            // Кнопка в самом инвенторе
+            if(ui.IsInventoryVisible())
+            {
+                if(ui.inventoryMain.GetCloseButton().IsJustPressed())
+                {
+                    ui.ShowHideInventory();
+                    SwitchInputProcessors();
+                }
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+            {
+                if(ui.IsInventoryVisible())
+                {
+                    ui.ShowHideInventory();
+                    SwitchInputProcessors();
+                }
+                else
+                {
+                    game.setScreen(new MainMenuScreen());
+                }
+            }
+
+        }
+        //********************
+        //  Keyboard controls
+        //********************
+        else
+        {
             // Передвижение
            if (Gdx.input.isKeyPressed(Input.Keys.D))
                 player.graphics.moveRight(player);
@@ -111,6 +144,37 @@ public class GUI
             if (Gdx.input.isKeyPressed(Input.Keys.J)) {
                     player.executeAbility(AbilityName.Player_MeleeSwordAttack);
             }
+
+            // Инвентарь
+            // TODO: сделать, чтобы выход из инвентаря работал
+            if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+                ui.ShowHideInventory();
+                SwitchInputProcessors();
+            }
+        }
+
+        // Обработка UI объектов
+
+        if(ui.IsInventoryVisible())
+        {
+            ui.inventoryMain.render(delta);
+        }
+    }
+
+    private void SwitchInputProcessors()
+    {
+        if(ui.IsInventoryVisible())
+        {
+            stageLayer.dispose();
+            InputMultiplexer inputMultiplexer = new InputMultiplexer();
+            inputMultiplexer.setProcessors(ui.inventoryMain.GetInputProcessor());
+            Gdx.input.setInputProcessor(inputMultiplexer);
+            return;
+        }
+        // ....
+        else {
+            stageLayer = new StageLayer();
+            Gdx.input.setInputProcessor(stageLayer);
         }
     }
 

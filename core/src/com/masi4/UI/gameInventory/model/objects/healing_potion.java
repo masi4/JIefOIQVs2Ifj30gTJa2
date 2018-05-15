@@ -1,26 +1,27 @@
 package com.masi4.UI.gameInventory.model.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.masi4.gamehelpers.AssetLoader;
+
+import static com.masi4.UI.UI.player;
 
 /**
  * Created by U1wknUzeU6 on 01.05.2018.
  */
 
-public class healing_potion implements _InventoryItem
+public class healing_potion implements _InventoryItem, _Useable
 {
-    public void Use()
+    @Override
+    public TextureRegion GetTexture()
     {
-
-    }
-
-    @Override
-    public boolean isUseable() {
-        return true;
-    }
-
-    @Override
-    public TextureRegion GetTexture() {
         return AssetLoader.Inventory_GetItemTexture(this);
     }
+
+    @Override
+    public void Use()
+    {
+        Gdx.app.log("healing_potion", "Use()");
+    }
+
 }
