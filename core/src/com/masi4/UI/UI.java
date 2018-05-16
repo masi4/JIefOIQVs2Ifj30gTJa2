@@ -5,13 +5,11 @@ import com.masi4.gameobjects.objects.Player;
 
 public class UI
 {
-    public static Player player;
 
     public InventoryMain inventoryMain;
 
-    public UI(Player player)
+    public UI()
     {
-        this.player = player;
     }
 
     private void ShowInventory()

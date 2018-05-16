@@ -80,6 +80,8 @@ public class InventoryMain extends Stage
         this.draw();
 
         contextMenuStage.draw();
+
+        inventoryWindow.UpdateStatsView(delta);
     }
 
     public void Hide()

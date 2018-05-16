@@ -3,7 +3,7 @@ package com.masi4.Abilities.MobsAbilities.SkeletonAbilities;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.masi4.Directions;
+import com.masi4.gamehelpers.Directions;
 import com.masi4.gameobjects.Stats;
 import com.masi4.gameobjects.objectGraphics.SkeletonGraphics;
 import com.masi4.gameobjects.objects.Player;
@@ -78,7 +78,7 @@ public class Skeleton_MeleeSwordAttack implements SkeletonAbility
         if (isCasting && currentCooldown == 0) {
             elapsedTime += delta;
 
-            if (isActing = elapsedTime > 0.07f)
+            if (isActing = elapsedTime > 0.22f)
                 if (skeleton.graphics.getTurnedSide() == Directions.RIGHT) {
                     hitboxes.get(0).setPosition(coords.x + skeleton.graphics.getX(), coords.y + skeleton.graphics.getY());
                     boundingRec.setPosition(hitboxes.get(0).x, hitboxes.get(0).y);

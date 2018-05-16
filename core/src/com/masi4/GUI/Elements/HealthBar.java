@@ -1,11 +1,13 @@
 package com.masi4.GUI.Elements;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.masi4.GUI.GUI;
+import com.masi4.GUI.GUI.*;
 import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gamehelpers.BackgroundColor;
+
+import static com.masi4.GUI.GUI.player;
 
 public class HealthBar extends ProgressBar
 {
@@ -32,7 +34,7 @@ public class HealthBar extends ProgressBar
     {
         super(0,1,0.01f,false,healthBarStyle);
         this.viewport = viewport;
-        this.setValue(0.4f);
+        this.setValue((float)player.getCurrentHP()/(float)player.getMaxHP());
         LoadStyle();
     }
 
@@ -40,5 +42,11 @@ public class HealthBar extends ProgressBar
     {
         setWidth(500);
         this.setPosition(viewport.getWorldWidth()-this.getWidth()-50, viewport.getWorldHeight()-50);
+    }
+
+    public void Update(float delta)
+    {
+        this.setValue((float)player.getCurrentHP()/(float)player.getMaxHP());
+        this.act(delta);
     }
 }

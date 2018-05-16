@@ -19,7 +19,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.masi4.Abilities.AbilityName;
-import com.masi4.Directions;
+import com.masi4.gamehelpers.Directions;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.SkeletonDeath;
 import com.masi4.gamehelpers.GameCharactersDefaults;
@@ -73,6 +73,7 @@ public abstract class GameRenderer
     protected ObjectMap<Skeleton, Animation>
             // Скелетоны
             skeleton_walking_animations,
+            skeleton_start_walking_animation,
             skeleton_melee_sword_attack_animations;
 
     protected ObjectMap<Skeleton, TextureRegion>
@@ -121,6 +122,7 @@ public abstract class GameRenderer
     {
         skeletons_standing = AssetLoader.skeletons_standing;
         skeleton_walking_animations = AssetLoader.skeleton_walking_animations;
+        skeleton_start_walking_animation = AssetLoader.skeleton_start_walking_animation;
         skeleton_melee_sword_attack_animations = AssetLoader.skeleton_melee_sword_attack_animations;
     }
 
@@ -129,6 +131,7 @@ public abstract class GameRenderer
     /**
      * Отрисовка игрока
      */
+    //TODO: Может лучше хранить рендер каждого персонажа в классе этого персонажа?
     protected void drawPlayer(float runTime)
     {
         if (!player.isDead())
@@ -238,7 +241,7 @@ public abstract class GameRenderer
                     else
                     {
                         playerElapsedWalkingTime = 0;
-
+                        ///////// Можно вставить заревершенную анимацию player_start_walking
                         if (player.graphics.getTurnedSide() == Directions.RIGHT)
                             batcher.draw(
                                     player_standing,
@@ -311,7 +314,7 @@ public abstract class GameRenderer
                 batcher.begin();
             }
         }
-
+        //else { draw(mogila);}
     }
 
     protected void drawSkeletons(float runTime)
@@ -361,24 +364,47 @@ public abstract class GameRenderer
                         // если идет вправо
                         if (skeleton.graphics.getControlsDirection() == Directions.RIGHT) {
                             skeleton.graphics.elapsedWalkingTime += Gdx.graphics.getDeltaTime();
-                            batcher.draw(
-                                    (TextureRegion) skeleton_walking_animations.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
-                                    skeleton.graphics.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                    skeleton.graphics.getY(),
-                                    -skeleton_frame_Width * skeletonWidthMult,
-                                    skeleton_frame_Height * skeletonHeightMult
-                            );
+                            if (!skeleton_start_walking_animation.get(skeleton).isAnimationFinished(skeleton.graphics.elapsedWalkingTime ))
+                            {
+                                batcher.draw(
+                                        (TextureRegion) skeleton_start_walking_animation.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
+                                        skeleton.graphics.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
+                                        skeleton.graphics.getY(),
+                                        -skeleton_frame_Width * skeletonWidthMult,
+                                        skeleton_frame_Height * skeletonHeightMult
+                                );
+                            }
+                                else{
+                                batcher.draw(
+                                        (TextureRegion) skeleton_walking_animations.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
+                                        skeleton.graphics.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
+                                        skeleton.graphics.getY(),
+                                        -skeleton_frame_Width * skeletonWidthMult,
+                                        skeleton_frame_Height * skeletonHeightMult
+                                );
+                            }
                         }
                         // если идет влево
                         else if (skeleton.graphics.getControlsDirection() == Directions.LEFT) {
                             skeleton.graphics.elapsedWalkingTime += Gdx.graphics.getDeltaTime();
-                            batcher.draw(
-                                    (TextureRegion) skeleton_walking_animations.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
-                                    skeleton.graphics.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                    skeleton.graphics.getY(),
-                                    skeleton_frame_Width * skeletonWidthMult,
-                                    skeleton_frame_Height * skeletonHeightMult
-                            );
+                            if (!skeleton_start_walking_animation.get(skeleton).isAnimationFinished(skeleton.graphics.elapsedWalkingTime )) {
+                                batcher.draw(
+                                        (TextureRegion) skeleton_start_walking_animation.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
+                                        skeleton.graphics.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
+                                        skeleton.graphics.getY(),
+                                        skeleton_frame_Width * skeletonWidthMult,
+                                        skeleton_frame_Height * skeletonHeightMult
+                                );
+                            }
+                            else{
+                                batcher.draw(
+                                        (TextureRegion) skeleton_walking_animations.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
+                                        skeleton.graphics.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
+                                        skeleton.graphics.getY(),
+                                        skeleton_frame_Width * skeletonWidthMult,
+                                        skeleton_frame_Height * skeletonHeightMult
+                                );
+                            }
                         }
                         // если стоит на месте
                         else {

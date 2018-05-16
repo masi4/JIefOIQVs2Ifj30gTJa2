@@ -88,6 +88,8 @@ public class ContextMenu extends Window
                 public void clicked(InputEvent event, float x, float y)
                 {
                     ((_Useable) item).Use();
+                    slot.Reduce(1);
+                    slotView.UpdateView();
                     Hide();
                 }
             });

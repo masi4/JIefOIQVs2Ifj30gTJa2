@@ -98,4 +98,9 @@ public class InventoryWindow extends Window
     public InventoryView GetInventoryView() {
         return inventoryView;
     }
+
+    public void UpdateStatsView(float delta)
+    {
+        statsView.UpdateHealthBar(delta);
+    }
 }

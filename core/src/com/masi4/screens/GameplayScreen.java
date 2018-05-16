@@ -9,6 +9,7 @@ package com.masi4.screens;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Input;
 import com.masi4.GUI.GUI;
+import com.masi4.GUI.PlayerDeathScreen;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gameobjects.objects.Skeleton;
 import com.masi4.gameworld.GameWorld;
@@ -27,6 +28,7 @@ public class GameplayScreen implements Screen, SkeletonListener
     private LevelNames levelName;
     private GameRenderer renderer;
     private GUI gui;
+    private PlayerDeathScreen playerDeathScreen;
     private float runTime;
 
     public GameplayScreen(LevelNames levelName)
@@ -36,11 +38,9 @@ public class GameplayScreen implements Screen, SkeletonListener
         AssetLoader.load_Level(levelName);
         AssetLoader.load_Player();
         AssetLoader.load_PlayerDefaultAttack();
-
-        if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
-            AssetLoader.load_Controller();
-            AssetLoader.load_GUI_Buttons();
-        }
+        AssetLoader.load_Fonts();
+        AssetLoader.load_Controller();
+        AssetLoader.load_GUI_Buttons();
 
         // возможно создать дочерние классы от GameWorld. Для каждого levelName свой.
         world = new GameWorld(levelName);
@@ -55,7 +55,9 @@ public class GameplayScreen implements Screen, SkeletonListener
             }
         }
 
-        gui = new GUI(world.getPlayer()); //TODO: this(?) InventoryScreen сделать не screen
+        gui = new GUI(world.getPlayer());
+
+        playerDeathScreen = new PlayerDeathScreen();
 
         world.addSkeletonListener(this);
     }
@@ -69,7 +71,7 @@ public class GameplayScreen implements Screen, SkeletonListener
     @Override
     public void render(float delta)
     {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             game.setScreen(new MainMenuScreen());
             dispose();
@@ -79,12 +81,12 @@ public class GameplayScreen implements Screen, SkeletonListener
         world.update(delta);
         renderer.render(runTime);
         gui.render(delta);
-        // Конфликтует с GUI рендером. TODO: Исправить UPD: Кнопка перекачевала в GUI
-        /*if (Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        //TODO: перенести сюда проверку player.isDead()
+        if(world.getPlayer().isDead())
         {
-            game.setScreen(new MainMenuScreen());
-            dispose();
-        }*/
+            playerDeathScreen.render(delta);
+        }
+
     }
 
     @Override

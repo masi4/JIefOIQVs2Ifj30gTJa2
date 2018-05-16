@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.masi4.Directions;
+import com.masi4.gamehelpers.Directions;
 import com.masi4.gameobjects.SkeletonListener;
 import com.masi4.gameobjects.objects.Player;
 import com.masi4.gameobjects.Stats;

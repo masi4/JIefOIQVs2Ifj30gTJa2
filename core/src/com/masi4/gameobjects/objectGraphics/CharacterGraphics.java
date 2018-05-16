@@ -2,7 +2,7 @@ package com.masi4.gameobjects.objectGraphics;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.masi4.Directions;
+import com.masi4.gamehelpers.Directions;
 
 /**
  * Created by OIEFIJM on 22.12.2017.

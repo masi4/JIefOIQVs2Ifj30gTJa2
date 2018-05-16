@@ -2,7 +2,6 @@ package com.masi4.gamehelpers;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.masi4.Directions;
 import com.masi4.gameobjects.objects.Skeleton;
 
 // TODO: ВЕЛОСИПЕД (?)

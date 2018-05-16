@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.ObjectSet;
 import static com.masi4.gamehelpers.GameCharactersDefaults.*;
 
 import com.masi4.Abilities.AbilityName;
-import com.masi4.Directions;
+import com.masi4.gamehelpers.Directions;
 import com.masi4.gameobjects.SkeletonListener;
 import com.masi4.gameobjects.Stats;
 import com.masi4.gameobjects.objects.Player;

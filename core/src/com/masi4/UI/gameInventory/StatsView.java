@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.masi4.gamehelpers.AssetLoader;
 import com.masi4.gamehelpers.GamePreferences;
 
-import static com.masi4.UI.UI.player;
+import static com.masi4.GUI.GUI.player;
 import static com.masi4.UI.gameInventory.InventoryWindow.INVENTORY_WIDTH;
 
 
@@ -23,11 +23,11 @@ import static com.masi4.UI.gameInventory.InventoryWindow.INVENTORY_WIDTH;
 
 public class StatsView extends Table
 {
-    private float defaultScale = 2.5f;
+    private float defaultScale = 3f;
     int MAX_HP;
     int HP;
     /*...*/
-
+    ProgressBar healthBar;
     Label.LabelStyle defaultStyle;
 
     public StatsView()
@@ -52,13 +52,14 @@ public class StatsView extends Table
                 new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarBoundsTextureRegion),
                 new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarFillTextureRegion));
         healthBarStyle.knobBefore = new TextureRegionDrawable(AssetLoader.GameInventory_HealthBarFillTextureRegion);
-        healthBarStyle.background.setLeftWidth(1);
+        healthBarStyle.background.setLeftWidth(3);
+        healthBarStyle.background.setRightWidth(6);
 
         healthBarStyle.background.setMinHeight(healthBarStyle.background.getMinHeight() * defaultScale);
         healthBarStyle.knobBefore.setMinHeight(healthBarStyle.knobBefore.getMinHeight() * defaultScale);
         healthBarStyle.knob.setMinHeight(healthBarStyle.knob.getMinHeight() * defaultScale);
 
-        ProgressBar healthBar = new ProgressBar(0,1,0.01f,false,healthBarStyle);
+        healthBar = new ProgressBar(0,1,0.01f,false,healthBarStyle);
         healthBar.setValue((float)HP/(float)MAX_HP);
         healthBar.setScale(defaultScale);
         healthLabel.setFontScale(defaultScale);
@@ -73,7 +74,13 @@ public class StatsView extends Table
 
     void LoadStats()
     {
-        int MAX_HP =  player.getMaxHP();
-        int HP = player.getCurrentHP();
+        MAX_HP =  player.getMaxHP();
+        HP = player.getCurrentHP();
+    }
+
+    public void UpdateHealthBar(float delta)
+    {
+        healthBar.setValue((float)player.getCurrentHP()/(float)player.getMaxHP());
+        healthBar.act(delta);
     }
 }

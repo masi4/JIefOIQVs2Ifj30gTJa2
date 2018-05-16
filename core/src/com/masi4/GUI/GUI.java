@@ -21,8 +21,7 @@ public class GUI
 {
     private UI ui;
     private StageLayer stageLayer;
-
-    private Player player;
+    public static Player player;
     // Чтобы прыгнуть еще раз, нужно сначала опустить пипку джойстика пониже, а потом опять поднять
     private boolean jumpCtrl;
     private boolean jumpCtrl_W;
@@ -44,14 +43,13 @@ public class GUI
 
     public GUI(Player player)
     {
-        if (!isDesktop) stageLayer = new StageLayer();
-
-        ui = new UI(player);
         this.player = player;
+        stageLayer = new StageLayer();
+
+        ui = new UI();
         jumpCtrl = true;
         jumpCtrl_W = true;
         jumpCtrl_SPACE = true;
-
         Gdx.input.setInputProcessor(stageLayer);
         Gdx.input.setCatchBackKey(true);
     }
@@ -60,13 +58,13 @@ public class GUI
     {
         // TODO: сделать событием (наверное)
         if (!player.isDead()) {
+            stageLayer.render(delta);
 
             // region Touchpad controls
             if (!isDesktop) {
                 //***********************
                 // Touchscreen controls
                 //***********************
-                stageLayer.render(delta);
 
                 if (stageLayer.GetWalkingController().isTouched()) {
                     player.graphics.controlByJoystick(

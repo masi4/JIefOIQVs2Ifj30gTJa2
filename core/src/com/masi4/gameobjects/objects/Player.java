@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.masi4.Abilities.AbilityName;
 import com.masi4.Abilities.PlayerAbilities.PlayerAbility;
-import com.masi4.Directions;
+import com.masi4.gamehelpers.Directions;
 import com.masi4.gameobjects.Stats;
 import com.masi4.gameobjects.objectRpg.PlayerRpg;
 import com.masi4.gameobjects.objectGraphics.PlayerGraphics;

@@ -1,13 +1,10 @@
 package com.masi4.UI.gameInventory.model.data;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.masi4.UI.gameInventory.model.Inventory;
 import com.masi4.UI.gameInventory.model.Slot;
 import com.masi4.gamehelpers.GamePreferences;
 
-import java.util.ArrayList;
 
 public class InventoryDataManager
 {

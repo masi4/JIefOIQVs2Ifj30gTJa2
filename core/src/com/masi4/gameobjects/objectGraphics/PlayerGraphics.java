@@ -1,7 +1,7 @@
 package com.masi4.gameobjects.objectGraphics;
 
 import com.masi4.Abilities.AbilityName;
-import com.masi4.Directions;
+import com.masi4.gamehelpers.Directions;
 import com.masi4.gameobjects.objects.Player;
 
 /**

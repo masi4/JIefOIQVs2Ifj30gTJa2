@@ -1,5 +1,6 @@
 package com.masi4.GUI;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -33,10 +34,13 @@ public class StageLayer extends Stage
         walkingControl = new WalkingController(viewport);
         healthBar = new HealthBar(viewport);
 
+        if(Gdx.app.getType() != Application.ApplicationType.Desktop) {
         this.addActor(inventoryButton);
         this.addActor(attackButton);
         this.addActor(walkingControl);
+        }
         this.addActor(healthBar);
+
 
         LoadEvents();
     }
@@ -82,6 +86,7 @@ public class StageLayer extends Stage
 
     public void render(float delta)
     {
+        healthBar.Update(delta);
         this.act(delta);
         this.draw();
     }

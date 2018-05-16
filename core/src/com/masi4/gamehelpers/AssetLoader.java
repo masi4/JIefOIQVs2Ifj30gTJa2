@@ -118,6 +118,7 @@ public class AssetLoader
             player_default_attack_frames,
             // скелетон
             skeleton_walking_frames,
+            skeleton_start_walking_frames,
             skeleton_dead_frames,
             skeleton_attack_frames,
             // факел
@@ -134,6 +135,7 @@ public class AssetLoader
     // Анимации скелетов
     public static ObjectMap<Skeleton, Animation>
             skeleton_walking_animations = new ObjectMap<Skeleton, Animation>(),
+            skeleton_start_walking_animation = new ObjectMap<Skeleton, Animation>(),
             skeleton_melee_sword_attack_animations = new ObjectMap<Skeleton, Animation>();
 
     // Скелеты стоят
@@ -144,7 +146,6 @@ public class AssetLoader
 
     public static Skin
             controllerSkin;
-
     //
     // Методы
     //
@@ -345,15 +346,26 @@ public class AssetLoader
                 new TextureRegion(skeleton_dead_Texture, skeleton_frame_Width * 7, 0, skeleton_frame_Width, skeleton_frame_Height)
         );
 
-        skeleton_walking_frames = new Array<TextureRegion>(11);
+        int[] frames_count = new int[] {9,  2}; // {бег, начало бега}
 
-        for (int i = 0; i < 11; i++)
+        skeleton_walking_frames = new Array<TextureRegion>(frames_count[0]);
+        skeleton_start_walking_frames = new Array<TextureRegion>(frames_count[1]);
+
+        for (int i = 2; i < frames_count[0]+2; i++)
+            skeleton_walking_frames.add(new TextureRegion(skeleton_WalkingTexture, skeleton_frame_Width * i,
+                    0, skeleton_frame_Width, skeleton_frame_Height));
+
+        for (int i = 0; i < frames_count[1]; i++)
             skeleton_walking_frames.add(new TextureRegion(skeleton_WalkingTexture, skeleton_frame_Width * i,
                     0, skeleton_frame_Width, skeleton_frame_Height));
 
         skeleton_walking_animations.put(
                 skeleton,
                 new Animation(0.06f, skeleton_walking_frames, Animation.PlayMode.LOOP)
+        );
+        skeleton_start_walking_animation.put(
+                skeleton,
+                new Animation(0.06f,skeleton_start_walking_frames, Animation.PlayMode.NORMAL)
         );
     }
 
@@ -389,6 +401,7 @@ public class AssetLoader
     {
         skeletons_standing.remove(skeleton);
         skeleton_walking_animations.remove(skeleton);
+        skeleton_start_walking_animation.remove(skeleton);
     }
 
     public static void remove_SkeletonMeleeSwordAttack(Skeleton skeleton)
