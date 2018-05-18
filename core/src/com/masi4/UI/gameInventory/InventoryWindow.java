@@ -22,6 +22,7 @@ public class InventoryWindow extends Window
 
     private InventoryView inventoryView;
     private StatsView statsView;
+    DialogBox dialogBox;
 
     private InventoryCloseButton inventoryCloseButton;
 
@@ -65,13 +66,19 @@ public class InventoryWindow extends Window
     private void CreateTable()
     {
         leftContainer = new Table();
+        leftContainer.setHeight(INVENTORY_HEIGHT);
+        dialogBox = new DialogBox();
 
-        inventoryView = new InventoryView(inventory);
+        inventoryView = new InventoryView(inventory,dialogBox);
 
         statsView = new StatsView();
+
         statsView.setWidth(inventoryView.getWidth()-100);
+        dialogBox.setWidth(inventoryView.getWidth()-100);
+        dialogBox.align(Align.bottom);
 
         statsView.left();
+        dialogBox.left();
         inventoryView.right();
 
         leftContainer.add(inventoryCloseButton)
@@ -81,6 +88,10 @@ public class InventoryWindow extends Window
         leftContainer.add(statsView)
                 .left()
                 .top();
+        leftContainer.row();
+        leftContainer.add(dialogBox)
+                .left()
+                .bottom();
 
         leftContainer.align(Align.left);
 

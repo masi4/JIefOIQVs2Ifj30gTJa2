@@ -57,6 +57,11 @@ public class ContextMenu extends Window
         this.pad(5);
     }
 
+    public boolean IsActiove()
+    {
+        return this.isVisible();
+    }
+
     public void Show(final SlotView slotView0)
     {
         this.clear();
@@ -67,12 +72,15 @@ public class ContextMenu extends Window
 
         LoadMenu();
         this.pack();
+
+        inventoryView.dialogBox.Show(slot.GetItem());
     }
 
     public void Hide()
     {
         this.clear();
         this.setVisible(false);
+        inventoryView.getDialogBox().Hide();
     }
 
     private void LoadMenu()

@@ -491,12 +491,7 @@ public class AssetLoader
     {
         if (items_Texture.isManaged())
         {
-            XmlReader reader = new XmlReader();
-            XmlReader.Element root = null;
-            FileHandle file = Gdx.files.internal("xml/Items.xml");
-            root = reader.parse(file);
-
-            int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
+            int id = Inventory_GetItemId(item);
 
             int x = (id % (items_Texture.getWidth() / itemWidth)) * itemWidth;
             int y = (id / (items_Texture.getHeight() / itemHeight)) * itemHeight;
@@ -509,6 +504,16 @@ public class AssetLoader
         }
     }
 
+    public static int Inventory_GetItemId(_InventoryItem item)
+    {
+        XmlReader reader = new XmlReader();
+        XmlReader.Element root = null;
+        FileHandle file = Gdx.files.internal("xml/Items.xml");
+        root = reader.parse(file);
+
+        int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
+        return id;
+    }
 
     public static void dispose_Level1()
     {
