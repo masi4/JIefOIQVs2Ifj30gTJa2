@@ -49,8 +49,9 @@ public class InventoryMain extends Stage
             {
                 if(contextMenu.isTrueClick)
                     contextMenu.setPosition(x,y );
-                else
+                else {
                     contextMenu.Hide();
+                }
 
                 contextMenu.isTrueClick = false;
 

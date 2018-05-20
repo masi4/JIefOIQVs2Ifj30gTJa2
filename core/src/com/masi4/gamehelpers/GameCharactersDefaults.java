@@ -20,7 +20,7 @@ public class GameCharactersDefaults
     public static final int PLAYER_DEFAULT_DAMAGE = 22;
     public static final int PLAYER_DEFAULT_INTELLECT = 50;
     public static final int PLAYER_DEFAULT_HASTE = 0;
-    public static final int PLAYER_DEFAULT_DEFENCE = 0;
+    public static final int PLAYER_DEFAULT_DEFENCE = 100000;
     public static final int PLAYER_DEFAULT_BLOCKING = 0;
     public static final int PLAYER_DEFAULT_BONUSSPEED = 0;
 

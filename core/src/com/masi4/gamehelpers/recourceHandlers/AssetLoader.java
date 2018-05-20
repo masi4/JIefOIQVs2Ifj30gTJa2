@@ -18,7 +18,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import static com.badlogic.gdx.Input.Keys.G;
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 import static com.masi4.gameobjects.Level.LevelNames;
 
@@ -26,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
+import com.masi4.UI.gameInventory.__InventoryStatics;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 import com.masi4.gamehelpers.GamePreferences;
 import com.masi4.gameobjects.objects.Skeleton;
@@ -551,18 +551,7 @@ public class AssetLoader
     {
         if (items_Texture.isManaged())
         {
-            XmlReader reader = new XmlReader();
-            XmlReader.Element root = null;
-            FileHandle file = Gdx.files.internal("xml/Items.xml");
-            try {
-                root = reader.parse(file);
-            }
-            catch (IOException e)
-            {
-                Gdx.app.log("", "IO EXCEPTION PARSER XML");
-            }
-
-            int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
+            int id = __InventoryStatics.GetItemId(item);
 
             int x = (id % (items_Texture.getWidth() / itemWidth)) * itemWidth;
             int y = (id / (items_Texture.getHeight() / itemHeight)) * itemHeight;
