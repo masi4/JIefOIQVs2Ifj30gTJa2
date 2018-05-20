@@ -1,17 +1,12 @@
 package com.masi4.UI.gameInventory;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.masi4.UI.gameInventory.model.Inventory;
-import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gamehelpers.BackgroundColor;
+import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.helpers.BackgroundColor;
 
 import static com.masi4.UI.gameInventory.InventoryMain.InventoryViewport;
 

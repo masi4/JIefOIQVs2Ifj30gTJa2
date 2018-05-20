@@ -3,14 +3,14 @@ package com.masi4.Abilities.MobsAbilities.SkeletonAbilities;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.masi4.gamehelpers.Directions;
+import com.masi4.gamehelpers.helpers.Directions;
 import com.masi4.gameobjects.Stats;
-import com.masi4.gameobjects.objectGraphics.SkeletonGraphics;
+import com.masi4.gameobjects.objectModel.SkeletonModel;
 import com.masi4.gameobjects.objects.Player;
 import com.masi4.gameobjects.objects.Skeleton;
 import static com.masi4.gamehelpers.GameCharactersDefaults.*;
 
-import java.util.Random;
+import static com.masi4.myGame.GameMain.random;
 
 /**
  *  Обычная атака мечом. По логике полностью идентична обычной атаке мечом игрока
@@ -21,7 +21,6 @@ public class Skeleton_MeleeSwordAttack implements SkeletonAbility
 {
     // TODO: исправить велосипед
     public static final Rectangle EMPTY = new Rectangle(0, 0, 1, 1);
-    Random random = new Random();
 
     // TODO: Если будет зависимость от статов (рейтинг скорости), то добавить сюда зависимость от статов
     private float castTime;
@@ -42,7 +41,7 @@ public class Skeleton_MeleeSwordAttack implements SkeletonAbility
     private Array<Rectangle> hitboxes;
     private Rectangle boundingRec;
 
-    public Skeleton_MeleeSwordAttack(SkeletonGraphics graphics, Stats stats)
+    public Skeleton_MeleeSwordAttack(SkeletonModel graphics, Stats stats)
     {
         castTime = SKELETON_DEFAULT_MELEE_SWORD_ATTACK_CAST_TIME;
         cooldown = SKELETON_DEFAULT_MELEE_SWORD_ATTACK_COOLDOWN;
@@ -59,11 +58,9 @@ public class Skeleton_MeleeSwordAttack implements SkeletonAbility
                 coords.x + graphics.getWidth(),
                 coords.y,
                 graphics.getWidth() / 30f * 36,
-                graphics.getHeight() / 60f * 70
+                graphics.getHeight() / 60f * 65
         ));
         boundingRec = new Rectangle(hitboxes.get(0));
-
-
     }
 
     @Override
@@ -79,14 +76,14 @@ public class Skeleton_MeleeSwordAttack implements SkeletonAbility
             elapsedTime += delta;
 
             if (isActing = elapsedTime > 0.22f)
-                if (skeleton.graphics.getTurnedSide() == Directions.RIGHT) {
-                    hitboxes.get(0).setPosition(coords.x + skeleton.graphics.getX(), coords.y + skeleton.graphics.getY());
+                if (skeleton.model.getTurnedSide() == Directions.RIGHT) {
+                    hitboxes.get(0).setPosition(coords.x + skeleton.model.getX(), coords.y + skeleton.model.getY());
                     boundingRec.setPosition(hitboxes.get(0).x, hitboxes.get(0).y);
                 }
                 else {
                     hitboxes.get(0).setPosition(
-                            -coords.x - hitboxes.get(0).width + skeleton.graphics.getX() + skeleton.graphics.getWidth(),
-                            coords.y + skeleton.graphics.getY()
+                            -coords.x - hitboxes.get(0).width + skeleton.model.getX() + skeleton.model.getWidth(),
+                            coords.y + skeleton.model.getY()
                     );
                     boundingRec.setPosition(hitboxes.get(0).x, hitboxes.get(0).y);
                 }

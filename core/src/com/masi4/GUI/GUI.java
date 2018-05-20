@@ -5,12 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.masi4.UI.UI;
-import com.masi4.UI.gameInventory.InventoryMain;
 import com.masi4.Abilities.AbilityName;
 import com.masi4.gameobjects.objects.Player;
 import com.masi4.screens.MainMenuScreen;
 
-import static com.badlogic.gdx.scenes.scene2d.InputEvent.Type.keyDown;
 import static com.masi4.myGame.GameMain.*;
 
 /**
@@ -67,7 +65,7 @@ public class GUI
                 //***********************
 
                 if (stageLayer.GetWalkingController().isTouched()) {
-                    player.graphics.controlByJoystick(
+                    player.model.controlByJoystick(
                             player,
                             stageLayer.GetWalkingController().getKnobPercentX(),
                             stageLayer.GetWalkingController().getKnobPercentY(),
@@ -75,7 +73,7 @@ public class GUI
                     );
                     jumpCtrl = !(stageLayer.GetWalkingController().getKnobPercentY() > 0.4);
                 } else
-                    player.graphics.releaseMovementControls();
+                    player.model.releaseMovementControls();
 
                 if (stageLayer.GetAttackButton().isPressed()) {
                     player.executeAbility(AbilityName.Player_MeleeSwordAttack);
@@ -110,22 +108,22 @@ public class GUI
             else {
                 // Передвижение
                 if (Gdx.input.isKeyPressed(Input.Keys.D))
-                    player.graphics.moveRight(player);
+                    player.model.moveRight(player);
 
                 if (Gdx.input.isKeyPressed(Input.Keys.A))
-                    player.graphics.moveLeft(player);
+                    player.model.moveLeft(player);
 
                 if (!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A))
-                    player.graphics.releaseMovementControls();
+                    player.model.releaseMovementControls();
 
                 if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                    if (jumpCtrl_W) player.graphics.jump();
+                    if (jumpCtrl_W) player.model.jump();
                     jumpCtrl_W = false;
                 } else
                     jumpCtrl_W = true;
 
                 if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                    if (jumpCtrl_SPACE) player.graphics.jump();
+                    if (jumpCtrl_SPACE) player.model.jump();
                     jumpCtrl_SPACE = false;
                 } else
                     jumpCtrl_SPACE = true;
@@ -151,8 +149,8 @@ public class GUI
         }
         else
         {
-            player.graphics.releaseMovementControls();
-            player.graphics.setVelocityX(0);
+            player.model.releaseMovementControls();
+            player.model.setVelocityX(0);
         }
     }
 

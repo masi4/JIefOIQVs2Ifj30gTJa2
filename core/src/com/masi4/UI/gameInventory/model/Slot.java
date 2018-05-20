@@ -1,11 +1,6 @@
 package com.masi4.UI.gameInventory.model;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
-import com.masi4.UI.gameInventory.InventoryMain;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
-import com.masi4.gamehelpers.AssetLoader;
-
 
 
 /**

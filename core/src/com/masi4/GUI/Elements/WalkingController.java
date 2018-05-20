@@ -2,16 +2,9 @@ package com.masi4.GUI.Elements;
 /**
  * Created by U1wknUzeU6 on 01.12.2017.
  */
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gamehelpers.GamePreferences;
+import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
 
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 

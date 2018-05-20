@@ -6,11 +6,11 @@ package com.masi4.screens;
  * Экран непосредственно игрового процесса
  */
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Input;
 import com.masi4.GUI.GUI;
 import com.masi4.GUI.PlayerDeathScreen;
-import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.recourceHandlers.SoundManager;
 import com.masi4.gameobjects.objects.Skeleton;
 import com.masi4.gameworld.GameWorld;
 import com.masi4.gameworld.renderers.GameRenderer;
@@ -24,7 +24,7 @@ import com.masi4.gameobjects.SkeletonListener;
 
 public class GameplayScreen implements Screen, SkeletonListener
 {
-    private GameWorld world;
+    private GameWorld gameworld;
     private LevelNames levelName;
     private GameRenderer renderer;
     private GUI gui;
@@ -43,23 +43,27 @@ public class GameplayScreen implements Screen, SkeletonListener
         AssetLoader.load_GUI_Buttons();
 
         // возможно создать дочерние классы от GameWorld. Для каждого levelName свой.
-        world = new GameWorld(levelName);
+        gameworld = new GameWorld(levelName);
         switch (levelName)
         {
             case LEVEL_1:
             {
-                AssetLoader.load_SkeletonTextures();
+                AssetLoader.load_SkeletonBasis();
 
-                renderer = new Level1_Renderer(world, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                world.addSkeletonListener((Level1_Renderer) renderer);
+                renderer = new Level1_Renderer(gameworld, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                gameworld.addSkeletonListener((Level1_Renderer) renderer);
+                // TODO: сделать, чтобы в PlayerDeathScreen не создавался новый GameplayScreen
+                if (!AssetLoader.level1_ambience.isPlaying()) {
+                    // TODO: рандомить только те моменты, в которых нет пиковых шумов
+                    SoundManager.playMusic(AssetLoader.level1_ambience, true);
+                    AssetLoader.level1_ambience.setPosition(random.nextInt(731));
+                }
             }
         }
 
-        gui = new GUI(world.getPlayer());
-
-        playerDeathScreen = new PlayerDeathScreen();
-
-        world.addSkeletonListener(this);
+        gui = new GUI(gameworld.getPlayer());
+        playerDeathScreen = new PlayerDeathScreen(this);
+        gameworld.addSkeletonListener(this);
     }
 
     @Override
@@ -71,6 +75,7 @@ public class GameplayScreen implements Screen, SkeletonListener
     @Override
     public void render(float delta)
     {
+        // TODO: сделать. чтобы на ESC не выбрасывало в главное меню, если открыт инвентарь. Вместо этого закрыть инвентарь.
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             game.setScreen(new MainMenuScreen());
@@ -78,11 +83,11 @@ public class GameplayScreen implements Screen, SkeletonListener
         }
         runTime += delta;
 
-        world.update(delta);
+        gameworld.update(delta);
         renderer.render(runTime);
         gui.render(delta);
         //TODO: перенести сюда проверку player.isDead()
-        if(world.getPlayer().isDead())
+        if(gameworld.getPlayer().isDead())
         {
             playerDeathScreen.render(delta);
         }
@@ -126,7 +131,7 @@ public class GameplayScreen implements Screen, SkeletonListener
             case LEVEL_1:
             {
                 AssetLoader.dispose_Level1();
-                AssetLoader.dispose_Skeleton_Textures();
+                AssetLoader.dispose_SkeletonBasis();
                 AssetLoader.dispose_SkeletonSwordAttack_Texture();
 
                 // dispose all remaining skeletons (mobs)
@@ -134,6 +139,30 @@ public class GameplayScreen implements Screen, SkeletonListener
         }
 
         gui.dispose();
+    }
+
+    public LevelNames getLevelName() { return levelName; }
+
+    public void reloadLevel(LevelNames levelName)
+    {
+        switch (levelName)
+        {
+            case LEVEL_1:
+                gameworld = new GameWorld(levelName);
+                renderer = new Level1_Renderer(gameworld, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                gameworld.addSkeletonListener((Level1_Renderer) renderer);
+                // TODO: сделать, чтобы в PlayerDeathScreen не создавался новый GameplayScreen
+                if (!AssetLoader.level1_ambience.isPlaying()) {
+                    // TODO: рандомить только те моменты, в которых нет пиковых шумов
+                    SoundManager.playMusic(AssetLoader.level1_ambience, true);
+                    AssetLoader.level1_ambience.setPosition(random.nextInt(731));
+
+                }
+            break;
+        }
+
+        gameworld.addSkeletonListener(this);
+        gui = new GUI(gameworld.getPlayer());
     }
 
     // TODO: перенести в рендерер

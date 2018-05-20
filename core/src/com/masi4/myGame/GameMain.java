@@ -4,6 +4,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 
+import java.util.Random;
+
 /**
  * Created by U1wknUzeU6 on 10.05.2018.
  */
@@ -11,13 +13,14 @@ import com.badlogic.gdx.Gdx;
 public class GameMain implements ApplicationListener
 {
     // DEBUG TODO: вынести в Preferences
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static final boolean SPAWN_SKELETONS = true;
 
     public static final int SCREEN_HEIGHT = 450;
     public static final int SCREEN_WIDTH = 800;
 
     public static final GameMainClass game = new GameMainClass();
+    public static final Random random = new Random();
 
     @Override
     public void create() { game.create(); }

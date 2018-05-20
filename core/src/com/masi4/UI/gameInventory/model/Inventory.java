@@ -13,7 +13,6 @@ import com.masi4.UI.gameInventory.model.objects.healing_potion;
 public class Inventory {
 
     public Array<Slot> slots;
-
     InventoryDataManager dataManager;
 
     public Inventory()

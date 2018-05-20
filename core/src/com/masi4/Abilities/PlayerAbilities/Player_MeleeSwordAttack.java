@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.masi4.gamehelpers.Directions;
+import com.masi4.gamehelpers.helpers.Directions;
 import com.masi4.gameobjects.SkeletonListener;
 import com.masi4.gameobjects.objects.Player;
 import com.masi4.gameobjects.Stats;
@@ -16,7 +16,7 @@ import com.masi4.gameobjects.objects.Skeleton;
 import com.masi4.gameworld.GameWorld;
 import static com.masi4.gamehelpers.GameCharactersDefaults.*;
 
-import java.util.Random;
+import static com.masi4.myGame.GameMain.random;
 
 
 /**
@@ -24,8 +24,6 @@ import java.util.Random;
  */
 public class Player_MeleeSwordAttack implements PlayerAbility, SkeletonListener
 {
-    Random random = new Random();
-
     // TODO: Если будет зависимость от статов (рейтинг скорости), то добавить сюда зависимость от статов
     private float castTime;
     private float cooldown;
@@ -100,44 +98,44 @@ public class Player_MeleeSwordAttack implements PlayerAbility, SkeletonListener
             elapsedTime += delta;
 
             // Если игрок смотрит вправо
-            if (player.graphics.getTurnedSide() == Directions.RIGHT) {
-                hitboxes.get(0).setPosition(coords0.x + player.graphics.getX(), coords0.y + player.graphics.getY());
-                hitboxes.get(1).setPosition(coords1.x + player.graphics.getX(), coords1.y + player.graphics.getY());
-                hitboxes.get(2).setPosition(coords2.x + player.graphics.getX(), coords2.y + player.graphics.getY());
-                hitboxes.get(3).setPosition(coords3.x + player.graphics.getX(), coords3.y + player.graphics.getY());
-                hitboxes.get(4).setPosition(coords4.x + player.graphics.getX(), coords4.y + player.graphics.getY());
-                boundingRec.setPosition(coords0.x + player.graphics.getX(), coords0.y + player.graphics.getY());
+            if (player.model.getTurnedSide() == Directions.RIGHT) {
+                hitboxes.get(0).setPosition(coords0.x + player.model.getX(), coords0.y + player.model.getY());
+                hitboxes.get(1).setPosition(coords1.x + player.model.getX(), coords1.y + player.model.getY());
+                hitboxes.get(2).setPosition(coords2.x + player.model.getX(), coords2.y + player.model.getY());
+                hitboxes.get(3).setPosition(coords3.x + player.model.getX(), coords3.y + player.model.getY());
+                hitboxes.get(4).setPosition(coords4.x + player.model.getX(), coords4.y + player.model.getY());
+                boundingRec.setPosition(coords0.x + player.model.getX(), coords0.y + player.model.getY());
             }
             // Если смотрит влево, то зеркально отражаем по горизонтали
             else {
                 hitboxes.get(0).setPosition(
-                        -coords0.x - hitboxes.get(0).width + player.graphics.getX() + player.graphics.getWidth(),
-                         coords0.y + player.graphics.getY()
+                        -coords0.x - hitboxes.get(0).width + player.model.getX() + player.model.getWidth(),
+                         coords0.y + player.model.getY()
                 );
 
                 hitboxes.get(1).setPosition(
-                        -coords1.x - hitboxes.get(1).width + player.graphics.getX() + player.graphics.getWidth(),
-                        coords1.y + player.graphics.getY()
+                        -coords1.x - hitboxes.get(1).width + player.model.getX() + player.model.getWidth(),
+                        coords1.y + player.model.getY()
                 );
 
                 hitboxes.get(2).setPosition(
-                        -coords2.x - hitboxes.get(2).width + player.graphics.getX() + player.graphics.getWidth(),
-                        coords2.y + player.graphics.getY()
+                        -coords2.x - hitboxes.get(2).width + player.model.getX() + player.model.getWidth(),
+                        coords2.y + player.model.getY()
                 );
 
                 hitboxes.get(3).setPosition(
-                        -coords3.x - hitboxes.get(3).width + player.graphics.getX() + player.graphics.getWidth(),
-                        coords3.y + player.graphics.getY()
+                        -coords3.x - hitboxes.get(3).width + player.model.getX() + player.model.getWidth(),
+                        coords3.y + player.model.getY()
                 );
 
                 hitboxes.get(4).setPosition(
-                        -coords4.x - hitboxes.get(4).width + player.graphics.getX() + player.graphics.getWidth(),
-                        coords4.y + player.graphics.getY()
+                        -coords4.x - hitboxes.get(4).width + player.model.getX() + player.model.getWidth(),
+                        coords4.y + player.model.getY()
                 );
 
                 boundingRec.setPosition(
-                        -coords0.x - boundingRec.width + player.graphics.getX() + player.graphics.getWidth(),
-                        coords0.y + player.graphics.getY()
+                        -coords0.x - boundingRec.width + player.model.getX() + player.model.getWidth(),
+                        coords0.y + player.model.getY()
                 );
             }
 

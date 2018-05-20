@@ -9,26 +9,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gamehelpers.BackgroundColor;
+import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.helpers.BackgroundColor;
 import com.masi4.gamehelpers.GamePreferences;
-import com.masi4.gameobjects.Level;
+import com.masi4.gameworld.GameWorld;
 import com.masi4.screens.GameplayScreen;
 
 import static com.masi4.myGame.GameMain.game;
 
 public class PlayerDeathScreen extends Stage
 {
+    GameplayScreen gameplayScreen;
+
     BackgroundColor bc;
     private Image background;
     private Animation<BackgroundColor> colorAnimation;
     private Label text;
     private Label button;
-    private float elapsedTime = 0;
-    boolean switcher = false;
+    private float elapsedTime;
+    boolean switcher;
 
-    public PlayerDeathScreen()
+    public PlayerDeathScreen(GameplayScreen gameplayScreen)
     {
+        this.gameplayScreen = gameplayScreen;
+
         LoadBackground();
         LoadAnimation();
         LoadText();
@@ -89,8 +93,8 @@ public class PlayerDeathScreen extends Stage
 
     private void MainAction()
     {
-        game.setScreen(new GameplayScreen(Level.LevelNames.LEVEL_1));
-        dispose();
+        gameplayScreen.reloadLevel(gameplayScreen.getLevelName());
+        game.setScreen(gameplayScreen);
     }
 
     public void render(float delta)

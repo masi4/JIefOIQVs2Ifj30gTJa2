@@ -1,7 +1,7 @@
 package com.masi4.UI.gameInventory.model.objects;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
 
 /**
  * Created by U1wknUzeU6 on 23.04.2018.

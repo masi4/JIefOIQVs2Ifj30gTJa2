@@ -6,13 +6,13 @@ import com.masi4.Abilities.AbilityName;
 import com.masi4.Abilities.MobsAbilities.SkeletonAbilities.SkeletonAbility;
 import com.masi4.Abilities.MobsAbilities.SkeletonAbilities.Skeleton_MeleeSwordAttack;
 import com.masi4.gameobjects.Stats;
-import com.masi4.gameobjects.objectGraphics.SkeletonGraphics;
+import com.masi4.gameobjects.objectModel.SkeletonModel;
 
 public class SkeletonRpg extends CharacterRpg
 {
     private ObjectMap<AbilityName, SkeletonAbility> abilities;
 
-    public SkeletonRpg(SkeletonGraphics graphics, Stats stats)
+    public SkeletonRpg(SkeletonModel graphics, Stats stats)
     {
         super(stats);
         abilities = new OrderedMap<AbilityName, SkeletonAbility>();

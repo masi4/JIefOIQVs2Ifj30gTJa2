@@ -16,8 +16,8 @@ public class GameCharactersDefaults
     public static final int PLAYER_DEFAULT_HORIZONTAL_VELOCITY_GAIN = 600;
     public static final int PLAYER_DEFAULT_MAX_HORIZONTAL_VELOCITY = 300;
 
-    public static final int PLAYER_DEFAULT_STAMINA = 60;
-    public static final int PLAYER_DEFAULT_DAMAGE = 20;
+    public static final int PLAYER_DEFAULT_STAMINA = 100;
+    public static final int PLAYER_DEFAULT_DAMAGE = 22;
     public static final int PLAYER_DEFAULT_INTELLECT = 50;
     public static final int PLAYER_DEFAULT_HASTE = 0;
     public static final int PLAYER_DEFAULT_DEFENCE = 0;
@@ -28,15 +28,15 @@ public class GameCharactersDefaults
     public static final float PLAYER_DEFAULT_MELEE_SWORD_ATTACK_COOLDOWN = 0.1f;
 
     // SKELETON
-    public static final int SKELETON_DEFAULT_WIDTH = 45;
-    public static final int SKELETON_DEFAULT_HEIGHT = 90;
+    public static final int SKELETON_DEFAULT_WIDTH = 39;
+    public static final int SKELETON_DEFAULT_HEIGHT = 82;
 
     public static final int SKELETON_DEFAULT_INITIAL_JUMP_SPEED = 550;
     public static final int SKELETON_DEFAULT_HORIZONTAL_VELOCITY_GAIN = 500;
-    public static final int SKELETON_DEFAULT_MAX_HORIZONTAL_VELOCITY = 200;
+    public static final int SKELETON_DEFAULT_MAX_HORIZONTAL_VELOCITY = 150;
 
-    public static final int SKELETON_DEFAULT_STAMINA = 40;
-    public static final int SKELETON_DEFAULT_DAMAGE = 15;
+    public static final int SKELETON_DEFAULT_STAMINA = 36;
+    public static final int SKELETON_DEFAULT_DAMAGE = 11;
     public static final int SKELETON_DEFAULT_INTELLECT = 0;
     public static final int SKELETON_DEFAULT_HASTE = 0;
     public static final int SKELETON_DEFAULT_DEFENCE = 2;

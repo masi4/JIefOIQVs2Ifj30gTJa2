@@ -5,10 +5,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.masi4.Abilities.AbilityName;
 import com.masi4.Abilities.PlayerAbilities.PlayerAbility;
-import com.masi4.gamehelpers.Directions;
+import com.masi4.gamehelpers.helpers.Directions;
 import com.masi4.gameobjects.Stats;
 import com.masi4.gameobjects.objectRpg.PlayerRpg;
-import com.masi4.gameobjects.objectGraphics.PlayerGraphics;
+import com.masi4.gameobjects.objectModel.PlayerModel;
+import com.masi4.gameobjects.objectSound.PlayerSound;
 import com.masi4.gameworld.GameWorld;
 
 import static com.masi4.gamehelpers.GameCharactersDefaults.*;
@@ -21,17 +22,20 @@ import static com.masi4.gamehelpers.GameCharactersDefaults.*;
 
 public class Player
 {
-    public final PlayerGraphics graphics;
+    // TODO: Переименовать в "model", добавить настоящий model (animations, texture regions etc)
+    public final PlayerModel model;
     private PlayerRpg rpg;
+    private PlayerSound sound;
 
     // Статы добавлять из расчета талантов etc.
     public Player(int width, int height, int worldGravity, boolean isOnGround, Stats stats)
     {
         int maxHorizontalVelocity = Math.round(PLAYER_DEFAULT_MAX_HORIZONTAL_VELOCITY * (1 + stats.getBonusSpeedProcent() * 0.01f));
         // Initial jump speed = 640, Horizontal velocity gain = 600
-        graphics = new PlayerGraphics(width, height, worldGravity, PLAYER_DEFAULT_INITIAL_JUMP_SPEED,
+        model = new PlayerModel(width, height, worldGravity, PLAYER_DEFAULT_INITIAL_JUMP_SPEED,
                 PLAYER_DEFAULT_HORIZONTAL_VELOCITY_GAIN, maxHorizontalVelocity, Directions.RIGHT, isOnGround);
         rpg = new PlayerRpg(stats);
+        sound = new PlayerSound();
     }
 
     public Player(int width, int height, int worldGravity, boolean isOnGround)
@@ -49,7 +53,7 @@ public class Player
 
     public void setCoords(float x, float y)
     {
-        graphics.setPosition(x, y);
+        model.setPosition(x, y);
     }
 
     public void executeAbility(AbilityName abilityName)
@@ -77,13 +81,6 @@ public class Player
                 return entry.key;
         }
         return AbilityName.NONE;
-    }
-
-    public int dealDamage(AbilityName abilityName, Skeleton skeleton)
-    {
-        if (rpg.getAbilities().containsKey(abilityName))
-            return rpg.getAbilities().get(abilityName).dealDamage(skeleton);
-        else return 0;
     }
 
     /**
@@ -144,6 +141,19 @@ public class Player
         return rpg.getCurrentHP();
     }
 
+    public Stats getStats() { return rpg.getStats(); }
+
+    public boolean isDead()
+    {
+        return rpg.isDead();
+    }
+
+    public int dealDamage(AbilityName abilityName, Skeleton skeleton)
+    {
+        if (rpg.getAbilities().containsKey(abilityName))
+            return rpg.getAbilities().get(abilityName).dealDamage(skeleton);
+        else return 0;
+    }
     public void takeDamage(int damage)
     {
         rpg.takeDamage(damage);
@@ -154,10 +164,13 @@ public class Player
         rpg.heal(healing);
     }
 
-    public boolean isDead()
+    // TODO: убрать задержку воспроизведения звуков шагов, приземления
+    public void updateSounds(float delta)
     {
-        return rpg.isDead();
+        sound.update(this, delta);
     }
+
+    public void updateEffects(float delta) { rpg.updateEffects(delta); }
 
     // TODO: либо придумать другой способ обработки того, продамажен враг, или нет, либо сделать gameworld реализующим интерфейс создателя событий, либо написать нормальный EventManager
     public void subscribeAbilities(GameWorld gameWorld)

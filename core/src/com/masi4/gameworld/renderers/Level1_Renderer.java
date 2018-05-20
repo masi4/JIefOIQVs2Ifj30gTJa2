@@ -12,9 +12,9 @@ import static com.masi4.myGame.GameMain.*;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectSet;
-import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
 import com.masi4.gamehelpers.GameTextureRegions;
-import com.masi4.gamehelpers.SkeletonDeath;
+import com.masi4.gameworld.SkeletonDeath;
 import com.masi4.gameobjects.SkeletonListener;
 import com.masi4.gameobjects.objects.Skeleton;
 import com.masi4.gameworld.GameWorld;
@@ -139,15 +139,15 @@ public class Level1_Renderer extends GameRenderer implements SkeletonListener
     private void AttachCameraAndCalculateParallax()
     {
         // Если игрок не в начале и не в конце уровня
-        if (player.graphics.getX() > SCREEN_WIDTH * proportion &&
-                player.graphics.getX() < world.getLevelWidth() - SCREEN_WIDTH * (1 - proportion))
+        if (player.model.getX() > SCREEN_WIDTH * proportion &&
+                player.model.getX() < world.getLevelWidth() - SCREEN_WIDTH * (1 - proportion))
         {
             cameraAttached = true;
-            camera.translate(player.graphics.getVelocityX() * Gdx.graphics.getDeltaTime(), 0);
-            backgroundsOffset = (player.graphics.getX() - proportion * SCREEN_WIDTH) / attachedSegment;
+            camera.translate(player.model.getVelocityX() * Gdx.graphics.getDeltaTime(), 0);
+            backgroundsOffset = (player.model.getX() - proportion * SCREEN_WIDTH) / attachedSegment;
         }
         // Если игрок в начале уровня
-        else if (cameraAttached && player.graphics.getX() <= SCREEN_WIDTH * proportion)
+        else if (cameraAttached && player.model.getX() <= SCREEN_WIDTH * proportion)
         {
             cameraAttached = false;
             camera.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);

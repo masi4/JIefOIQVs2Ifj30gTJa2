@@ -13,6 +13,7 @@ import com.masi4.gameworld.GameWorld;
  */
 public interface PlayerAbility
 {
+    // TODO: не нужен здесь именно Player. Достаточно CharacterRpg, так что переделать в один интерфейс.
     void execute(Player player);
 
     /** Обновляет состояние хитбоксов и прочих элементов, которые создает способность **/

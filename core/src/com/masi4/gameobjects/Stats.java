@@ -27,6 +27,37 @@ public class Stats
         this.bonusSpeedProcent = bonusSpeedProcent;
     }
 
+    public void setStamina(int stamina) {
+        if (stamina >= 0)
+            this.stamina = stamina;
+    }
+
+    public void setDamage(int damage) {
+        if (damage >= 0)
+            this.damage = damage;
+    }
+
+    public void setIntellect(int intellect) {
+        if (intellect >= 0)
+            this.intellect = intellect;
+    }
+
+    public void setHaste(int haste) {
+            this.haste = haste;
+    }
+
+    public void setDefence(int defence) {
+            this.defence = defence;
+    }
+
+    public void setBlocking(int blocking) {
+            this.blocking = blocking;
+    }
+
+    public void setBonusSpeedProcent(int bonusSpeedProcent) {
+            this.bonusSpeedProcent = bonusSpeedProcent;
+    }
+
     public int getStamina() {
         return stamina;
     }

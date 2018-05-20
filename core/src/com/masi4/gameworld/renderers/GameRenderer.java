@@ -19,9 +19,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.masi4.Abilities.AbilityName;
-import com.masi4.gamehelpers.Directions;
-import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gamehelpers.SkeletonDeath;
+import com.masi4.gamehelpers.helpers.Directions;
+import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gameworld.SkeletonDeath;
 import com.masi4.gamehelpers.GameCharactersDefaults;
 import com.masi4.gameobjects.objects.Player;
 import com.masi4.gameobjects.objects.Skeleton;
@@ -55,8 +55,8 @@ public abstract class GameRenderer
     protected SpriteBatch batcher;
 
     // TODO: сделать нормальным образом
-    protected final float skeletonWidthMult = GameCharactersDefaults.SKELETON_DEFAULT_WIDTH / 30f;
-    protected final float skeletonHeightMult = GameCharactersDefaults.SKELETON_DEFAULT_HEIGHT / 60f;
+    protected float skeletonWidthMult = GameCharactersDefaults.SKELETON_DEFAULT_WIDTH / 30f;
+    protected float skeletonHeightMult = GameCharactersDefaults.SKELETON_DEFAULT_HEIGHT / 60f;
 
     // DEBUG TODO: закоментить перед релизом
     protected ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -138,19 +138,19 @@ public abstract class GameRenderer
         {
             playerHp.draw(batcher, Integer.toString(player.getCurrentHP()),
                     // (playerWidth - playerHpTextWidth) / 2
-                    player.graphics.getX() + (player.graphics.getWidth() - playerHp.getSpaceWidth() * Integer.toString(player.getCurrentHP()).length()) / 2f,
-                    player.graphics.getY() + player.graphics.getHeight() + 21
+                    player.model.getX() + (player.model.getWidth() - playerHp.getSpaceWidth() * Integer.toString(player.getCurrentHP()).length()) / 2f,
+                    player.model.getY() + player.model.getHeight() + 21
             );
 
             // TODO: Скорость анимации ходьбы зависит от скорости персонажа
         /*
-        if (Math.abs(player.graphics.getVelocityX()) > 30) {
+        if (Math.abs(player.model.getVelocityX()) > 30) {
             player_start_walking_animation.setFrameDuration(
-                    300f / Math.abs(player.graphics.getVelocityX()) * 0.06f
+                    300f / Math.abs(player.model.getVelocityX()) * 0.06f
             );
 
             player_walking_animation.setFrameDuration(
-                    300f / Math.abs(player.graphics.getVelocityX()) * 0.06f
+                    300f / Math.abs(player.model.getVelocityX()) * 0.06f
             );
         }
         else {
@@ -181,17 +181,17 @@ public abstract class GameRenderer
                 // Атака
                 //
                 case Player_MeleeSwordAttack:
-                    if (player.graphics.getTurnedSide() == Directions.RIGHT)
+                    if (player.model.getTurnedSide() == Directions.RIGHT)
                     {
                         batcher.draw((TextureRegion) player_melee_sword_attack_animation.getKeyFrame(player.getCastingElapsedTime()),
-                                player.graphics.getX() - (player_attack_frame_Width - player.graphics.getWidth()) / 2f,
-                                player.graphics.getY(), player_attack_frame_Width, player_attack_frame_Height);
+                                player.model.getX() - (player_attack_frame_Width - player.model.getWidth()) / 2f,
+                                player.model.getY(), player_attack_frame_Width, player_attack_frame_Height);
                     }
                     else
                     {
                         batcher.draw((TextureRegion) player_melee_sword_attack_animation.getKeyFrame(player.getCastingElapsedTime()),
-                                player.graphics.getX() + player_attack_frame_Width - (player_attack_frame_Width - player.graphics.getWidth()) / 2f,
-                                player.graphics.getY(), -player_attack_frame_Width, player_attack_frame_Height);
+                                player.model.getX() + player_attack_frame_Width - (player_attack_frame_Width - player.model.getWidth()) / 2f,
+                                player.model.getY(), -player_attack_frame_Width, player_attack_frame_Height);
                     }
                     break;
 
@@ -200,40 +200,40 @@ public abstract class GameRenderer
                 // TODO: анимация ходьбы, только если нажаты кнопки A или D или джойстик
                 case NONE:
                     // Если идет вправо
-                    if (player.graphics.getControlsDirection() == Directions.RIGHT)
+                    if (player.model.getControlsDirection() == Directions.RIGHT)
                     {
                         playerElapsedWalkingTime += Gdx.graphics.getDeltaTime();
                         // начало шага
                         if (!player_start_walking_animation.isAnimationFinished(playerElapsedWalkingTime))
                         {
                             batcher.draw((TextureRegion) player_start_walking_animation.getKeyFrame(playerElapsedWalkingTime),
-                                    player.graphics.getX() - (player_default_frame_Width - player.graphics.getWidth()) / 2f,
-                                    player.graphics.getY(), player_default_frame_Width, player_default_frame_Height);
+                                    player.model.getX() - (player_default_frame_Width - player.model.getWidth()) / 2f,
+                                    player.model.getY(), player_default_frame_Width, player_default_frame_Height);
                         }
                         else
                         {
                             batcher.draw((TextureRegion) player_walking_animation.getKeyFrame(runTime),
-                                    player.graphics.getX() - (player_default_frame_Width - player.graphics.getWidth()) / 2f,
-                                    player.graphics.getY(), player_default_frame_Width, player_default_frame_Height);
+                                    player.model.getX() - (player_default_frame_Width - player.model.getWidth()) / 2f,
+                                    player.model.getY(), player_default_frame_Width, player_default_frame_Height);
                         }
                     }
 
                     // Если идет влево
-                    else if (player.graphics.getControlsDirection() == Directions.LEFT)
+                    else if (player.model.getControlsDirection() == Directions.LEFT)
                     {
                         playerElapsedWalkingTime += Gdx.graphics.getDeltaTime();
                         // начало шага
                         if (!player_start_walking_animation.isAnimationFinished(playerElapsedWalkingTime))
                         {
                             batcher.draw((TextureRegion) player_start_walking_animation.getKeyFrame(playerElapsedWalkingTime),
-                                    player.graphics.getX() + player_default_frame_Width - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                                    player.graphics.getY(), -player_default_frame_Width, player_default_frame_Height);
+                                    player.model.getX() + player_default_frame_Width - (player_default_frame_Width - player.model.getWidth()) / 2,
+                                    player.model.getY(), -player_default_frame_Width, player_default_frame_Height);
                         }
                         else
                         {
                             batcher.draw((TextureRegion) player_walking_animation.getKeyFrame(runTime),
-                                    player.graphics.getX() + player_default_frame_Width - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                                    player.graphics.getY(), -player_default_frame_Width, player_default_frame_Height);
+                                    player.model.getX() + player_default_frame_Width - (player_default_frame_Width - player.model.getWidth()) / 2,
+                                    player.model.getY(), -player_default_frame_Width, player_default_frame_Height);
                         }
                     }
 
@@ -242,16 +242,16 @@ public abstract class GameRenderer
                     {
                         playerElapsedWalkingTime = 0;
                         ///////// Можно вставить заревершенную анимацию player_start_walking
-                        if (player.graphics.getTurnedSide() == Directions.RIGHT)
+                        if (player.model.getTurnedSide() == Directions.RIGHT)
                             batcher.draw(
                                     player_standing,
-                                    player.graphics.getX() - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                                    player.graphics.getY(), player_default_frame_Width, player_default_frame_Height);
+                                    player.model.getX() - (player_default_frame_Width - player.model.getWidth()) / 2,
+                                    player.model.getY(), player_default_frame_Width, player_default_frame_Height);
 
                         else
                             batcher.draw(player_standing,
-                                    player.graphics.getX() + player_default_frame_Width - (player_default_frame_Width - player.graphics.getWidth()) / 2,
-                                    player.graphics.getY(), -player_default_frame_Width, player_default_frame_Height);
+                                    player.model.getX() + player_default_frame_Width - (player_default_frame_Width - player.model.getWidth()) / 2,
+                                    player.model.getY(), -player_default_frame_Width, player_default_frame_Height);
 
 
                     }
@@ -272,10 +272,10 @@ public abstract class GameRenderer
                 // Хитбокс игрока
                 shapeRenderer.setColor(Color.GREEN);
                 shapeRenderer.rect(
-                        player.graphics.getHitbox().x,
-                        player.graphics.getHitbox().y,
-                        player.graphics.getHitbox().width,
-                        player.graphics.getHitbox().height
+                        player.model.getHitbox().x,
+                        player.model.getHitbox().y,
+                        player.model.getHitbox().width,
+                        player.model.getHitbox().height
                 );
 
                 // Края хитбоксов атаки
@@ -321,6 +321,9 @@ public abstract class GameRenderer
     {
         // region Отрисовка скелетов
         for (Skeleton skeleton : skeletons) {
+            skeletonWidthMult = skeleton.model.getWidth() / 30f;
+            skeletonHeightMult = skeleton.model.getHeight() / 60f;
+
             if (!skeleton.isDead())
             {
                 // здоровье скелета
@@ -328,8 +331,8 @@ public abstract class GameRenderer
                         batcher,
                         Integer.toString(skeleton.getCurrentHP()),
                         // (skeletonWidth - skeletonHpTextWidth) / 2
-                        skeleton.graphics.getX() + (skeleton.graphics.getWidth() - skeletonHps.get(skeleton).getSpaceWidth() * Integer.toString(skeleton.getCurrentHP()).length()) / 2f,
-                        skeleton.graphics.getY() + skeleton.graphics.getHeight() + 21
+                        skeleton.model.getX() + (skeleton.model.getWidth() - skeletonHps.get(skeleton).getSpaceWidth() * Integer.toString(skeleton.getCurrentHP()).length()) / 2f,
+                        skeleton.model.getY() + skeleton.model.getHeight() + 15 * skeletonHeightMult
                 );
 
                 skeleton_melee_sword_attack_animations.get(skeleton).setFrameDuration(
@@ -340,19 +343,19 @@ public abstract class GameRenderer
                 switch (skeleton.getCastingAbilityName()) {
                     // Атака
                     case Skeleton_MeleeSwordAttack:
-                        if (skeleton.graphics.getTurnedSide() == Directions.RIGHT) {
+                        if (skeleton.model.getTurnedSide() == Directions.RIGHT) {
                             batcher.draw(
                                     (TextureRegion) skeleton_melee_sword_attack_animations.get(skeleton).getKeyFrame(skeleton.getCastingElapsedTime()),
-                                    skeleton.graphics.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                    skeleton.graphics.getY(),
+                                    skeleton.model.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.model.getWidth()) / 2f,
+                                    skeleton.model.getY(),
                                     -skeleton_frame_Width * skeletonWidthMult,
                                     skeleton_frame_Height * skeletonHeightMult
                             );
                         } else {
                             batcher.draw(
                                     (TextureRegion) skeleton_melee_sword_attack_animations.get(skeleton).getKeyFrame(skeleton.getCastingElapsedTime()),
-                                    skeleton.graphics.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                    skeleton.graphics.getY(),
+                                    skeleton.model.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.model.getWidth()) / 2f,
+                                    skeleton.model.getY(),
                                     skeleton_frame_Width * skeletonWidthMult,
                                     skeleton_frame_Height * skeletonHeightMult
                             );
@@ -362,45 +365,45 @@ public abstract class GameRenderer
                     // Ходьба
                     case NONE:
                         // если идет вправо
-                        if (skeleton.graphics.getControlsDirection() == Directions.RIGHT) {
-                            skeleton.graphics.elapsedWalkingTime += Gdx.graphics.getDeltaTime();
-                            if (!skeleton_start_walking_animation.get(skeleton).isAnimationFinished(skeleton.graphics.elapsedWalkingTime ))
+                        if (skeleton.model.getControlsDirection() == Directions.RIGHT) {
+                            skeleton.model.elapsedWalkingTime += Gdx.graphics.getDeltaTime();
+                            if (!skeleton_start_walking_animation.get(skeleton).isAnimationFinished(skeleton.model.elapsedWalkingTime ))
                             {
                                 batcher.draw(
-                                        (TextureRegion) skeleton_start_walking_animation.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
-                                        skeleton.graphics.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                        skeleton.graphics.getY(),
+                                        (TextureRegion) skeleton_start_walking_animation.get(skeleton).getKeyFrame(skeleton.model.elapsedWalkingTime),
+                                        skeleton.model.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.model.getWidth()) / 2f,
+                                        skeleton.model.getY(),
                                         -skeleton_frame_Width * skeletonWidthMult,
                                         skeleton_frame_Height * skeletonHeightMult
                                 );
                             }
                                 else{
                                 batcher.draw(
-                                        (TextureRegion) skeleton_walking_animations.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
-                                        skeleton.graphics.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                        skeleton.graphics.getY(),
+                                        (TextureRegion) skeleton_walking_animations.get(skeleton).getKeyFrame(skeleton.model.elapsedWalkingTime),
+                                        skeleton.model.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.model.getWidth()) / 2f,
+                                        skeleton.model.getY(),
                                         -skeleton_frame_Width * skeletonWidthMult,
                                         skeleton_frame_Height * skeletonHeightMult
                                 );
                             }
                         }
                         // если идет влево
-                        else if (skeleton.graphics.getControlsDirection() == Directions.LEFT) {
-                            skeleton.graphics.elapsedWalkingTime += Gdx.graphics.getDeltaTime();
-                            if (!skeleton_start_walking_animation.get(skeleton).isAnimationFinished(skeleton.graphics.elapsedWalkingTime )) {
+                        else if (skeleton.model.getControlsDirection() == Directions.LEFT) {
+                            skeleton.model.elapsedWalkingTime += Gdx.graphics.getDeltaTime();
+                            if (!skeleton_start_walking_animation.get(skeleton).isAnimationFinished(skeleton.model.elapsedWalkingTime )) {
                                 batcher.draw(
-                                        (TextureRegion) skeleton_start_walking_animation.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
-                                        skeleton.graphics.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                        skeleton.graphics.getY(),
+                                        (TextureRegion) skeleton_start_walking_animation.get(skeleton).getKeyFrame(skeleton.model.elapsedWalkingTime),
+                                        skeleton.model.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.model.getWidth()) / 2f,
+                                        skeleton.model.getY(),
                                         skeleton_frame_Width * skeletonWidthMult,
                                         skeleton_frame_Height * skeletonHeightMult
                                 );
                             }
                             else{
                                 batcher.draw(
-                                        (TextureRegion) skeleton_walking_animations.get(skeleton).getKeyFrame(skeleton.graphics.elapsedWalkingTime),
-                                        skeleton.graphics.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                        skeleton.graphics.getY(),
+                                        (TextureRegion) skeleton_walking_animations.get(skeleton).getKeyFrame(skeleton.model.elapsedWalkingTime),
+                                        skeleton.model.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.model.getWidth()) / 2f,
+                                        skeleton.model.getY(),
                                         skeleton_frame_Width * skeletonWidthMult,
                                         skeleton_frame_Height * skeletonHeightMult
                                 );
@@ -408,21 +411,21 @@ public abstract class GameRenderer
                         }
                         // если стоит на месте
                         else {
-                            skeleton.graphics.elapsedWalkingTime = 0;
+                            skeleton.model.elapsedWalkingTime = 0;
 
-                            if (skeleton.graphics.getTurnedSide() == Directions.RIGHT)
+                            if (skeleton.model.getTurnedSide() == Directions.RIGHT)
                                 batcher.draw(
                                         skeletons_standing.get(skeleton),
-                                        skeleton.graphics.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                        skeleton.graphics.getY(),
+                                        skeleton.model.getX() + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - skeleton.model.getWidth()) / 2f,
+                                        skeleton.model.getY(),
                                         -skeleton_frame_Width * skeletonWidthMult,
                                         skeleton_frame_Height * skeletonHeightMult
                                 );
                             else
                                 batcher.draw(
                                         skeletons_standing.get(skeleton),
-                                        skeleton.graphics.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.graphics.getWidth()) / 2f,
-                                        skeleton.graphics.getY(),
+                                        skeleton.model.getX() - (skeleton_frame_Width * skeletonWidthMult - skeleton.model.getWidth()) / 2f,
+                                        skeleton.model.getY(),
                                         skeleton_frame_Width * skeletonWidthMult,
                                         skeleton_frame_Height * skeletonHeightMult
                                 );
@@ -446,10 +449,10 @@ public abstract class GameRenderer
                 // Хитбокс игрока
                 shapeRenderer.setColor(Color.GREEN);
                 shapeRenderer.rect(
-                        skeleton.graphics.getHitbox().x,
-                        skeleton.graphics.getHitbox().y,
-                        skeleton.graphics.getHitbox().width,
-                        skeleton.graphics.getHitbox().height
+                        skeleton.model.getHitbox().x,
+                        skeleton.model.getHitbox().y,
+                        skeleton.model.getHitbox().width,
+                        skeleton.model.getHitbox().height
                 );
 
                 // Края хитбоксов атаки
@@ -499,18 +502,18 @@ public abstract class GameRenderer
                 if (point.turnedSide == Directions.RIGHT)
                     batcher.draw(
                         (TextureRegion) point.skeletonDeathAnimation.getKeyFrame(point.elapsedTime),
-                        point.x + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - point.skeletonWidth) / 2f,
+                        point.x + skeleton_frame_Width * point.skeletonWidthMult - (skeleton_frame_Width * point.skeletonWidthMult - point.skeletonWidth) / 2f,
                         point.y,
-                        -skeleton_frame_Width * skeletonWidthMult,
-                        skeleton_frame_Height * skeletonHeightMult
+                        -skeleton_frame_Width * point.skeletonWidthMult,
+                        skeleton_frame_Height * point.skeletonHeightMult
                     );
                 else
                     batcher.draw(
                             (TextureRegion) point.skeletonDeathAnimation.getKeyFrame(point.elapsedTime),
-                            point.x - (skeleton_frame_Width * skeletonWidthMult - point.skeletonWidth) / 2f,
+                            point.x - (skeleton_frame_Width * point.skeletonWidthMult - point.skeletonWidth) / 2f,
                             point.y,
-                            skeleton_frame_Width * skeletonWidthMult,
-                            skeleton_frame_Height * skeletonHeightMult
+                            skeleton_frame_Width * point.skeletonWidthMult,
+                            skeleton_frame_Height * point.skeletonHeightMult
                     );
             }
             else {
@@ -522,18 +525,18 @@ public abstract class GameRenderer
                 if (point.turnedSide == Directions.RIGHT)
                     batcher.draw(
                             point.skeletonDeathRemains,
-                            point.x + skeleton_frame_Width * skeletonWidthMult - (skeleton_frame_Width * skeletonWidthMult - point.skeletonWidth) / 2f,
+                            point.x + skeleton_frame_Width * point.skeletonWidthMult - (skeleton_frame_Width * point.skeletonWidthMult - point.skeletonWidth) / 2f,
                             point.y,
-                            -skeleton_frame_Width * skeletonWidthMult,
-                            skeleton_frame_Height * skeletonHeightMult
+                            -skeleton_frame_Width * point.skeletonWidthMult,
+                            skeleton_frame_Height * point.skeletonHeightMult
                     );
                 else
                     batcher.draw(
                             point.skeletonDeathRemains,
-                            point.x - (skeleton_frame_Width * skeletonWidthMult - point.skeletonWidth) / 2f,
+                            point.x - (skeleton_frame_Width * point.skeletonWidthMult - point.skeletonWidth) / 2f,
                             point.y,
-                            skeleton_frame_Width * skeletonWidthMult,
-                            skeleton_frame_Height * skeletonHeightMult
+                            skeleton_frame_Width * point.skeletonWidthMult,
+                            skeleton_frame_Height * point.skeletonHeightMult
                     );
 
             }

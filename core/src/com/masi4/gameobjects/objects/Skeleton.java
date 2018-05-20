@@ -5,22 +5,42 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.masi4.Abilities.AbilityName;
 import com.masi4.Abilities.MobsAbilities.SkeletonAbilities.SkeletonAbility;
-import com.masi4.gamehelpers.Directions;
+import com.masi4.gamehelpers.helpers.Directions;
 import com.masi4.gameobjects.Stats;
-import com.masi4.gameobjects.objectGraphics.SkeletonGraphics;
+import com.masi4.gameobjects.objectModel.SkeletonModel;
 import com.masi4.gameobjects.objectRpg.SkeletonRpg;
+import com.masi4.gameobjects.objectSound.SkeletonSound;
+
 import static com.masi4.gamehelpers.GameCharactersDefaults.*;
 
 public class Skeleton
 {
-    public final SkeletonGraphics graphics;
+    public final SkeletonModel model;
     private SkeletonRpg rpg;
+
+    public Skeleton (int width, int height, int initialJumpSpeed, int horizontalVelocityGain,
+                     int maxHorizontalVelocity, int worldGravity, boolean isOnGround,
+                     Directions turnedSide, Stats stats)
+    {
+        int actualMaxHorizontalVelocity = Math.round(maxHorizontalVelocity * (1 + stats.getBonusSpeedProcent() * 0.01f));
+        model = new SkeletonModel(
+                width,
+                height,
+                worldGravity,
+                initialJumpSpeed,
+                horizontalVelocityGain,
+                actualMaxHorizontalVelocity,
+                turnedSide,
+                isOnGround
+        );
+        rpg = new SkeletonRpg(model, stats);
+    }
 
     public Skeleton (int width, int height, int worldGravity, boolean isOnGround,
                      Directions turnedSide, Stats stats)
     {
         int maxHorizontalVelocity = Math.round(SKELETON_DEFAULT_MAX_HORIZONTAL_VELOCITY * (1 + stats.getBonusSpeedProcent() * 0.01f));
-        graphics = new SkeletonGraphics(
+        model = new SkeletonModel(
                 width,
                 height,
                 worldGravity,
@@ -30,7 +50,7 @@ public class Skeleton
                 turnedSide,
                 isOnGround
         );
-        rpg = new SkeletonRpg(graphics, stats);
+        rpg = new SkeletonRpg(model, stats);
     }
 
     public Skeleton (int width, int height, int worldGravity, boolean isOnGround, Directions turnedSide)
@@ -49,12 +69,14 @@ public class Skeleton
 
     public void setCoords(float x, float y)
     {
-        graphics.setPosition(x, y);
+        model.setPosition(x, y);
     }
 
     public void takeDamage(int damage)
     {
         rpg.takeDamage(damage);
+        if (damage != 0)
+            SkeletonSound.takeDamage();
     }
 
     public void heal(int healing)

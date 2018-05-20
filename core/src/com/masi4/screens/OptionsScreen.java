@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
 import com.masi4.gamehelpers.GamePreferences;
 import static com.masi4.myGame.GameMain.*;
 /**
