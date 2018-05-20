@@ -1,4 +1,4 @@
-package com.masi4.gamehelpers.recourceHandlers;
+package com.masi4.gamehelpers.resourceHandlers;
 
 /**
  * Created by OIEFIJM on 27.10.2017.
@@ -11,7 +11,6 @@ package com.masi4.gamehelpers.recourceHandlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -24,14 +23,11 @@ import static com.masi4.gameobjects.Level.LevelNames;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.XmlReader;
 import com.masi4.UI.gameInventory.__InventoryStatics;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 import com.masi4.gamehelpers.GamePreferences;
 import com.masi4.gameobjects.objects.Skeleton;
 import com.masi4.gameworld.SkeletonDeath;
-
-import java.io.IOException;
 
 // TODO: Использовать готовый Loader из libgdx
 public class AssetLoader

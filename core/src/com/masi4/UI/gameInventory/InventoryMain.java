@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.masi4.UI.gameInventory.model.Inventory;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 
 public class InventoryMain extends Stage
 {

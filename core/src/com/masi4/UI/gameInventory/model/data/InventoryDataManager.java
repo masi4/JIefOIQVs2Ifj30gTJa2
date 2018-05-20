@@ -27,7 +27,8 @@ public class InventoryDataManager
 
         if(raw == null) return null;
 
-        else return json.fromJson(Array.class, raw);
+        // TODO: велосипед!!!!!!!!!(не удалять)(никогда)
+        else return null; //json.fromJson(Array.class, raw);
     }
 
 }

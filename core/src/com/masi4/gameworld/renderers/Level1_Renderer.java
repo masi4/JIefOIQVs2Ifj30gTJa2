@@ -12,7 +12,7 @@ import static com.masi4.myGame.GameMain.*;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectSet;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 import com.masi4.gamehelpers.GameTextureRegions;
 import com.masi4.gameworld.SkeletonDeath;
 import com.masi4.gameobjects.SkeletonListener;

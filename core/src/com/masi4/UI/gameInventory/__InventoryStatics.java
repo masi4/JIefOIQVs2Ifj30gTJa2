@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 import com.masi4.gamehelpers.GamePreferences;
 
+import java.io.IOException;
+
 
 // Различные подгрузщики из файлов
 public class __InventoryStatics
@@ -17,7 +19,11 @@ public class __InventoryStatics
         XmlReader reader = new XmlReader();
         XmlReader.Element root = null;
         FileHandle file = Gdx.files.internal("xml/Items.xml");
-        root = reader.parse(file);
+
+        try {
+            root = reader.parse(file);
+        }
+        catch (IOException e) {}
 
         int id = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("id"));
         return id;
@@ -27,14 +33,14 @@ public class __InventoryStatics
     public static String GetItemTitle(_InventoryItem item)
     {
         int id = GetItemId(item);
-        String result = GamePreferences.loc.format("InventoryItem"+id+"_Title");
+        String result = GamePreferences.loc.format("InventoryItem" + id + "_Title");
         return result;
     }
 
-    public static String GetItemDiscription(_InventoryItem item)
+    public static String GetItemDescription(_InventoryItem item)
     {
         int id = GetItemId(item);
-        String result = GamePreferences.loc.format("InventoryItem" + id + "_Discription", item.GetStats());
+        String result = GamePreferences.loc.format("InventoryItem" + id + "_Description", item.GetStats());
         return result;
     }
 
@@ -43,7 +49,10 @@ public class __InventoryStatics
         XmlReader reader = new XmlReader();
         XmlReader.Element root = null;
         FileHandle file = Gdx.files.internal("xml/Items.xml");
-        root = reader.parse(file);
+        try {
+            root = reader.parse(file);
+        }
+        catch (IOException e) { }
 
         int rarity = Integer.parseInt(root.getChildByName(item.getClass().getSimpleName()).getAttribute("rarity"));
         return rarity;

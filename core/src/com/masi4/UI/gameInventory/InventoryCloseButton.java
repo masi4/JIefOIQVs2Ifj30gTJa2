@@ -2,7 +2,7 @@ package com.masi4.UI.gameInventory;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 
 public class InventoryCloseButton extends ImageButton
 {

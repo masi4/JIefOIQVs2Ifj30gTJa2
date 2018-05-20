@@ -4,8 +4,6 @@ package com.masi4.gamehelpers;
  * Содержит значения параметров для игровых персонажей
  */
 
-// Is it safe to have such classes with game parameters?
-
 public class GameCharactersDefaults
 {
     // PLAYER

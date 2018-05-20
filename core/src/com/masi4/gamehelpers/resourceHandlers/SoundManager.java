@@ -1,4 +1,4 @@
-package com.masi4.gamehelpers.recourceHandlers;
+package com.masi4.gamehelpers.resourceHandlers;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.masi4.UI.gameInventory.model.Slot;
-import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 
 import static com.masi4.GUI.GUI.player;
 

@@ -3,7 +3,7 @@ package com.masi4.myGame;
 import com.masi4.gamehelpers.GamePreferences;
 import com.masi4.screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 
 public class GameMainClass extends Game
 {

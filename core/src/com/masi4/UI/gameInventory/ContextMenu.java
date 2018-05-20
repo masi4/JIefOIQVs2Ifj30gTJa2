@@ -11,7 +11,7 @@ import com.masi4.UI.gameInventory.model.Slot;
 import com.masi4.UI.gameInventory.model.objects._Equipable;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
 import com.masi4.UI.gameInventory.model.objects._Useable;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 import com.masi4.gamehelpers.helpers.BackgroundColor;
 
 public class ContextMenu extends Window

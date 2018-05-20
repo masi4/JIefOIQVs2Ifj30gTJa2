@@ -1,11 +1,13 @@
 package com.masi4.UI.gameInventory.model.objects;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.Abilities.Effects.CommonDamageBuff;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
+import static com.masi4.GUI.GUI.player;
 
 public class small_damage_potion implements _InventoryItem, _Useable
 {
-    final int DAMAGE = 10;
+    final int DAMAGE_PROCEnT = 15;
     final float COOLDOWN = 0.01f;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,12 +20,12 @@ public class small_damage_potion implements _InventoryItem, _Useable
     @Override
     public Object[] GetStats() {
         return new Object[]{
-                DAMAGE, COOLDOWN
+                DAMAGE_PROCEnT, COOLDOWN
         };
     }
 
     @Override
     public void Use() {
-        //Player.IncDamage(DAMAGE);
+        player.addEffect(new CommonDamageBuff());
     }
 }

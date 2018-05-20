@@ -1,12 +1,7 @@
 package com.masi4.gameobjects.objectSound;
 
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.utils.Array;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
-import com.masi4.gamehelpers.recourceHandlers.SoundManager;
-import com.masi4.gameobjects.objects.Skeleton;
-
-import static com.masi4.myGame.GameMain.random;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.SoundManager;
 
 // TODO: сделатль не static
 public class SkeletonSound

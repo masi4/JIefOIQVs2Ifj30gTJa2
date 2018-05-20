@@ -11,6 +11,7 @@ import com.masi4.gamehelpers.helpers.BackgroundColor;
 
 import static com.masi4.UI.gameInventory.InventoryMain.InventoryViewport;
 import static com.masi4.UI.gameInventory.InventoryWindow.INVENTORY_HEIGHT;
+import static com.masi4.UI.gameInventory.InventoryMain.contextMenu;
 
 
 /**
@@ -105,7 +106,7 @@ public class InventoryView extends Table
                         contextMenu.Hide();
                     inventory.slots.swap(lastClickedIndex[0], lastClickedIndex[1]);
                     //swapActor(lastClickedIndex[0], lastClickedIndex[1]); Не работает!!
-                    for(int i = 0; i<2 ;i++){
+                    for(int i = 0; i < 2 ;i++){
                         SlotView slotView = new SlotView(inventory.slots.get(lastClickedIndex[i]));
                         getCells().get(lastClickedIndex[i]).clearActor();
                         getCells().get(lastClickedIndex[i]).setActor(slotView)
@@ -129,6 +130,7 @@ public class InventoryView extends Table
         this.pack();
     }
 
+    // TODO: исправить кэл ---------------------->
     void SetClickListener(final Cell cell) // КЭЛЛ)))))))
     {
         cell.getActor().addListener(new ClickListener()

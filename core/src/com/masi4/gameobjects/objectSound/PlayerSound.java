@@ -1,8 +1,8 @@
 package com.masi4.gameobjects.objectSound;
 
 import com.masi4.gamehelpers.helpers.Directions;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
-import com.masi4.gamehelpers.recourceHandlers.SoundManager;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.SoundManager;
 import com.masi4.gameobjects.objects.Player;
 
 public class PlayerSound
@@ -22,7 +22,6 @@ public class PlayerSound
 
     public void update(Player player, float delta)
     {
-        /*
         // playing footstep on grounding
         if (player.model.isOnGround()) {
             if (!isGrounded) {
@@ -31,7 +30,6 @@ public class PlayerSound
             }
         }
         else isGrounded = false;
-        */
 
         // Изменение промежутка между шагами в зависимости от скорости игрока. 0.225f - при скорости 300
         // 0.001 - чтобы не было слишком большого числа и ошибки деления на ноль

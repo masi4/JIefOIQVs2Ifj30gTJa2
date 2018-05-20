@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.masi4.Abilities.AbilityName;
+import com.masi4.Abilities.Effects.Effect;
 import com.masi4.Abilities.PlayerAbilities.PlayerAbility;
 import com.masi4.gamehelpers.helpers.Directions;
 import com.masi4.gameobjects.Stats;
@@ -60,6 +61,12 @@ public class Player
     {
         if (rpg.getAbilities().containsKey(abilityName))
             rpg.getAbilities().get(abilityName).execute(this);
+    }
+
+    // TODO: сделать, чтобы нельзя было настакивать нестакающиеся эффекты
+    public void addEffect(Effect effect)
+    {
+        rpg.addEffect(effect);
     }
 
     public void updateAbilities(float delta)

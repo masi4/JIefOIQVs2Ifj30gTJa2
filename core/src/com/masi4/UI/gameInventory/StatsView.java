@@ -1,16 +1,11 @@
 package com.masi4.UI.gameInventory;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.masi4.gamehelpers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 import com.masi4.gamehelpers.GamePreferences;
 
 import static com.masi4.GUI.GUI.player;
@@ -107,10 +102,11 @@ public class StatsView extends Table
         healthBar.act(delta);
     }
 
+    // TODO: применение
     public void UpdateStats()
     {
-        staminaLabel.setText(GamePreferences.loc.format("Inventory_Stamina") + ": " /*+ player.GetStamina()*/ );
-        defenceLabel.setText(GamePreferences.loc.format("Inventory_Defence") + ": " /*+ player.GetDefence()*/ );
-        damageLabel.setText(GamePreferences.loc.format("Inventory_Damage") + ": " /*+ player.GetDamage()*/ );
+        staminaLabel.setText(GamePreferences.loc.format("Inventory_Stamina") + ": " + player.getStats().getStamina());
+        defenceLabel.setText(GamePreferences.loc.format("Inventory_Defence") + ": " + player.getStats().getDefence());
+        damageLabel.setText(GamePreferences.loc.format("Inventory_Damage") + ": " + player.getStats().getDamage());
     }
 }

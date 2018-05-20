@@ -4,9 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.masi4.UI.gameInventory.model.objects._InventoryItem;
-import com.masi4.gamehelpers.AssetLoader;
-import com.masi4.gamehelpers.BackgroundColor;
-import com.masi4.gamehelpers.GamePreferences;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.helpers.BackgroundColor;
 
 
 // Показывается в зависимости от контекстного меню
@@ -64,7 +63,7 @@ public class DialogBox extends Table
         discription.setVisible(true);
 
         title.setText(__InventoryStatics.GetItemTitle(item));
-        discription.setText(__InventoryStatics.GetItemDiscription(item));
+        discription.setText(__InventoryStatics.GetItemDescription(item));
 
         title.setColor(__InventoryStatics.GetItemColor(item));
 

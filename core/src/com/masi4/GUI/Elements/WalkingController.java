@@ -4,7 +4,7 @@ package com.masi4.GUI.Elements;
  */
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 
 import static com.masi4.gamehelpers.GameTextureRegions.*;
 

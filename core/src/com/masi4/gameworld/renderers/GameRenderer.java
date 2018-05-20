@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.masi4.Abilities.AbilityName;
 import com.masi4.gamehelpers.helpers.Directions;
-import com.masi4.gamehelpers.recourceHandlers.AssetLoader;
+import com.masi4.gamehelpers.resourceHandlers.AssetLoader;
 import com.masi4.gameworld.SkeletonDeath;
 import com.masi4.gamehelpers.GameCharactersDefaults;
 import com.masi4.gameobjects.objects.Player;
