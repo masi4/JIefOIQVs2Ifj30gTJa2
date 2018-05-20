@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <items name="itemsId">
-  <Test_Item id="0"/>
-  <healing_potion id="1"/>
+
+  <Test_Item id="0" rarity="0"/>
+  <small_healing_potion id="1" rarity="1"/>
+  <small_damage_potion id="2" rarity="1"/>
+
 </items>
+
+<!-- Rarity - показатель редкости предмета
+	0 - ћусор 			#ffffff
+	1 - ќбычный 		#3fe429
+	2 - –едкий			#0070dd
+	3 - Ёпический		#a335ee
+	4 - Ћегендарный		#ff8000
+(цвета тут дл€ примера. –еальные цвета указаны в __InventoryStatics.GetItemColor)
+-->

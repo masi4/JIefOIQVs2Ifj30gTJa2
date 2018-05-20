@@ -75,11 +75,11 @@ public class InventoryWindow extends Window
 
         statsView.setWidth(inventoryView.getWidth()-100);
         dialogBox.setWidth(inventoryView.getWidth()-100);
-        dialogBox.align(Align.bottom);
 
         statsView.left();
         dialogBox.left();
         inventoryView.right();
+
 
         leftContainer.add(inventoryCloseButton)
                 .left()
@@ -90,12 +90,14 @@ public class InventoryWindow extends Window
                 .top();
         leftContainer.row();
         leftContainer.add(dialogBox)
+                .expand()
+                .fillX()
                 .left()
                 .bottom();
 
         leftContainer.align(Align.left);
 
-        this.add(leftContainer).left().top().width(INVENTORY_WIDTH - inventoryView.getWidth());
+        this.add(leftContainer).left().top().width(INVENTORY_WIDTH - inventoryView.getWidth()).height(INVENTORY_HEIGHT-20);
         this.add(inventoryView).right().space(0, 0,0 ,10 );
         /*
         this.add(inventoryCloseButton);

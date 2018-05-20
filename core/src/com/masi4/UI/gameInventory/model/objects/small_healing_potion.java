@@ -12,9 +12,11 @@ import static com.masi4.GUI.GUI.player;
  * Created by U1wknUzeU6 on 01.05.2018.
  */
 
-public class healing_potion implements _InventoryItem, _Useable
+public class small_healing_potion implements _InventoryItem, _Useable
 {
     final int HEALING = 100;
+    final float COOLDOWN = 0.01f;
+    // TODO:Переделать текстуру. Нынешнюю текстуру прикрутить к medium_healing_potion
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -27,7 +29,7 @@ public class healing_potion implements _InventoryItem, _Useable
     public Object[] GetStats()
     {
         return new Object[]{
-                HEALING
+                HEALING, COOLDOWN
         };
     }
 

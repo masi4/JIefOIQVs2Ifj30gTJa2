@@ -24,11 +24,16 @@ import static com.masi4.UI.gameInventory.InventoryWindow.INVENTORY_WIDTH;
 public class StatsView extends Table
 {
     private float defaultScale = 3f;
+    private float statsScale = 2f;
     int MAX_HP;
     int HP;
     /*...*/
     ProgressBar healthBar;
     Label.LabelStyle defaultStyle;
+    Label.LabelStyle statsStyle;
+    Label staminaLabel;
+    Label defenceLabel;
+    Label damageLabel;
 
     public StatsView()
     {
@@ -39,13 +44,15 @@ public class StatsView extends Table
 
     private void SetStyle()
     {
-        pad(10,30,10,10);
+        pad(0,30,10,10);
 
     }
-
+    /**Здесь создаются объекты для отображения статов*/
     private void Create()
     {
         defaultStyle = new Label.LabelStyle(AssetLoader.default18, Color.WHITE);
+        statsStyle = new Label.LabelStyle(AssetLoader.default18, Color.WHITE);
+
         Label healthLabel = new Label(GamePreferences.loc.format("Inventory_Health"),defaultStyle);
 
         ProgressBar.ProgressBarStyle healthBarStyle = new ProgressBar.ProgressBarStyle(
@@ -64,10 +71,26 @@ public class StatsView extends Table
         healthBar.setScale(defaultScale);
         healthLabel.setFontScale(defaultScale);
 
+        staminaLabel = new Label("" ,statsStyle);
+        staminaLabel.setFontScale(statsScale);
+
+        defenceLabel = new Label("" ,statsStyle);
+        defenceLabel.setFontScale(statsScale);
+
+        damageLabel = new Label("",statsStyle);
+        damageLabel.setFontScale(statsScale);
+
+        UpdateStats();
 
         this.add(healthLabel);
         this.row();
         this.add(healthBar).width(INVENTORY_WIDTH/3);
+        this.row();
+        this.add(staminaLabel).left().padTop(10);
+        this.row();
+        this.add(defenceLabel).left();
+        this.row();
+        this.add(damageLabel).left();
 
         this.pack();
     }
@@ -82,5 +105,12 @@ public class StatsView extends Table
     {
         healthBar.setValue((float)player.getCurrentHP()/(float)player.getMaxHP());
         healthBar.act(delta);
+    }
+
+    public void UpdateStats()
+    {
+        staminaLabel.setText(GamePreferences.loc.format("Inventory_Stamina") + ": " /*+ player.GetStamina()*/ );
+        defenceLabel.setText(GamePreferences.loc.format("Inventory_Defence") + ": " /*+ player.GetDefence()*/ );
+        damageLabel.setText(GamePreferences.loc.format("Inventory_Damage") + ": " /*+ player.GetDamage()*/ );
     }
 }

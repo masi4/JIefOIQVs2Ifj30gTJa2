@@ -2,9 +2,8 @@ package com.masi4.UI.gameInventory.model;
 
 import com.badlogic.gdx.utils.Array;
 import com.masi4.UI.gameInventory.model.data.InventoryDataManager;
-import com.masi4.UI.gameInventory.model.objects.Test_Item;
-import com.masi4.UI.gameInventory.model.objects._InventoryItem;
-import com.masi4.UI.gameInventory.model.objects.healing_potion;
+import com.masi4.UI.gameInventory.model.objects.small_damage_potion;
+import com.masi4.UI.gameInventory.model.objects.small_healing_potion;
 
 /**
  * Created by U1wknUzeU6 on 23.04.2018.
@@ -73,6 +72,7 @@ public class Inventory {
 
     private void LoadDeafult()
     {
-        slots.get(0).Set(new healing_potion(), 64);
+        slots.get(0).Set(new small_healing_potion(), 64);
+        slots.get(1).Set(new small_damage_potion(),64);
     }
 }
